@@ -3,8 +3,9 @@ import Input from "../components/Input"
 import database from "../database";
 import AlertBox from "../components/AlertBox";
 import images from "../images";
+import { useSelector } from "react-redux";
 
-const AddExpenses = ({ status }) => {
+const AddExpenses = ({ title, status }) => {
     const [name, setName] = useState("")
     const [fish, setFish] = useState(0)
     const [egg, setEgg] = useState(0)
@@ -13,6 +14,8 @@ const AddExpenses = ({ status }) => {
     const [vegetable, setVegetable] = useState(0)
     const [date, setDate] = useState(0)
     const [alertBox, setAlertBox] = useState(null)
+    const userInfo = useSelector(state => state.currentUserInfo)
+
     class Expenses {
         Name;
         UserID;
@@ -21,9 +24,9 @@ const AddExpenses = ({ status }) => {
         TotalCost;
         Vegetable;
         submitDate;
-        constructor(Name, UserID = "demo-User", Vegetable, Grocery, Fish, Egg, Meat, submitDate) {
-            this.Name = Name;
-            this.UserID = UserID;
+        constructor(Vegetable, Grocery, Fish, Egg, Meat, submitDate) {
+            this.Name = userInfo['name'];
+            this.UserID = userInfo['phone'];
             this.Egg = Number(Egg);
             this.Fish = Number(Fish);
             this.Vegetable = Number(Vegetable);
@@ -38,7 +41,7 @@ const AddExpenses = ({ status }) => {
         e.preventDefault()
         try {
             setAlertBox(<AlertBox massege={"adding data..."} image={images.process} ></AlertBox>)
-            const expenses = new Expenses(name, "demo1", vegetable, grocery, fish, egg, meat, date)
+            const expenses = new Expenses( vegetable, grocery, fish, egg, meat, date)
             console.log(expenses)
             const dataSubmit = await database.newExpenseAdd(expenses)
 
@@ -69,18 +72,25 @@ const AddExpenses = ({ status }) => {
             </div>
             <hr className="w-full h-1 bg-green-500 mb-2 rounded-lg"></hr>
             <form onSubmit={onSubmitEventHandeler}>
-                <Input iconName={"fa fa-user-circle-o"} type={"text"} placeholder={"Name"} required={true} fname={(res) => setName(res)}></Input>
+              
+
                 <Input iconName={"fa fa-calendar"} type={"date"} placeholder={"date"} required={true} fname={(res) => setDate(res)}></Input>
+
                 <fieldset className="flex flex-row flex-wrap text-green-600 justify-center rounded-lg bg-gray-100 border-double border-2 border-gray-100">
                     <legend className=" bg-gray-100 p-3 rounded-full text-xl font-extrabold text-center">Today's Marketing Cost</legend>
-                    <Input classname="w-1/3 min-w-60" iconName={"fa fa-money"} type={"number"} placeholder={"Vegetable Cost"} required={true} fname={(res) => setVegetable(Number(res))} require={true}></Input>
-                    <Input classname="w-1/3 min-w-60" iconName={"fa fa-money"} type={"number"} placeholder={"Grocery Cost"} required={true} fname={(res) => setGrocery(Number(res))} require={true}></Input>
-                    <Input classname="w-1/3 min-w-60" iconName={"fa fa-money"} type={"number"} placeholder={"Fish Cost"} required={true} fname={(res) => setFish(Number(res))} require={true}></Input>
-                    <Input classname="w-1/3 min-w-60" iconName={"fa fa-money"} type={"number"} placeholder={"Egg Cost"} required={true} fname={(res) => setEgg(Number(res))} require={true}></Input>
-                    <Input classname="w-1/3 min-w-60" iconName={"fa fa-money"} type={"number"} placeholder={"Meat Cost"} required={true} fname={(res) => setMeat(Number(res))} require={true}></Input>
+
+                    <Input classname="w-1/3 min-w-60" iconName={"fa fa-inr"} type={"number"} placeholder={"Vegetable Cost"} required={true} fname={(res) => setVegetable(Number(res))} require={true}></Input>
+
+                    <Input classname="w-1/3 min-w-60" iconName={"fa fa-inr"} type={"number"} placeholder={"Grocery Cost"} required={true} fname={(res) => setGrocery(Number(res))} require={true}></Input>
+
+                    <Input classname="w-1/3 min-w-60" iconName={"fa fa-inr"} type={"number"} placeholder={"Fish Cost"} required={true} fname={(res) => setFish(Number(res))} require={true}></Input>
+
+                    <Input classname="w-1/3 min-w-60" iconName={"fa fa-inr"} type={"number"} placeholder={"Egg Cost"} required={true} fname={(res) => setEgg(Number(res))} require={true}></Input>
+
+                    <Input classname="w-1/3 min-w-60" iconName={"fa fa-inr"} type={"number"} placeholder={"Meat Cost"} required={true} fname={(res) => setMeat(Number(res))} require={true}></Input>
                 </fieldset>
                 <p className="text-xl font-bold">TotalCost:{vegetable + grocery + meat + fish + egg}</p>
-                <input type="submit" value={"add"} className={`px-3 py-2  w-40 rounded-lg font-semibold hover:cursor-pointer  text-white ${(name != "" && date != "") ? "bg-green-600 hover:bg-green-700 hover:shadow-md hover:shadow-gray-300" : "bg-gray-600"}`} disabled={(name != "" && date != "") ? false : true} />
+                <input type="submit" value={"add"} className={`px-3 py-2  w-40 rounded-lg font-semibold hover:cursor-pointer  text-white ${(date != "") ? "bg-green-600 hover:bg-green-700 hover:shadow-md hover:shadow-gray-300" : "bg-gray-600"}`} disabled={(date != "") ? false : true} />
             </form>
             <div>
                 {alertBox}

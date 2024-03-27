@@ -20,7 +20,7 @@ const Panel = ({ navigation = [] }) => {
 
     const currentUserInfo = useSelector(state => state.currentUserInfo)
     const isAuthorised = useSelector(state => state.isUserLogin)
-    console.log("panel::", currentUserInfo)
+
 
     const navigate = useNavigate()
     const dispatch = useDispatch()

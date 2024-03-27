@@ -18,7 +18,7 @@ function App() {
     <>
      
       <Provider store={store}>
-        <Header />
+     
         <div className='h-screen'>
           <Outlet />
         </div>

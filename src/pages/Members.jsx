@@ -13,21 +13,25 @@ const Members = ({ }) => {
     const [isMemberAdded, setIsMemberAdded] = useState(false)
     const [printData, setPrintData] = useState("")
     const [totalMember, setTotalMember] = useState(0)
+
+    //add new member form show .......
     const addNewMember = () => {
         setBox(<AlertBox massege={"Loading"} image={images.process} color="blue" />)
         setBox(<PopUp isPopUpClose={(res) => setIsPopUpClose(true)} close_btn={() => setBox("")} ><MembersAdd title={"Add New Member"} status={() => setIsMemberAdded(true)} /></PopUp>)
     }
-    const userInfo = async () => {
+
+    //print user data....
+    const printUserData = async () => {
         setPrintData(<AlertBox massege={"please wait..."} image={images.process} color="blue" />)
         try {
             const data = await database.getMembersShow()
             setTotalMember(data['documents'].length)
             if (data.documents.length > 0 && data != null) {
                 setPrintData(<AlertBox image={images.success} massege={"succesfully fatched"} />)
-                setPrintData(<DataTable title="Members Information" except="No Member add" columns={Object.keys(data['documents'][0]).filter((key) => { if (!String(key).startsWith('$', 0)) { return (key) } })} data={data["documents"]} />)
+                setPrintData(<DataTable deltePerform={()=>setIsMemberAdded((pre)=>!pre)} title="All Members Information" except="No Member add" columns={Object.keys(data['documents'][0]).filter((key) => { if (!String(key).startsWith('$', 0)) { return (key) } })} data={data["documents"]} />)
             }
             else {
-                setPrintData(<p>No data Found</p>)
+                setPrintData(<p>No members found</p>)
             }
         }
         catch (err) {
@@ -35,10 +39,12 @@ const Members = ({ }) => {
         }
 
     }
+
+    //user effect ......
     useEffect(() => {
         setBox("")
         setIsMemberAdded(false)
-        userInfo()
+        printUserData()
     }, [isMemberAdded])
 
 
@@ -46,7 +52,6 @@ const Members = ({ }) => {
     return (
 
         <section className="w-full">
-
             <PanelSectionTitle title={"All Members Details"} image={images.members} alt={"members"}>
             </PanelSectionTitle>
             <div className=" flex justify-between flex-wrap items-center text-gray-500 font-bold text-xl border px-5 ">

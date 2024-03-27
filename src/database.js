@@ -77,6 +77,37 @@ class Database {
         }
 
     }
+
+    async updateNewExpence(
+        docId
+
+    ) {
+        try {
+            await this.databases.updateDocument(conf.dataBaseId, conf.expenseId, docId)
+            return 0
+        }
+        catch (err) {
+            return 1
+        }
+    }
+
+    async deleteDocuments(
+        dataBaseId,collectionId,docId
+
+    ) {
+        try {
+           const data = await this.databases.deleteDocument(dataBaseId,collectionId,docId)
+           if(data==0){
+            alert("deleted")
+           }
+            return 0
+        }
+        catch (err) {
+            alert(err)
+        }
+    }
+
+
     async getAllExpenses() {
         try {
             const data = await this.databases.listDocuments(
@@ -150,10 +181,10 @@ class Database {
                 ID.unique,
                 file
             )
-            console.log('upload',data)
+            console.log('upload', data)
         }
-        catch(error){
-            console.log('upload',data);
+        catch (error) {
+            console.log('upload', data);
         }
     }
 

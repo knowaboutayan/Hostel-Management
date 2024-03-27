@@ -12,6 +12,7 @@ import Members from './pages/Members.jsx'
 import Cards from './PanelComponents/Cards.jsx'
 import SendMassege from './PanelComponents/SendMassege.jsx'
 import ErrorPage from './pages/ErrorPage.jsx'
+import Header from './components/Header.jsx'
 
 const navCardsData = [
   {
@@ -57,6 +58,7 @@ const dasboardCards = {
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path='' element={<App />} errorElement={<ErrorPage />}>
+     <Route path='' element={<Header />} errorElement={<ErrorPage />}></Route>
       <Route path='/login' element={<Login />} />
       <Route path={'/panel'} element={<Panel navigation={navCardsData} />} >
         <Route path={'/panel'} element={<Dashboard>
@@ -72,10 +74,6 @@ const router = createBrowserRouter(
 
   )
 )
-
-
-
-
 ReactDOM.createRoot(document.getElementById('root')).render(
   <RouterProvider router={router} />
 )

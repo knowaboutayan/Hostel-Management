@@ -1,5 +1,5 @@
 import images from "../images"
-const ErrorPage = ({ title = "connection error", image = "",descrption="",children }) => {
+const ErrorPage = ({ title = "connection error", image = "", descrption = "", children }) => {
     return (
         <section>
             <div>

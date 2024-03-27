@@ -1,8 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit"
 
 const initialState = {
+
     currentUserInfo: null,
-    isUserLogin: false
+    isUserLogin: false,
+    userStatus: "no-user",
+
+
 }
 
 const authenication = createSlice(
@@ -11,16 +15,27 @@ const authenication = createSlice(
         initialState,
         reducers: {
             isLogIn: (state, action) => {
+
                 state.isUserLogin = action.payload
+
             },
 
             userInfo: (state, action) => {
-                console.log("slice::",action.payload)
-                state.currentUserInfo = action.payload
+                console.log("slice::", action.payload)
+                const recivedData = action.payload
+                state.currentUserInfo = recivedData
+                if (recivedData != null)
+                    state.userStatus = recivedData['labels'][0]
+                else
+                    state.userStatus = 'no-user'
+
             },
+
+
+
 
         }
     }
 )
-export const { isLogIn, userInfo } = authenication.actions
+export const { isLogIn, userInfo, setUserStatus } = authenication.actions
 export default authenication.reducer

@@ -10,6 +10,7 @@ import process from '../images/progress.png'
 import senderror from '../images/senderror.png'
 import logout from '../images/logout.png'
 import pagenotfound from '../images/pagenotfound.png'
+import login from '../images/login.png'
 const images = {
     'success': success,
     'unsuccess': unsuccess,
@@ -22,7 +23,8 @@ const images = {
     'process': process,
     'senderror':senderror,
     'logout':logout,
-    'pagenotfound':pagenotfound
+    'pagenotfound':pagenotfound,
+    'login':login
 
 }
 export default images
