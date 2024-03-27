@@ -13,6 +13,7 @@ import Cards from './PanelComponents/Cards.jsx'
 import SendMassege from './PanelComponents/SendMassege.jsx'
 import ErrorPage from './pages/ErrorPage.jsx'
 import Header from './components/Header.jsx'
+import Deposits from './pages/Deposits.jsx'
 
 const navCardsData = [
   {
@@ -49,7 +50,14 @@ const navCardsData = [
     color: "green",
     activeClassName: "active-logout", // Add the appropriate class name
     id: "logout"//navigation-id
-  }
+  },
+  {
+    title: "Deposit",
+    icon: images.deposit,
+    color: "green",
+    activeClassName: "active-deposit", // Add the appropriate class name
+    id: "deposits"//navigation-id
+  },
 ];
 const dasboardCards = {
 
@@ -68,6 +76,7 @@ const router = createBrowserRouter(
         <Route path={'/panel/expenses'} element={<AllExpenses />} />
         <Route path={'/panel/members'} element={<Members />} />
         <Route path={'/panel/massege'} element={<SendMassege />} />
+        <Route path={'/panel/deposits'} element={<Deposits />} />
       </Route>
       <Route path='/*' element={<ErrorPage />} />
     </Route>

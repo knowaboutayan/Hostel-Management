@@ -7,5 +7,6 @@ const conf = {
     otherExpenseId: String(import.meta.env.VITE_OTHER_EXPENSE_COLLECTION_ID),
     chatId: String(import.meta.env.VITE_CHAT_COLLECTION_ID),
     bucketId:String(import.meta.env.VITE_BUCKET_ID),
+    depositId:String(import.meta.env.VITE_DEPOSIT_COLLECTION_ID)
 }
 export default conf

@@ -54,7 +54,7 @@ const AddOtherExpenses = ({ title, status }) => {
                 <img src={images.expense} alt="addMember" width={"50px"} className="rounded-full bg-green-300 p-2" />
                 <hr className="h-0 mx-2 w-1 bg-green-500"></hr>
                 <h2>
-                    Add New Expense
+                    Add Other Expense
                 </h2>
             </div>
             <hr className="w-full h-1 bg-green-500 mb-2 rounded-lg"></hr>

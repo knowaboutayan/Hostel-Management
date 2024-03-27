@@ -1,21 +1,29 @@
-import { Account, Client, ID } from "appwrite"
+import { Account, Client, ID, Teams } from "appwrite"
 import conf from "./conf/conf"
 
 class AuthService {
     client = new Client()
     account;
-    
+    teams;
+
     constructor() {
+
         this.client
             .setEndpoint('https://cloud.appwrite.io/v1')
             .setProject(conf.projectId)
         this.account = new Account(this.client)
+        this.teams = new Teams(this.client)
     }
-    async CreateAccount(email, password, name, phone) {
+
+
+    async CreateAccount(id,email, password, name, phone) {
         try {
-            const createAccount = await this.account.create(ID.unique(), email, password, name)
+
+            const createAccount = await this.account.create(id, email, password, name)
+
+
             if (createAccount) {
-                
+
                 return 0
             }
             else {
@@ -25,7 +33,7 @@ class AuthService {
 
         }
         catch (error) {
-            return 1
+            console.log(error)
         }
 
     }
@@ -46,7 +54,7 @@ class AuthService {
 
     async getCurrentUser() {
         try {
-            const data=await this.account.get()
+            const data = await this.account.get()
             console.log(data)
             return data
         }

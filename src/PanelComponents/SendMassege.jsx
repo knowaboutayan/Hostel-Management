@@ -6,14 +6,18 @@ import { useEffect, useState } from "react"
 import database from "../database"
 import AlertBox from "../components/AlertBox"
 import { ID } from "appwrite"
+import { useSelector } from "react-redux"
 
 
 const SendMassege = () => {
     const [sendChat, setSendChat] = useState("")
     const [reciveChats, setRecieveChats] = useState([])
     const [alert, setAlert] = useState("")
+    const userName = useSelector(state=>state.userName);
+    const userId = useSelector(state=>state.userId);
+
     class NewChat {
-        constructor(userId, userName, dateAndtime, text) {
+        constructor( dateAndtime, text) {
 
             this.userId = userId;
             this.userName = userName;
@@ -27,7 +31,7 @@ const SendMassege = () => {
     const send = async () => {
 
         const date = new Date()
-        const newChat = new NewChat("demo1", "DEMO", `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}  ${date.getTime()}:${date.getMinutes()}`, sendChat)
+        const newChat = new NewChat( `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}  ${date.getHours()}:${date.getMinutes()}`, sendChat)
 
         try {
             const data = await database.newChatAdd(newChat)

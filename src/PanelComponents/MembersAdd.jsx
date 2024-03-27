@@ -13,6 +13,15 @@ const MembersAdd = ({ title, width = "w-full", status = "" }) => {
     const [confirmPassword, setConfirmPassword] = useState("")
     const [showAlert, setShowAlert] = useState(false)
     const onSubmitEventHAndeler = async (e) => {
+        class Member {
+            constructor(name, password, email, phone) {
+                this.name = name;
+                this.password = password;
+                this.email = email;
+
+                this.phone = "+91" + phone
+            }
+        }
         e.preventDefault()
         try {
             setShowAlert(
@@ -20,7 +29,8 @@ const MembersAdd = ({ title, width = "w-full", status = "" }) => {
                     <p className="animate-spin border-green-600 p-8 border-8 border-l-green-200 border-solid rounded-full"></p>
                 </AlertBox>
             )
-            const add = await database.memberAdd(name, phone, email)
+            const member = new Member(name, password, email, phone)
+            const add = await database.memberAdd(member)
             if (add == 0) {
                 setShowAlert(< AlertBox massege={"successfully registered"} image={images.success} >
                 </AlertBox >);

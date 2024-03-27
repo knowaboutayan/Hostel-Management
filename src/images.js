@@ -11,6 +11,7 @@ import senderror from '../images/senderror.png'
 import logout from '../images/logout.png'
 import pagenotfound from '../images/pagenotfound.png'
 import login from '../images/login.png'
+import deposit from '../images/deposit.png'
 const images = {
     'success': success,
     'unsuccess': unsuccess,
@@ -24,7 +25,8 @@ const images = {
     'senderror':senderror,
     'logout':logout,
     'pagenotfound':pagenotfound,
-    'login':login
+    'login':login,
+    'deposit':deposit
 
 }
 export default images

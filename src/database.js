@@ -1,5 +1,6 @@
 import { Client, Databases, ID, Query, Storage } from "appwrite";
 import conf from "./conf/conf";
+import authService from "./auth";
 
 
 class Database {
@@ -11,18 +12,23 @@ class Database {
         this.databases = new Databases(this.client)
         this.storage = new Storage(this.client)
     }
-    async memberAdd(name, phone, email) {
+    async memberAdd({ name, email, phone, password }) {
         try {
-            const add = await this.databases.createDocument(
+            let id = ID.unique()
+            const add = await authService.CreateAccount(id, email, password, phone, name)
+            add = await this.databases.createDocument(
                 String(conf.dataBaseId),
                 String(conf.collectionId),
-                ID.unique(),
+                id,
                 {
                     name,
                     phone,
                     email,
                 }
+
             )
+
+
             if (add) {
                 return 0
             }
@@ -30,8 +36,10 @@ class Database {
                 return 1
             }
 
+
         }
         catch (error) {
+            console.log(error)
             return 1
         }
 
@@ -52,6 +60,7 @@ class Database {
             alert(err)
         }
     }
+
     async newExpenseAdd({ Name = "f", UserID = "demo-User", Vegetable, Grocery, Fish, Egg, Meat, submitDate, TotalCost }) {
         try {
             const addExpense = await this.databases.createDocument(
@@ -92,14 +101,14 @@ class Database {
     }
 
     async deleteDocuments(
-        dataBaseId,collectionId,docId
+        dataBaseId, collectionId, docId
 
     ) {
         try {
-           const data = await this.databases.deleteDocument(dataBaseId,collectionId,docId)
-           if(data==0){
-            alert("deleted")
-           }
+            const data = await this.databases.deleteDocument(dataBaseId, collectionId, docId)
+            if (data == 0) {
+                alert("deleted")
+            }
             return 0
         }
         catch (err) {
@@ -135,7 +144,6 @@ class Database {
                 conf.dataBaseId,
                 conf.chatId,
                 ID.unique(),
-
                 {
 
                     userId, userName, dateAndTime, text
@@ -173,6 +181,39 @@ class Database {
         }
     }
 
+    async newDepositAdd({ memberName, amount, userId }) {
+        try {
+            await this.databases.createDocument(
+                conf.dataBaseId,
+                conf.depositId,
+                {
+                    memberName, amount, userId
+                }
+            )
+            alert('updted deposit')
+        }
+        catch (err) {
+            alert("error", err)
+
+        }
+
+    }
+
+    async getDeposit() {
+        try {
+            await this.databases.listDocuments(
+                conf.dataBaseId,
+                conf.depositId,
+
+            )
+            alert('updted deposit')
+        }
+        catch (err) {
+            alert("error", err)
+
+        }
+
+    }
 
     async uploadProfilePic(file) {
         try {

@@ -5,6 +5,8 @@ const initialState = {
     currentUserInfo: null,
     isUserLogin: false,
     userStatus: "no-user",
+    userName: "untitled",
+    userId: "0000"
 
 
 }
@@ -24,10 +26,17 @@ const authenication = createSlice(
                 console.log("slice::", action.payload)
                 const recivedData = action.payload
                 state.currentUserInfo = recivedData
-                if (recivedData != null)
+                if (recivedData != null) {
                     state.userStatus = recivedData['labels'][0]
-                else
+                    state.userName = recivedData['name']
+                    state.userId = recivedData['email']
+                }
+                else {
                     state.userStatus = 'no-user'
+                    state.userName = "untitled"
+                    state.userId = "0000"
+                }
+
 
             },
 
