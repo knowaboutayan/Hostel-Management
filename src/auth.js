@@ -16,27 +16,25 @@ class AuthService {
     }
 
 
-    async CreateAccount(id,email, password, name, phone) {
-        try {
+    // async CreateAccount(email, password, name, phone) {
+    //     try {
+    //         console.log(email, password, name, phone);
+    //         const createAccount = await this.account.create(ID.unique(), email, password, name);
 
-            const createAccount = await this.account.create(id, email, password, name)
+    //         if (createAccount) {
+    //             alert("success")
+    //             return 0;
+    //         } else {
+    //             return 1;
+    //         }
+           
+    //     } catch (error) {
+    //         console.error(error);
+    //         return -1; // Return a custom error code or handle the error appropriately
+    //     }
+    // }
 
 
-            if (createAccount) {
-
-                return 0
-            }
-            else {
-                return 1
-
-            }
-
-        }
-        catch (error) {
-            console.log(error)
-        }
-
-    }
     async Login(email, password) {
         try {
             const accountLogin = await this.account.createEmailPasswordSession(String(email), String(password))
@@ -61,7 +59,7 @@ class AuthService {
         catch (err) {
             return 1
         }
-        return 1
+
     }
 
     async logout() {

@@ -1,81 +1,111 @@
+import { useEffect, useState } from "react";
 import PanelSectionTitle from "../PanelComponents/PanelSectionTitle";
-import PopUp from "../components/PopUp";
-import database from "../database";
-import Input from "../components/Input";
-import AlertBox from "../components/AlertBox";
-import { useState } from "react";
+import PopUp from "../components/PopUp"
 import images from "../images";
+import AddDeposite from "../PanelComponents/AddDeposit";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router";
+import AlertBox from "../components/AlertBox";
+import database from "../database";
+import conf from "../conf/conf";
+import DataTable from "../PanelComponents/DataTable";
+
+
 
 const Deposits = () => {
-    const [popupBox, setPopUpBox] = useState("");
-    const [alertBox, setAlertBox] = useState("");
-   
 
-class Deposit{
-    constructor({memberName,memberId},amount){
-        this.memberName=memberName;
-        this.memberId = memberId;
-        this.amount=amount
+    const [status, setStatus] = useState(false)
+    const [popupBox, setPopupBox] = useState("")
+    const [alertBox, setAlert] = useState("")
+    const [printData, setPrintData] = useState("")
+    const [databaseUpdate, setDatabaseUpdated] = useState(false)
+    
+
+    const userStatus = useSelector(state => state.userStatus)
+    const navigate = useNavigate()
+    //adding new deposit of members
+    const addNew = () => {
+
+        setPopupBox(<PopUp title="addDeposite" icon={images.deposit} close_btn={() => setPopupBox("")}>
+
+            <AddDeposite status={() => setStatus((pre) => !pre)} />
+
+        </PopUp>)
+    }
+    //print Data 
+    const printDeposits = async () => {
+
+        setAlert(<AlertBox massege={"please wait..."} color="gray" image={images.process} />)
+     try{
+        const data = await database.fetchCollectionData({ collectionId: conf.depositId })
+        console.log("hhh",data)
+       if(data.length>0 && data!=1)
+        setPrintData(<DataTable deltePerform={()=>setDatabaseUpdated((pre)=>!pre)} title="All Expenses" data={data} columns={Object.keys(data[0]).filter((key) => { if (!String(key).startsWith('$')) { return key } })} />)
+    else{
+        setAlert(<AlertBox massege={"No data found"} ><button onClick={()=>setAlert("")}>close</button></AlertBox>)
+    }
+    }
+     catch(error){
+        console.log('error',error)
+     }
+
+    }
+
+
+
+    useEffect(() => {
+
+        printDeposits()
+        setPopupBox("")
+        setAlert("")
+
+
+    }, [status])
+
+
+    if (userStatus == 'admin' || userStatus == 'manager') {
+
+        return (
+            <section>
+                <PanelSectionTitle title={"Deposits"} image={images.deposit} />
+
+                <p onClick={() => addNew()}>
+                    add new
+                </p>
+
+
+                <div>
+                    <h3>
+                        All Deposit 
+                    </h3>
+                    {printData}
+                </div>
+
+                <div>
+
+                    {popupBox}
+                </div>
+                {alertBox}
+
+
+            </section>
+        )
+    }
+
+
+
+    else {
+
+
+        return (
+
+            <AlertBox massege={"You Have No permission "} >
+
+                <button onClick={() => navigate('/panel')}>go to dashboard</button>
+            </AlertBox>
+
+        )
 
     }
 }
-
-    const onSubmitEventHandeler = async (e,data) => {
-        e.preventDefault();
-        setAlertBox(<AlertBox massege={"submitting..."}></AlertBox>);
-        
-        try {
-            
-            // Construct Deposit object
-           
-            console.log(deposit);
-            
-            // Call the API method to add deposit
-            await database.newDepositAdd(data);
-        } catch (err) {
-            console.log(err);
-            alert("dipositpanel", err);
-        }
-    }
-
-    const addDeposit = async () => {
-        const memberList = await database.getMembersShow();
-        const [amount, setAmount] = useState("");
-        const [memberInfo, setMemberInfo] = useState("");
-        
-        setPopUpBox(
-            <PopUp close_btn={() => setPopUpBox("")}>
-                <form onSubmit={(e)=>onSubmitEventHandeler(e,JSON.stringify({ memberName: memberInfo.memberName, userId:me,amount:amount }))}>
-                    <select onChange={(e) => setMemberInfo(JSON.parse(e.target.value))}>
-                        <option value={""}>select a member</option>
-                        {memberList['documents'].map((member) => (
-                            <option key={member['$id']} value={JSON.stringify({ memberName: member['name'], memberId: member['$id'] })}>
-                                {member['name']}
-                            </option>
-                        ))}
-                    </select>
-                    {amount}
-                    <Input type={"text"} fname={(res) => setAmount(res)}></Input>
-                    <button type="submit">Submit</button>
-                </form>
-            </PopUp>
-        );
-    }
-
-    return (
-        <section>
-            <PanelSectionTitle title={"Deposits"} image={images.deposit} />
-            <div>
-                <h2>All deposits</h2>
-                <i onClick={() => addDeposit()}>Deposit</i>
-            </div>
-            {memberInfo['memberName']}
-            <div>
-                {popupBox}
-            </div>
-            {alertBox}
-        </section>
-    )
-}
-
-export default Deposits;
+export default Deposits

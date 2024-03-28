@@ -4,11 +4,12 @@ import images from "../images";
 import { ID } from "appwrite";
 import database from "../database";
 
-const DataTable = ({ title = "", except = "", columns = [], data = [{}], deltePerform ,  classname, children }) => {
+const DataTable = ({ title = "", except = "", columns = [], data = [{}], deltePerform, classname, children }) => {
     const [printdata, setPrintData] = useState("");
     const [alert, setAlertBox] = useState("")
     const databseID = data[0]['$databaseId']//database Id
     const collectionID = data[0]['$collectionId']//collection Id
+
     const [deleteId, setDeleteId] = useState("")
     //delete items 
     const deleteDocument = async (docId) => {
@@ -16,6 +17,7 @@ const DataTable = ({ title = "", except = "", columns = [], data = [{}], deltePe
 
             const response = await database.deleteDocuments(databseID, collectionID, docId)
             setDeleteId(docId)
+
             deltePerform()
 
         }
@@ -35,7 +37,7 @@ const DataTable = ({ title = "", except = "", columns = [], data = [{}], deltePe
             setPrintData(
                 data.map((obj) => (
 
-                    <tr key={obj['$id']}  style={{display: (obj['$id'] === deleteId) ? "none" : "table-row"}} className={`animate-fade-up animate-once animate-duration-1000 animate-delay-200 animate-ease-in-out  animate-fill text-center border even:bg-green-100`}>
+                    <tr key={obj['$id']} style={{ display: (obj['$id'] === deleteId) ? "none" : "table-row" }} className={`animate-fade-up animate-once animate-duration-1000 animate-delay-200 animate-ease-in-out  animate-fill text-center border even:bg-green-100`}>
                         {Object.keys(obj).map((key, i) => {
                             if (String(key)[0] !== '$')
                                 return (<td className=" border p-2 w-24 " key={i}>{obj[key]}</td>)
@@ -51,7 +53,7 @@ const DataTable = ({ title = "", except = "", columns = [], data = [{}], deltePe
         } else {
             setPrintData(<p>{except}</p>);
         }
-    }, [deltePerform]);
+    }, [deleteId]);
 
     return (
         <section className="container min-w-80 px-3 ">

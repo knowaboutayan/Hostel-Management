@@ -17,7 +17,7 @@ const Members = ({ }) => {
     //add new member form show .......
     const addNewMember = () => {
         setBox(<AlertBox massege={"Loading"} image={images.process} color="blue" />)
-        setBox(<PopUp isPopUpClose={(res) => setIsPopUpClose(true)} close_btn={() => setBox("")} ><MembersAdd title={"Add New Member"} status={() => setIsMemberAdded(true)} /></PopUp>)
+        setBox(<PopUp title="Add New Member" icon={images.newMember} isPopUpClose={(res) => setIsPopUpClose(true)} close_btn={() => setBox("")} ><MembersAdd title={"Add New Member"} status={() => setIsMemberAdded(true)} /></PopUp>)
     }
 
     //print user data....

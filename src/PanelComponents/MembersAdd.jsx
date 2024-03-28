@@ -55,17 +55,9 @@ const MembersAdd = ({ title, width = "w-full", status = "" }) => {
         }
     }
     return (
-        <section className={`p-4 ${width} relative min-w-80 bg-gray-50 border-2 border-green-600 mx-auto rounded-lg shadow-lg shadow-gray-700`}>
-            <div className="flex mb-2  items-center font-medium text-2xl text-green-600  ">
-                <img src={newMember} alt="addMember" width={"50px"} className="rounded-full bg-green-300 p-2" />
-                <hr className="h-12 mx-2 w-1 bg-green-500"></hr>
-                <h2>
-                    {title}
-                </h2>
-            </div>
-            <hr className="w-full h-1 bg-green-500 mb-2 rounded-lg"></hr>
-
-            <form onSubmit={onSubmitEventHAndeler}   >
+        <section className="">
+          
+            <form onSubmit={onSubmitEventHAndeler}>
                 <Input iconName={"fa fa-user"} type={"text"} placeholder={"member's name"} fname={(res) => setName(res)} required={true} />
                 <Input iconName={"fa fa-mobile"} type={"tel"} minValue={1000000000} maxValue={9999999999} placeholder={"member's mobile number"} fname={(res) => setPhone(res)} required={true} />
                 <Input iconName={"fa fa-envelope"} type={"tel"} placeholder={"members's email"} fname={(res) => setEmail(res)} required={true} />

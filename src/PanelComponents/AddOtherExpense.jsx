@@ -49,15 +49,8 @@ const AddOtherExpenses = ({ title, status }) => {
 
     }
     return (
-        <section className={`p-4 relative w-full min-w-80 bg-gray-50 border-2 border-green-600 mx-auto rounded-lg shadow-lg shadow-gray-700`}>
-            <div className="flex mb-2  items-center font-medium text-2xl text-green-600  ">
-                <img src={images.expense} alt="addMember" width={"50px"} className="rounded-full bg-green-300 p-2" />
-                <hr className="h-0 mx-2 w-1 bg-green-500"></hr>
-                <h2>
-                    Add Other Expense
-                </h2>
-            </div>
-            <hr className="w-full h-1 bg-green-500 mb-2 rounded-lg"></hr>
+        <section >
+            
             <form onSubmit={onSubmitEventHandeler}>
                 <Input iconName={"fa fa-pencil"} type={"text"} placeholder={"expense details"} required={true} fname={(res) => setDetails(res)}></Input>
                 <Input iconName={"fa fa-inr"} type={"number"} placeholder={"amount"} required={true} fname={(res) => setAmount(res)}></Input>

@@ -12,14 +12,15 @@ class Database {
         this.databases = new Databases(this.client)
         this.storage = new Storage(this.client)
     }
+
+
     async memberAdd({ name, email, phone, password }) {
         try {
-            let id = ID.unique()
-            const add = await authService.CreateAccount(id, email, password, phone, name)
-            add = await this.databases.createDocument(
+
+            const add = await this.databases.createDocument(
                 String(conf.dataBaseId),
                 String(conf.collectionId),
-                id,
+                ID.unique(),
                 {
                     name,
                     phone,
@@ -186,30 +187,35 @@ class Database {
             await this.databases.createDocument(
                 conf.dataBaseId,
                 conf.depositId,
+                ID.unique(),
                 {
                     memberName, amount, userId
                 }
             )
-            alert('updted deposit')
+            return 0
         }
         catch (err) {
-            alert("error", err)
+            console.log(err)
 
         }
 
     }
 
-    async getDeposit() {
+
+    //function forgeneral data fetched 
+    async fetchCollectionData({ dataBaseId = conf.dataBaseId, collectionId = collectionId }) {
         try {
-            await this.databases.listDocuments(
-                conf.dataBaseId,
-                conf.depositId,
+            const data = await this.databases.listDocuments(
+                dataBaseId,
+                collectionId,
 
             )
-            alert('updted deposit')
+            console.log(data)
+            return data['documents']
+
         }
         catch (err) {
-            alert("error", err)
+            return 1
 
         }
 
@@ -228,6 +234,8 @@ class Database {
             console.log('upload', data);
         }
     }
+
+
 
 
 }

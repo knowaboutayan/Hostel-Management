@@ -22,7 +22,7 @@ const AllExpenses = () => {
 
     const addNewExpense = () => {
         setBox(<AlertBox massege={"please Wait..."} image={images.process} color="gray" />)
-        setBox(<PopUp className="animate-fade-left" close_btn={() => setBox("")}><AddExpenses status={(res) => setDatabaseUpdated((pre)=>!pre)} /></PopUp>)
+        setBox(<PopUp title="Add New Expenses " icon={images.expense} className="animate-fade-left" close_btn={() => setBox("")}><AddExpenses status={(res) => setDatabaseUpdated((pre)=>!pre)} /></PopUp>)
 
     }
 
@@ -30,7 +30,7 @@ const AllExpenses = () => {
     //add new other expenses
     const addOtherExpense = () => {
         setBox(<AlertBox massege={"please Wait..."} image={images.process} color="gray" />)
-        setBox(<PopUp className="animate-fade-left" close_btn={() => setBox("")}><AddOtherExpenses status={(res) => setDatabaseUpdated((pre)=>!pre)} /></PopUp>)
+        setBox(<PopUp title="Add Other Expenses " icon={images.expense} className="animate-fade-left" close_btn={() => setBox("")}><AddOtherExpenses status={(res) => setDatabaseUpdated((pre)=>!pre)} /></PopUp>)
 
     }
 
@@ -71,9 +71,6 @@ const AllExpenses = () => {
     return (
         <section>
             <PanelSectionTitle title={"All Expenses"} image={images.expense}></PanelSectionTitle>
-
-
-
             <div className="flex items-center w-full justify-between  px-5"> <p className="text-green-700 text-2xl">
                 Total Monthly Expense : {totalExpense} {userStatus}
             </p>
@@ -81,9 +78,6 @@ const AllExpenses = () => {
                 <button onClick={() => addNewExpense()} type="button" className="px-3 py-2  text-lg text-white rounded-lg shadow-lg bg-green-600"><i className="fa fa-plus-circle"></i> Add New Expense</button>
                 {(userStatus === 'admin') ? <button onClick={() => addOtherExpense()} type="button" className="px-3 py-2  text-lg text-white rounded-lg shadow-lg bg-green-600"><i className="fa fa-plus-circle"></i> Add Other Expense</button> : null}
             </div>
-
-
-
             <div>
                 {alert}
             </div>
