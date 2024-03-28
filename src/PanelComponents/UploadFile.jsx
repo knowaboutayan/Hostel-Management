@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import AlertBox from "../components/AlertBox";
 import images from "../images";
 import database from "../database";
+import Button from "../components/Button";
 
 const UploadFile = ({ title, requirements, classname, children, uploadTo, fname }) => {
     const [alert, setAlert] = useState("");
@@ -47,9 +48,9 @@ const UploadFile = ({ title, requirements, classname, children, uploadTo, fname 
                                     onChange={(e) => setFile(e.target.files[0])} // Set file to the selected file
                                     required
                                 />
-                                <button type="submit" className="bg-green-600">
-                                    upload
-                                </button>
+                                <Button type="submit" className="bg-green-600">
+                                <i className="fa fa-upload"/>    upload
+                                </Button>
                             </form>
                         </div>
                     </div>

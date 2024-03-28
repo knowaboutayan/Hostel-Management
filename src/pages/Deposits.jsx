@@ -11,6 +11,7 @@ import conf from "../conf/conf";
 import DataTable from "../PanelComponents/DataTable";
 import Button from "../components/Button";
 import alert from "../components/allAlerts";
+import NoDataFound from "../PanelComponents/NoDataFound";
 
 const Deposits = () => {
 
@@ -41,15 +42,24 @@ const Deposits = () => {
         try {
             const data = await database.fetchCollectionData({ collectionId: conf.depositId })//fetching data....
 
-            
+
             if (data == 'netErr') {
                 alert("")
                 setPrintData(alert.networkError(() => setPrintData("")))
                 return
             }
-            else if (data.length > 0 && data != 1) {
-                setPrintData(<DataTable deltePerform={(res) => setDatabaseUpdated((pre) => !pre)} title="All  Member's Deposit" data={data} columns={Object.keys(data[0]).filter((key) => { if (!String(key).startsWith('$')) { return key } })} />)
+            else if (data.length == 0 || data == []) {
+                setPrintData(
+                    <NoDataFound/>
+                )
 
+            }
+            else if (data.length > 0 && data != 1) {
+                setPrintData(
+                    <>
+
+                        <DataTable deltePerform={(res) => setDatabaseUpdated((pre) => !pre)} title="All  Member's Deposit" data={data} columns={Object.keys(data[0]).filter((key) => { if (!String(key).startsWith('$')) { return key } })} />)
+                    </>)
             }
 
             else {
@@ -76,16 +86,17 @@ const Deposits = () => {
 
         return (
             <section>
-          
-                <Button type="button" text=" " fname={() => addNewDeposit()}><i className="fa fa-plus-circle" /> Add New Deposit</Button>
-                <div>
-                    <h3>
-                        All Deposit
-                    </h3>
 
-                </div>
                 {popupBox}
-                <div>
+                <div className="">
+                <Button type="button" text=" " fname={() => addNewDeposit()}><i className="fa fa-plus-circle" /> Add New Deposit</Button>
+                        <div>
+                            <h3>
+                                All Deposit
+                            </h3>
+
+                        </div>
+                       
                     {printData}
 
                 </div>

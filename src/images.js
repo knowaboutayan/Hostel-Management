@@ -13,6 +13,9 @@ import pagenotfound from '../images/pagenotfound.png'
 import login from '../images/login.png'
 import deposit from '../images/deposit.png'
 import alert from '../images/alert.png'
+import imagrupload from '../images/imageupload.png'
+import empty from '../images/empty.jpg'
+import maintenence from '../images/maintenence.png'
 const images = {
     'success': success,
     'unsuccess': unsuccess,
@@ -28,7 +31,10 @@ const images = {
     'pagenotfound':pagenotfound,
     'login':login,
     'deposit':deposit,
-    'alert':alert
+    'alert':alert,
+    'imageupload':imagrupload,
+    'empty':empty,
+    'maintenence':maintenence
 
 }
 export default images

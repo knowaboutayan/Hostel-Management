@@ -78,7 +78,7 @@ const SendMassege = () => {
 
     return (
         <>
-       
+{/*        
         <section className="h-full relative border-8  border-green-700 bg-green-700">
            
             <div className="h-12   text-white font-medium box-border   text-2xl ">
@@ -110,7 +110,12 @@ const SendMassege = () => {
                     </form>
                 </div>
             </div>
-        </section>
+        </section> */}
+
+        <div>
+            <p className="text-3xl text-gray-500 text-center font-light"> Comming Soon...</p>
+            <img src={images.maintenence} className="w-1/2 m-auto"/>
+        </div>
         </>
     )
 }

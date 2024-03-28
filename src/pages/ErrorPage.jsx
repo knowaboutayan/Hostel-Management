@@ -1,15 +1,18 @@
+import { useDispatch } from "react-redux"
+import NoDataFound from "../PanelComponents/NoDataFound"
 import images from "../images"
-const ErrorPage = ({ title = "connection error", image = "", descrption = "", children }) => {
+import { isLogIn, userInfo } from "../store/slice"
+import { useEffect } from "react"
+const ErrorPage = ({ image = "", descrption = "", children }) => {
+    const dispatch = useDispatch()
+   
+    
     return (
-        <section>
-            <div>
-                <img alt="error" src={(image == "") ? images.pagenotfound : image} />
-            </div>
-            <div>
-                {title}
-                <p> {descrption}</p>
-            </div>
-            {children}
+        <section className="m-auto text-center">
+           <NoDataFound text={"pagenotfound"} image={images.pagenotfound}>
+            </NoDataFound>
+            {descrption}
+            <div>{children}</div>
         </section>
     )
 

@@ -9,6 +9,7 @@ import database from "../database"
 import AddOtherExpenses from "../PanelComponents/AddOtherExpense"
 import { useSelector } from "react-redux"
 import Button from "../components/Button"
+import NoDataFound from "../PanelComponents/NoDataFound"
 
 
 
@@ -44,7 +45,7 @@ const AllExpenses = () => {
             const data = await (database.getAllExpenses())
 
             if (data == 1 || data == null || data == {} || data.documents.length == 0) {
-                setAlert(<p>No expense</p>)
+                setAlert(<NoDataFound/>)
             }
             else {
                 let cost = 0

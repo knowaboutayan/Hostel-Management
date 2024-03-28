@@ -23,7 +23,7 @@ function App() {
         <div className='h-screen box-border overflow-auto '>
         <Outlet/>
         </div>
-       
+       <Footer/>
 
       </Provider>
 

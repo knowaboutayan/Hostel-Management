@@ -15,13 +15,16 @@ import ErrorPage from './pages/ErrorPage.jsx'
 import Header from './components/Header.jsx'
 import Deposits from './pages/Deposits.jsx'
 
+import Footer from './components/Footer.jsx'
+import NoDataFound from './PanelComponents/NoDataFound.jsx'
+
 const navCardsData = [
   {
     title: "Dashboard",
     icon: images.dashboard,
     color: "green",
     activeClassName: "active-dashboard", // Add the appropriate class name
-    id: ""//navigation-id
+    id: "dashboard"//navigation-id
   },
   {
     title: "All Members",
@@ -30,27 +33,7 @@ const navCardsData = [
     activeClassName: "active-members",// Add the appropriate class name
     id: "members"//navigation-id
   },
-  {
-    title: "Expenses",
-    icon: images.expense,
-    color: "green",
-    activeClassName: "active-expenses", // Add the appropriate class name
-    id: "expenses"//navigation-id
-  },
-  {
-    title: "Message",
-    icon: images.massege,
-    color: "green",
-    activeClassName: "active-message", // Add the appropriate class name
-    id: "massege"//navigation-id
-  },
-  {
-    title: "Logout",
-    icon: images.logout,
-    color: "green",
-    activeClassName: "active-logout", // Add the appropriate class name
-    id: "logout"//navigation-id
-  },
+
   {
     title: "Deposit",
     icon: images.deposit,
@@ -58,20 +41,46 @@ const navCardsData = [
     activeClassName: "active-deposit", // Add the appropriate class name
     id: "deposits"//navigation-id
   },
-];
-const dasboardCards = {
 
-}
+  {
+    title: "Expenses",
+    icon: images.expense,
+    color: "green",
+    activeClassName: "active-expenses", // Add the appropriate class name
+    id: "expenses"//navigation-id
+  },
+
+  {
+    title: "Message",
+    icon: images.massege,
+    color: "green",
+    activeClassName: "active-message", // Add the appropriate class name
+    id: "massege"//navigation-id
+  },
+
+  {
+    title: "Logout",
+    icon: images.logout,
+    color: "green",
+    activeClassName: "active-logout", // Add the appropriate class name
+    id: "logout"//navigation-id
+  },
+];
+
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path='' element={<App />} errorElement={<ErrorPage />}>
-     <Route path='' element={<Header />} errorElement={<ErrorPage />}></Route>
+      <Route path='' element={<Header />} errorElement={<ErrorPage />}></Route>
+      <Route path="" element={<Footer />} />
       <Route path='/login' element={<Login />} />
       <Route path={'/panel'} element={<Panel navigation={navCardsData} />} >
-        <Route path={'/panel'} element={<Dashboard>
+        <Route path={'/panel'} element={<NoDataFound text="WELCOME" image={images.maintenence}/>}/>
+        <Route path={'/panel/dashboard'} element={<Dashboard>
+        <div className='flex flex-row flex-wrap justify-around items-center h-full'>
           <Cards title="Expenses" icon={images.expense} color="red" navigateTo={"/panel/expenses"} />
           <Cards title="All Members" icon={images.members} color={'green'} navigateTo={"/panel/members"} />
+          </div>
         </Dashboard>} />
         <Route path={'/panel/expenses'} element={<AllExpenses />} />
         <Route path={'/panel/members'} element={<Members />} />
@@ -79,10 +88,11 @@ const router = createBrowserRouter(
         <Route path={'/panel/deposits'} element={<Deposits />} />
       </Route>
       <Route path='/*' element={<ErrorPage />} />
+      
     </Route>
 
-  )
-)
-ReactDOM.createRoot(document.getElementById('root')).render(
-  <RouterProvider router={router} />
-)
+      )
+      )
+      ReactDOM.createRoot(document.getElementById('root')).render(
+      <RouterProvider router={router} />
+      )

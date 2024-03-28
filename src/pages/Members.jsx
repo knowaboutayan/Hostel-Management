@@ -7,6 +7,7 @@ import PanelSectionTitle from "../PanelComponents/PanelSectionTitle"
 import AlertBox from "../components/AlertBox"
 import database from "../database"
 import DataTable from "../PanelComponents/DataTable"
+import NoDataFound from "../PanelComponents/NoDataFound"
 
 const Members = ({ }) => {
     const [box, setBox] = useState("")
@@ -29,6 +30,9 @@ const Members = ({ }) => {
             if (data.documents.length > 0 && data != null) {
                 setPrintData(<AlertBox image={images.success} massege={"succesfully fatched"} />)
                 setPrintData(<DataTable deltePerform={()=>setIsMemberAdded((pre)=>!pre)} title="All Members Information" except="No Member add" columns={Object.keys(data['documents'][0]).filter((key) => { if (!String(key).startsWith('$', 0)) { return (key) } })} data={data["documents"]} />)
+            }
+            else if(String(totalMember)=='0'){
+                setPrintData(<NoDataFound/>)
             }
             else {
                 setPrintData(<p>No members found</p>)
@@ -57,7 +61,7 @@ const Members = ({ }) => {
                 <p>Total Member:<big>{totalMember}</big></p>
                 <button onClick={() => addNewMember()} type="button" className=" px-3 py-2  text-lg text-white rounded-lg shadow-lg bg-green-600"><i className="fa fa-plus-circle"></i>Add New Member</button>
             </div>
-            <div>
+            <div className="m-auo ">
                 {printData}
             </div>
             <div>

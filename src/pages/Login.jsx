@@ -68,6 +68,7 @@ const Login = ({ loginFor = '', valiDationFunc = "" }) => {
     }
     //cheking loggedin or not
     const isLogin = useSelector(state => state.isUserLogin)
+    
     //if not
     if (!isLogin) {
         return (
