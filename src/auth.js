@@ -53,7 +53,7 @@ class AuthService {
     async getCurrentUser() {
         try {
             const data = await this.account.get()
-            console.log(data)
+      
             return data
         }
         catch (err) {

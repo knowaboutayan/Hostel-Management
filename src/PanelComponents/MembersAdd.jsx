@@ -4,6 +4,7 @@ import { useState } from "react"
 import database from "../database"
 import AlertBox from "../components/AlertBox"
 import images from "../images"
+import Button from "../components/Button"
 
 const MembersAdd = ({ title, width = "w-full", status = "" }) => {
     const [name, setName] = useState("")
@@ -56,14 +57,16 @@ const MembersAdd = ({ title, width = "w-full", status = "" }) => {
     }
     return (
         <section className="">
-          
+
             <form onSubmit={onSubmitEventHAndeler}>
                 <Input iconName={"fa fa-user"} type={"text"} placeholder={"member's name"} fname={(res) => setName(res)} required={true} />
                 <Input iconName={"fa fa-mobile"} type={"tel"} minValue={1000000000} maxValue={9999999999} placeholder={"member's mobile number"} fname={(res) => setPhone(res)} required={true} />
-                <Input iconName={"fa fa-envelope"} type={"tel"} placeholder={"members's email"} fname={(res) => setEmail(res)} required={true} />
+                <Input iconName={"fa fa-envelope"} type={"email"} placeholder={"members's email"} fname={(res) => setEmail(res)} required={true} />
                 <Input iconName={"fa fa-lock"} type={"password"} placeholder={"enter strong password"} fname={(res) => setPassword(res)} required={true} />
                 <Input iconName={"fa fa-lock"} type={"password"} placeholder={"confirm password"} fname={(res) => setConfirmPassword(res)} required={true} />
-                <input type="submit" value={"Add Member"} className={`px-3 py-2  w-40 rounded-lg font-semibold hover:cursor-pointer  text-white ${(password === confirmPassword && password != "" && confirmPassword != "") ? "bg-green-600 hover:bg-green-700 hover:shadow-md hover:shadow-gray-300" : "bg-gray-600"}`} disabled={(password === confirmPassword && password != "" && confirmPassword != "") ? false : true} />
+
+                <Button type="submit" text="" classname={`mt-2 mx-auto  ${(name != "" && phone != "" && email != "" && password != "" && confirmPassword != "") ? "bg-green-600" : "bg-gray-600"}`} disabled={(name != "" && phone != "" && email != "" && password != "" && confirmPassword != "") ? false : true} >
+                    <i class="fa fa-cloud" aria-hidden="true" fname={() => { }}> </i> save </Button>
             </form>
             {showAlert}
         </section>

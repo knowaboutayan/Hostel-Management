@@ -78,7 +78,7 @@ const SendMassege = () => {
 
     return (
         <>
-        <PanelSectionTitle title={"Massenger"} image={images.massege}/>
+       
         <section className="h-full relative border-8  border-green-700 bg-green-700">
            
             <div className="h-12   text-white font-medium box-border   text-2xl ">

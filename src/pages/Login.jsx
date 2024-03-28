@@ -46,7 +46,6 @@ const Login = ({ loginFor = '', valiDationFunc = "" }) => {
                 dispatch(isLogIn(true))//setLogIn status 
                 setTimeout(() => navigate("/panel"), 800)//waiting for redirect...
             }
-
             //onUnsuccessful Login....
             else {
 
@@ -55,8 +54,6 @@ const Login = ({ loginFor = '', valiDationFunc = "" }) => {
                         ok
                     </button>
                 </AlertBox>)
-
-
             }
         }
         catch (error) {
@@ -69,46 +66,28 @@ const Login = ({ loginFor = '', valiDationFunc = "" }) => {
 
         }
     }
-
     //cheking loggedin or not
     const isLogin = useSelector(state => state.isUserLogin)
     //if not
     if (!isLogin) {
         return (
             //login
-            <section className=" px-5 w-1/3 min-w-80  py-4  border-2 border-green-600 mx-auto rounded-lg shadow-lg shadow-gray-700 ">
-                {/* loginbox */}
-                <div className="w-full  m-auto">
+            <section >
 
-                    {/* making a new componenet */}
+                <hr className="w-full h-1 bg-green-500 mb-2 rounded-lg"></hr>
+                {/* form login */}
+                <form onSubmit={onSubmitHandeler} className="w-full m-auto">
+                    <Input label={"Username"} type="text" placeholder={"username"} fname={(res) => setUserName(res)} iconName={"fa fa-user-circle-o"} required="true"></Input>
+                    <Input label={"password"} type="password" placeholder={"password"} fname={(res) => setPassword(res)} iconName={"fa fa-lock"} required="true"></Input>
+                    <p className="text-right mb-5 font-serif text-sm text-gray-500 hover:text-gray-900 hover:cursor-pointer " onClick={() => { forgetPassword() }} >
+                        <h5>
+                            forget password?
+                        </h5>
+                    </p>
+                    <input type="submit" value={"login"} className={`px-3 py-2  w-40 rounded-lg font-semibold hover:cursor-pointer  text-white ${(username != "" && password != "") ? "bg-green-600 hover:bg-green-700 hover:shadow-md hover:shadow-gray-300" : "bg-gray-600"}`} disabled={(username != "" && password != "") ? false : true} />
+                </form>
+                {showSuccess}
 
-                    <div className="flex mb-2  items-center font-medium text-2xl text-green-600  ">
-                        <img src={images.login} alt="addMember" width={"50px"} className="rounded-full bg-green-100 p-1" />
-                        <hr className="h-12 mx-2 w-1 bg-green-500"></hr>
-                        <h2>
-                         {loginFor}   Login
-                        </h2>
-                    </div>
-                    <hr className="w-full h-1 bg-green-500 mb-2 rounded-lg"></hr>
-
-
-
-
-
-                    {/* form login */}
-                    <form onSubmit={onSubmitHandeler} className="w-full m-auto">
-                        <Input label={"Username"} type="text" placeholder={"username"} fname={(res) => setUserName(res)} iconName={"fa fa-user-circle-o"} required="true"></Input>
-                        <Input label={"password"} type="password" placeholder={"password"} fname={(res) => setPassword(res)} iconName={"fa fa-lock"} required="true"></Input>
-                        <p className="text-right mb-5 font-serif text-sm text-gray-500 hover:text-gray-900 hover:cursor-pointer " onClick={() => { forgetPassword() }} >
-                            <h5>
-                                forget password?
-                            </h5>
-                        </p>
-                        <input type="submit" value={"login"} className={`px-3 py-2  w-40 rounded-lg font-semibold hover:cursor-pointer  text-white ${(username != "" && password != "") ? "bg-green-600 hover:bg-green-700 hover:shadow-md hover:shadow-gray-300" : "bg-gray-600"}`} disabled={(username != "" && password != "") ? false : true} />
-                    </form>
-                    {showSuccess}
-
-                </div>
             </section>
 
         )

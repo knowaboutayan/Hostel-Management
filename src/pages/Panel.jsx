@@ -7,17 +7,21 @@ import PopUp from "../components/PopUp"
 import database from "../database"
 import { useDispatch, useSelector } from "react-redux"
 import ErrorPage from "./ErrorPage"
-import { Link } from "react-router-dom"
+import { Link, NavLink } from "react-router-dom"
 import AlertBox from "../components/AlertBox"
 import authService from "../auth"
 import { isLogIn, userInfo } from "../store/slice"
+import Button from "../components/Button"
+import Login from "./Login"
+import PanelSectionTitle from "../PanelComponents/PanelSectionTitle"
 
 const Panel = ({ navigation = [] }) => {
     const date = new Date()
     const [time, setTime] = useState("")
     const [alert, setAlert] = useState("")
     const [popup, setPopup] = useState("")
-
+    const [title, setTitle] = useState("")
+    const [image, setImage] = useState("")
     const currentUserInfo = useSelector(state => state.currentUserInfo)
     const isAuthorised = useSelector(state => state.isUserLogin)
 
@@ -51,72 +55,100 @@ const Panel = ({ navigation = [] }) => {
     //checking user login or not 
     if ((currentUserInfo == null || currentUserInfo == {} || currentUserInfo) && isAuthorised != true) {
 
-        return <ErrorPage title="unauthorised entry " descrption="access decliend"><Link to={"/login"}> go to login  </Link> </ErrorPage>
+        return <ErrorPage title="unauthorised entry " descrption="access decliend">
+            <Button text="" type="button" fname={() => { setPopup(<PopUp title="Login" close_btn={() => setPopup("")}><Login /></PopUp>) }}><i className="fa fa-sign-in" />Login</Button> </ErrorPage>
     }
 
     else if (isAuthorised) {
         return (
-            <section className="w-full flex h-screen border-4 flex-row flex-nowrap">
-                {/* side nav */}
-                <div className="relative top-0 bottom-0 left-0 right-0 flex h-full flex-col w-80  border-4 border-gray-800 ">
-                    {/* userProfileBox */}
-                    <div>
-                        {/* profile data */}
-                        <div className="flex flex-row flex-nowrap pt-5 border-b-slate-600  justify-around ">
-                            <div className="flex flex-col items-center">
-                                <img onClick={profilePicUpload} src={images.user} alt="user" className=" rounded-full size-36" />
+            <section>
+                <section className=" grid grid-cols-4  overflow-auto flex-col flex-nowrap">
 
-                                {/* print user information */}
-                                <div>
-                                    <p className="text-center font-serif text-sm ">{currentUserInfo.name}</p>
-                                    <p className="text-center font-serif text-sm ">{currentUserInfo.email}</p>
-                                    <p className="text-center font-serif text-sm ">{currentUserInfo.phone}</p>
-                                </div>
-                            </div>
-
-                            {/* user social media */}
-                            <div className="flex text-green-700 flex-col justify-center items-center gap-4  text-2xl">
-                                <i className="fa fa-whatsapp" />
-                                <i className="fa fa-facebook" />
-                                <i className="fa fa-envelope" />
-                                <i className="fa fa-instagram" />
-
-                            </div>
-                        </div>
-                    </div>
-                    {/* navigation cards */}
-                    <div className="flex flex-col gap-2">
-                        {navigation.map((card) => <NavCards title={card.title} icon={card.icon} color={card.color} isActiveClassName={card.activeClassName} navigateTo={card.id} />)}
-                    </div>
-                </div>
-                {/* remaining space */}
-                <div className="w-screen  flex flex-col">
                     {/* top, date time*/}
-
-                    <div className=" flex items-center justify-between h-12 bg-green-700 text-white px-10  w-full " >
+                    <div className="md:flex col-span-4 flex justify-around items-center bg-green-800 text-gray-200 text-lg flex-wrap " >
                         <p className="flex flex-row text-nowrap">
                             <p className="mx-4 font-sans font-bold "><i className="fa fa-calendar"></i> {`${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`}</p>
                             <p className=" font-sans font-bold "><i className="fa fa-clock-o"></i> {time}</p>
                         </p>
-                        <p className="mx-4 font-sans text-nowrap ">WELCOME {String(currentUserInfo.name)}</p>
+                        <p className="mx-4 font-sans text-nowrap "> {String(currentUserInfo['$id'])}</p>
                         <p className="flex flex-row text-nowrap">
                             <p className="mx-4 font-sans font-bold " onClick={() => logoutEventHandeler()}><i className="fa fa-sign-out"></i></p>
                         </p>
                     </div>
 
 
-                    {/* showing elements */}
-                    <div className=" border-2 overflow-auto">
-                        <Outlet />
+
+                    {/* side nav */}
+
+
+                    <div className="  md:col-span-1 md:col-span-0  md: bg-stone-200-50  border-2 md:border-r-0 md:static 
+                md:h-auto md:w-full md:z-0 md:block
+                relative w-72 h-screen  z-10 hidden overflow-auto ">
+                        {/* userProfileBox */}
+                        <div className="bg-gray-50 break-words text-wrap h-60" >
+                            {/* profile data */}
+                            <div className="flex flex-row flex-nowrap pt-2 px-3 border-b-slate-600  justify-around ">
+                                <div className="flex flex-col items-center">
+                                    <img onClick={profilePicUpload} src={images.user} alt="user" className=" rounded-full size-36" />
+
+                                    {/* print user information */}
+                                    <div>
+                                        <p className="text-center font-serif text-sm ">{currentUserInfo.name}</p>
+                                        <p className="text-center font-serif text-sm ">{currentUserInfo.email}</p>
+                                        <p className="text-center font-serif text-sm ">{currentUserInfo.phone}</p>
+                                    </div>
+                                </div>
+
+                                {/* user social media */}
+                                <div className="flex text-green-700 flex-col justify-center items-center gap-4  text-2xl">
+                                    <i className="fa fa-whatsapp" />
+                                    <i className="fa fa-facebook" />
+                                    <i className="fa fa-envelope" />
+                                    <i className="fa fa-instagram" />
+
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* navigation cards */}
+                        <div className=" gap-1  " >
+                            {navigation.map((card) => <NavCards title={card.title} icon={card.icon} color={card.color} isActiveClassName={card.activeClassName} navigateTo={card.id} changeStatus={() => { setImage(card.icon); setTitle(card.title) }} />)}
+                        </div>
                     </div>
+
+                    {/* remaining space */}
+                    <div className=" md:col-span-3 col-span-4   ">
+                        {/* showing elements */}
+                        <div className="z-0 h-screen">
+                            <PanelSectionTitle title={title} image={image} />
+                            <Outlet />
+                        </div>
+                    </div>
+
+                    {/*  for pop up */}
+                    <div>
+                        {alert}
+                        {popup}
+                    </div>
+                </section>
+                {/* bottom nav */}
+                <div className="md:hidden fixed py-2 z-50 bg-green-700 w-screen min-w-80 bottom-0">
+                    <div className=" flex flex-row box-border justify-around" >
+                        {navigation.map((card) => <NavLink to={`${card.id}`} className={({isActive})=>` w-12 hover:cursor-pointer shadow-lg   p-2 rounded-full 
+                        hover:shadow-black transition-all
+                        
+                         ${isActive? "animate-pulse animate-once bg-green-300 border-8 border-gray-50  shadow-black -translate-y-6 ":" animate-jump translate-y-0 bg-green-50 "}  `} onClick={()=>{setImage(card.icon); setTitle(card.title)}}>
+                            
+                            <img src={card.icon} />
+                       
+
+                        </NavLink>
+
+                        )}
+                    </div>
+
                 </div>
-                
-                {/*  for pop up */}
-                <div>
-                    {alert}
-                    {popup}
-                </div>
-            </section >
+            </section>
         )
     }
 }

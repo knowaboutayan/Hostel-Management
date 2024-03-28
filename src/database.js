@@ -40,7 +40,7 @@ class Database {
 
         }
         catch (error) {
-            console.log(error)
+
             return 1
         }
 
@@ -58,7 +58,11 @@ class Database {
 
         }
         catch (err) {
-            alert(err)
+            if (err['AppwriteException'] == " Network request failed)") {
+                return 'netErr'
+            }
+            return 1
+
         }
     }
 
@@ -81,9 +85,12 @@ class Database {
             }
 
         }
-        catch (error) {
-            alert("error" + error)
+        catch (err) {
+            if (err['AppwriteException'] == " Network request failed)") {
+                return 'netErr'
+            }
             return 1
+
         }
 
     }
@@ -113,7 +120,11 @@ class Database {
             return 0
         }
         catch (err) {
-            alert(err)
+            if (err['AppwriteException'] == " Network request failed)") {
+                return 'netErr'
+            }
+            return 1
+
         }
     }
 
@@ -140,7 +151,7 @@ class Database {
 
     async newChatAdd({ userId, userName, dateAndTime, text }) {
         try {
-            console.log(userId, userName, dateAndTime, text)
+
             const data = await this.databases.createDocument(
                 conf.dataBaseId,
                 conf.chatId,
@@ -168,9 +179,9 @@ class Database {
                 conf.dataBaseId,
                 conf.chatId
             )
-            console.log(data)
+
             if (data) {
-                console.log(data["documents"])
+
                 return data["documents"]
             }
             else {
@@ -178,16 +189,22 @@ class Database {
             }
         }
         catch (err) {
-            alert(err)
+            if (err['AppwriteException'] == " Network request failed)") {
+                return 'netErr'
+            }
+            return 1
+
         }
     }
 
     async newDepositAdd({ memberName, amount, userId }) {
         try {
+
             await this.databases.createDocument(
                 conf.dataBaseId,
                 conf.depositId,
                 ID.unique(),
+
                 {
                     memberName, amount, userId
                 }
@@ -195,12 +212,14 @@ class Database {
             return 0
         }
         catch (err) {
-            console.log(err)
+            if (err['AppwriteException'] == " Network request failed)") {
+                return 'netErr'
+            }
+            return 1
 
         }
 
     }
-
 
     //function forgeneral data fetched 
     async fetchCollectionData({ dataBaseId = conf.dataBaseId, collectionId = collectionId }) {
@@ -208,13 +227,14 @@ class Database {
             const data = await this.databases.listDocuments(
                 dataBaseId,
                 collectionId,
-
             )
-            console.log(data)
+         
             return data['documents']
-
         }
         catch (err) {
+            if (err['AppwriteException'] == " Network request failed)") {
+                return 'netErr'
+            }
             return 1
 
         }
@@ -230,18 +250,14 @@ class Database {
             )
             console.log('upload', data)
         }
-        catch (error) {
-            console.log('upload', data);
+        catch (err) {
+            if (err['AppwriteException'] == " Network request failed)") {
+                return 'netErr'
+            }
+            return 1
+
         }
     }
-
-
-
-
 }
-
-
-
-
 const database = new Database()
 export default database

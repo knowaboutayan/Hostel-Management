@@ -11,14 +11,17 @@ const DataTable = ({ title = "", except = "", columns = [], data = [{}], deltePe
     const collectionID = data[0]['$collectionId']//collection Id
 
     const [deleteId, setDeleteId] = useState("")
+   
     //delete items 
     const deleteDocument = async (docId) => {
         try {
 
             const response = await database.deleteDocuments(databseID, collectionID, docId)
-            setDeleteId(docId)
 
+            setDeleteId(docId)
             deltePerform()
+
+           
 
         }
         catch (err) {
@@ -28,12 +31,14 @@ const DataTable = ({ title = "", except = "", columns = [], data = [{}], deltePe
 
     }
 
-    useEffect(() => {
+    useEffect(() =>(()=> {
+       
+        
         setPrintData(
             <AlertBox massege={"fetching data..."} image={images.process} color="gray" />
         );
 
-        if (data.length > 0) {
+        if (data.length != 0 || data!=null) {
             setPrintData(
                 data.map((obj) => (
 
@@ -53,7 +58,8 @@ const DataTable = ({ title = "", except = "", columns = [], data = [{}], deltePe
         } else {
             setPrintData(<p>{except}</p>);
         }
-    }, [deleteId]);
+     
+    })(), [deleteId]);
 
     return (
         <section className="container min-w-80 px-3 ">

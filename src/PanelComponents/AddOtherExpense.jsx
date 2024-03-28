@@ -4,6 +4,7 @@ import database from "../database";
 import AlertBox from "../components/AlertBox";
 import images from "../images";
 import { useSelector } from "react-redux";
+import Button from "../components/Button";
 
 const AddOtherExpenses = ({ title, status }) => {
 
@@ -54,7 +55,8 @@ const AddOtherExpenses = ({ title, status }) => {
             <form onSubmit={onSubmitEventHandeler}>
                 <Input iconName={"fa fa-pencil"} type={"text"} placeholder={"expense details"} required={true} fname={(res) => setDetails(res)}></Input>
                 <Input iconName={"fa fa-inr"} type={"number"} placeholder={"amount"} required={true} fname={(res) => setAmount(res)}></Input>
-                <input type="submit" value={"add"} className={`px-3 py-2  w-40 rounded-lg font-semibold hover:cursor-pointer  text-white ${(expanseDetails != "" && amount != "") ? "bg-green-600 hover:bg-green-700 hover:shadow-md hover:shadow-gray-300" : "bg-gray-600"}`} disabled={(amount != "" && expanseDetails != "") ? false : true} />
+                <Button type="submit" text="" classname={`mt-2 mx-auto  ${(amount != "" && expanseDetails!="") ? "bg-green-600 hover:bg-green-700 hover:shadow-md hover:shadow-gray-300" : "bg-gray-600"}`} disabled={(amount != "" && expanseDetails!="") ? false : true} >
+                    <i class="fa fa-cloud" aria-hidden="true"> </i> save</Button>
             </form>
             <div>
                 {alertBox}

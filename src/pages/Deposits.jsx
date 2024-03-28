@@ -9,83 +9,87 @@ import AlertBox from "../components/AlertBox";
 import database from "../database";
 import conf from "../conf/conf";
 import DataTable from "../PanelComponents/DataTable";
-
-
+import Button from "../components/Button";
+import alert from "../components/allAlerts";
 
 const Deposits = () => {
 
-    const [status, setStatus] = useState(false)
+
     const [popupBox, setPopupBox] = useState("")
-    const [alertBox, setAlert] = useState("")
-    const [printData, setPrintData] = useState("")
-    const [databaseUpdate, setDatabaseUpdated] = useState(false)
-    
+    const [printData, setPrintData] = useState("")//state for he table component for show data
+    const [databaseUpdate, setDatabaseUpdated] = useState(false)//database update or not like delete document 
 
     const userStatus = useSelector(state => state.userStatus)
     const navigate = useNavigate()
-    //adding new deposit of members
-    const addNew = () => {
 
-        setPopupBox(<PopUp title="addDeposite" icon={images.deposit} close_btn={() => setPopupBox("")}>
 
-            <AddDeposite status={() => setStatus((pre) => !pre)} />
+    //adding new deposit of members...
+    const addNewDeposit = () => {
 
-        </PopUp>)
+        setPopupBox(
+            <PopUp title="Add New Deposit" icon={images.deposit} close_btn={() => setPopupBox("")}>
+
+                <AddDeposite status={() => setDatabaseUpdated((pre) => !pre)} />
+
+            </PopUp>)
     }
-    //print Data 
+
+    //print Data table.... 
     const printDeposits = async () => {
 
-        setAlert(<AlertBox massege={"please wait..."} color="gray" image={images.process} />)
-     try{
-        const data = await database.fetchCollectionData({ collectionId: conf.depositId })
-        console.log("hhh",data)
-       if(data.length>0 && data!=1)
-        setPrintData(<DataTable deltePerform={()=>setDatabaseUpdated((pre)=>!pre)} title="All Expenses" data={data} columns={Object.keys(data[0]).filter((key) => { if (!String(key).startsWith('$')) { return key } })} />)
-    else{
-        setAlert(<AlertBox massege={"No data found"} ><button onClick={()=>setAlert("")}>close</button></AlertBox>)
-    }
-    }
-     catch(error){
-        console.log('error',error)
-     }
+
+        try {
+            const data = await database.fetchCollectionData({ collectionId: conf.depositId })//fetching data....
+
+            
+            if (data == 'netErr') {
+                alert("")
+                setPrintData(alert.networkError(() => setPrintData("")))
+                return
+            }
+            else if (data.length > 0 && data != 1) {
+                setPrintData(<DataTable deltePerform={(res) => setDatabaseUpdated((pre) => !pre)} title="All  Member's Deposit" data={data} columns={Object.keys(data[0]).filter((key) => { if (!String(key).startsWith('$')) { return key } })} />)
+
+            }
+
+            else {
+                setPrintData(<AlertBox massege={"No data found"} ><button onClick={() => setPrintData("")}>close</button></AlertBox>)
+            }
+        }
+        catch (error) {
+            setPrintData(alert.unsuccessful({ fname: () => setPrintData("") }))
+        }
 
     }
 
-
-
-    useEffect(() => {
-
-        printDeposits()
+    useEffect(() => (() => {//each time page load....
+        setPrintData(alert.processing)
         setPopupBox("")
-        setAlert("")
+        printDeposits()
 
+    })()
 
-    }, [status])
+        , [databaseUpdate])
 
 
     if (userStatus == 'admin' || userStatus == 'manager') {
 
         return (
             <section>
-                <PanelSectionTitle title={"Deposits"} image={images.deposit} />
-
-                <p onClick={() => addNew()}>
-                    add new
-                </p>
-
-
+          
+                <Button type="button" text=" " fname={() => addNewDeposit()}><i className="fa fa-plus-circle" /> Add New Deposit</Button>
                 <div>
                     <h3>
-                        All Deposit 
+                        All Deposit
                     </h3>
-                    {printData}
-                </div>
 
+                </div>
+                {popupBox}
                 <div>
+                    {printData}
 
-                    {popupBox}
                 </div>
-                {alertBox}
+
 
 
             </section>
@@ -100,8 +104,7 @@ const Deposits = () => {
         return (
 
             <AlertBox massege={"You Have No permission "} >
-
-                <button onClick={() => navigate('/panel')}>go to dashboard</button>
+                <Button classname="bg-gray-600" fname={() => navigate('/panel')}>go to dashboard</Button>
             </AlertBox>
 
         )

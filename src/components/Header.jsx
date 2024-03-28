@@ -1,13 +1,27 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Input from '../components/Input';
 import { useNavigate } from 'react-router';
+import Button from './Button';
+import images from '../images';
+import PopUp from './PopUp';
+import Login from '../pages/Login'
+import { useSelector } from 'react-redux';
 
 const Header = ({ logo = "", navList = [] }) => {
-    const navigate=useNavigate()
+
+    const navigate = useNavigate()
+    const [popup, setPopUp] = useState()
+
+    const isLogin = useSelector(state => state.isUserLogin)
+
+    const currentUserName = useSelector(state => state.userName)
+
+
+
     return (
         <header className="bg-green-300 py-4 px-8 flex justify-between items-center">
             <div className="flex items-center">
-                <img src={logo} alt="logo" className="h-8 mr-4" />
+                <img src={images.user} alt="logo" className="h-8 mr-4" />
                 <nav className="flex flex-row gap-4">
                     {navList.map((item, index) => (
                         <span key={index} className="text-black hover:text-green-600 active:text-green-700 text-sm font-serif px-2 py-1 hover:bg-gray-400">
@@ -17,9 +31,25 @@ const Header = ({ logo = "", navList = [] }) => {
                 </nav>
             </div>
             <div className="flex gap-4 items-center">
-                <button onClick={()=>navigate('login')} className="bg-white text-black px-4 py-2 rounded-md border border-black hover:bg-gray-200">
-                    LogIn
-                </button>
+
+
+                {/* conditional rendering for user login or not  */}
+
+                {
+                    (!isLogin) ?
+
+                        <Button fname={() => setPopUp(<PopUp title='Login' icon={images.login} close_btn={() => setPopUp("")}>
+                            <Login />
+                        </PopUp>)} className="bg-green-600">
+                            <i className=' fa fa-sign-in' />LogIn
+                        </Button>
+                        : <Button fname={() => navigate('/panel')}>
+                            welcome back {String(currentUserName).split(" ")[0]}
+                        </Button>
+
+
+                }
+
                 <Input
                     iconName="fa fa-search"
                     type="search"
@@ -27,10 +57,11 @@ const Header = ({ logo = "", navList = [] }) => {
                     placeholder="Search here..."
                 />
                 <div className="flex gap-4 items-center">
-                    <i className="fab fa-facebook text-xl"></i>
-                    <i className="fab fa-twitter text-xl"></i>
-                    <i className="fab fa-whatsapp text-xl"></i>
+                    <i className="fa fa-facebook text-xl"></i>
+                    <i className="fa fa-twitter text-xl"></i>
+                    <i className="fa fa-whatsapp text-xl"></i>
                 </div>
+                {popup}
             </div>
         </header>
     )

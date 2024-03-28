@@ -52,8 +52,7 @@ const Members = ({ }) => {
     return (
 
         <section className="w-full">
-            <PanelSectionTitle title={"All Members Details"} image={images.members} alt={"members"}>
-            </PanelSectionTitle>
+           
             <div className=" flex justify-between flex-wrap items-center text-gray-500 font-bold text-xl border px-5 ">
                 <p>Total Member:<big>{totalMember}</big></p>
                 <button onClick={() => addNewMember()} type="button" className=" px-3 py-2  text-lg text-white rounded-lg shadow-lg bg-green-600"><i className="fa fa-plus-circle"></i>Add New Member</button>

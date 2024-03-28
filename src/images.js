@@ -12,6 +12,7 @@ import logout from '../images/logout.png'
 import pagenotfound from '../images/pagenotfound.png'
 import login from '../images/login.png'
 import deposit from '../images/deposit.png'
+import alert from '../images/alert.png'
 const images = {
     'success': success,
     'unsuccess': unsuccess,
@@ -26,7 +27,8 @@ const images = {
     'logout':logout,
     'pagenotfound':pagenotfound,
     'login':login,
-    'deposit':deposit
+    'deposit':deposit,
+    'alert':alert
 
 }
 export default images

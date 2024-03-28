@@ -4,6 +4,8 @@ import database from "../database";
 import { useEffect, useState } from "react";
 import AlertBox from "../components/AlertBox";
 import images from "../images";
+import Button from "../components/Button";
+import alert from "../components/allAlerts";
 
 const AddDeposite = ({ status }) => {
     const currenUserId = useSelector(state => state.userId)
@@ -21,14 +23,20 @@ const AddDeposite = ({ status }) => {
             <AlertBox massege={"fetching all members.... "} image={images.process} ></AlertBox>
         )
         try {
-            const data=members = await database.getMembersShow()
-           
-            setMembers(data['documents'].map((member) => <option key={member['$id']} value={[member.name, member.$id]} >{member['name']}</option>))
-            setAlertBox("")
+            const data = members = await database.getMembersShow()
+            if (data == 'netErr') {
+                setAlertBox(
+                    alert.warning({ fname: () => setAlertBox("") })
+                )
+            }
+            else {
+                setMembers(data['documents'].map((member) => <option className=" cursor-pointer " key={member['phone']} value={[member.name, member.phone, member.email]} >{member['name']}</option>))
+                setAlertBox("")
+            }
         }
         catch (error) {
             setAlertBox(
-                <AlertBox massege={"can not fetch" + error} image={images.unsuccess} ></AlertBox>
+                alert.warning({ fname: () => setAlertBox("") })
             )
 
         }
@@ -37,28 +45,36 @@ const AddDeposite = ({ status }) => {
 
     const addDeposite = async () => {
         setAlertBox(<AlertBox massege={"processing..."} image={images.process} onClick={() => setAlertBox("")} />)
-        class Deposits {
-            constructor(member, amount) {
-                this.memberName = member[0];
-                this.amount = amount;
-                this.userId = member[1]
-            }
+
+        if (member == []) {
+
+            setAlertBox(<AlertBox massege={"select a member"} image={images.unsuccess} onClick={() => setAlertBox("")} />)
 
         }
-        if (member == []) {
-            setAlertBox(<AlertBox massege={"select a member"} image={images.unsuccess} onClick={() => setAlertBox("")} />)
-            return
-        }
+
         else {
 
             try {
-                const deposit = new Deposits(member, amount)
+                class Deposits {
+
+                    memberName; amount; userId;
+                    constructor(member, amount) {
+                        console.log(member)
+                        this.memberName = member[0];
+                        this.amount = amount;
+                        this.userId = member[1]
+                    }
+                }
+
+                const deposit = new Deposits(member.split(','), amount)
+
                 console.log(deposit)
                 const response = await database.newDepositAdd(deposit)
-                console.log(response)
                 if (response == 0) {
                     setAlertBox(<AlertBox massege={"succesfully add"}></AlertBox>)
-                    setTimeout(() => status(true), 1000)
+
+                    setTimeout(() => { setAlertBox(""), status() }, 1000)
+
 
                 }
                 else {
@@ -75,17 +91,14 @@ const AddDeposite = ({ status }) => {
         e.preventDefault()
         addDeposite()
     }
-
     useEffect(() => {
         fetchMember()
     }, [])
-
-
     return (
         <>
             <section>
                 <form onSubmit={(e) => onSubmitEventHandeler(e)}>
-                    <select onChange={(e) => { console.log(e.target.value); setMember(e.target.value) }} required>
+                    <select className="w-full p-3 outline-green-600 justify-center rounded-lg shadow-sm my-2 bg-gray-200  font-bold  " onChange={(e) => setMember(e.target.value)} required>
                         <option value={[]}>
                             Select a member
                         </option>
@@ -93,14 +106,16 @@ const AddDeposite = ({ status }) => {
                             Self
                         </option>
                         {members}
+
                     </select>
+                    {member}
                     <Input type={"number"} iconName={'fa fa-inr'} placeholder={"amount"} fname={(res) => setAmount(res)} required={true} />
-                    <button type="submit" className={`w-40 py-2 rounded-lg text-white ${!(member == [] && amount == 0 || amount === "") ? "bg-green-600" : "bg-gray-600"}`}>
-                        Add
-                    </button>
+                    <Button type="submit" text="" classname={`mt-2 mx-auto  ${(member != "" && amount != "" && amount != 0) ? "bg-green-600" : "bg-gray-600"}`} disabled={(member != "" && amount != "") ? false : true} >
+                        <i class="fa fa-cloud" aria-hidden="true" fname={() => { }}> </i> save </Button>
                 </form>
 
             </section>
+
             {alertBox}
         </>
     )

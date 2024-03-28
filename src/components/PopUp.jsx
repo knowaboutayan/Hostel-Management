@@ -9,7 +9,7 @@ const PopUp = ({ title = "", icon = "", children, close_btn }) => {
     }
     return (
         //popup page
-        <section className={`border-8 border-gray-950 animate-fade w-full fixed   bg-black bg-opacity-50 top-0 bottom-0 z-10 left-0 right-0 block items-center justify-center`}>
+        <section className={`overflow-auto  animate-fade w-full fixed   bg-black bg-opacity-50 top-0 bottom-0 z-10 left-0 right-0 block items-center justify-center`}>
             <div>
                 {/* popupbox container*/}
 
