@@ -32,7 +32,7 @@ const AddOtherExpenses = ({ title, status }) => {
             const expenses = new Expenses(expanseDetails, amount)
             console.log(expenses)
             const dataSubmit = await database.newExpenseAdd(expenses)
-
+            await database.getProfilePic("6603da09cbdee175b725")
             setAlertBox(<AlertBox massege={"working please wait..."} image={images.process} >
                 <p className="animate-spin border-green-600 p-8 border-8 border-l-green-200 border-solid rounded-full"></p>
             </AlertBox>)
@@ -51,11 +51,11 @@ const AddOtherExpenses = ({ title, status }) => {
     }
     return (
         <section >
-            
+
             <form onSubmit={onSubmitEventHandeler}>
                 <Input iconName={"fa fa-pencil"} type={"text"} placeholder={"expense details"} required={true} fname={(res) => setDetails(res)}></Input>
                 <Input iconName={"fa fa-inr"} type={"number"} placeholder={"amount"} required={true} fname={(res) => setAmount(res)}></Input>
-                <Button type="submit" text="" classname={`mt-2 mx-auto  ${(amount != "" && expanseDetails!="") ? "bg-green-600 hover:bg-green-700 hover:shadow-md hover:shadow-gray-300" : "bg-gray-600"}`} disabled={(amount != "" && expanseDetails!="") ? false : true} >
+                <Button type="submit" text="" classname={`mt-2 mx-auto  ${(amount != "" && expanseDetails != "") ? "bg-green-600 hover:bg-green-700 hover:shadow-md hover:shadow-gray-300" : "bg-gray-600"}`} disabled={(amount != "" && expanseDetails != "") ? false : true} >
                     <i class="fa fa-cloud" aria-hidden="true"> </i> save</Button>
             </form>
             <div>

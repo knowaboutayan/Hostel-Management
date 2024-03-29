@@ -1,6 +1,8 @@
 import { Client, Databases, ID, Query, Storage } from "appwrite";
 import conf from "./conf/conf";
-import authService from "./auth";
+
+
+import { haveProfilePic, setProfilePicFile } from "./store/slice";
 
 
 class Database {
@@ -228,7 +230,7 @@ class Database {
                 dataBaseId,
                 collectionId,
             )
-         
+
             return data['documents']
         }
         catch (err) {
@@ -241,23 +243,67 @@ class Database {
 
     }
 
-    async uploadProfilePic(file) {
+    async uploadProfilePic(id, file) {
         try {
             const data = await this.storage.createFile(
+
                 conf.bucketId,
-                ID.unique,
+                id,//current user id..
                 file
             )
-            console.log('upload', data)
+            console.log("uploadd", data)
+
+            return 0
         }
         catch (err) {
             if (err['AppwriteException'] == " Network request failed)") {
                 return 'netErr'
             }
-            return 1
-
+            console.log("uploadd", err)
+            return err
         }
     }
+
+    async deleteProfilePic(fileId) {
+        try {
+            const data = await this.storage.deleteFile(
+                conf.bucketId,
+                String(fileId)
+            )
+            console.log("Deleted", data)
+
+            return 0
+        }
+        catch (err) {
+            if (err['AppwriteException'] == " Network request failed)") {
+                return 'netErr'
+            }
+            console.log("uploadd", err)
+            return err
+        }
+    }
+
+    async getProfilePic(fileId) {
+
+        try {
+            const data = this.storage.getFileView(
+                conf.bucketId,
+                fileId
+            )
+            console.log("IMage", data)
+            if (data != null && data != 1 && data.href && data.href != "") {
+                return data
+            }
+            else {
+                return 1
+            }
+        }
+        catch (err) {
+            alert(err)
+            return 1
+        }
+    }
+
 }
 const database = new Database()
 export default database

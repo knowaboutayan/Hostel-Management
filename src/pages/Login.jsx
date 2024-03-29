@@ -7,10 +7,11 @@ import images from "../images"
 import { redirect, useNavigate } from "react-router"
 import { Link } from "react-router-dom"
 import { useDispatch, useSelector } from "react-redux"
-import { isLogIn, setUserStatus, userInfo } from "../store/slice"
+import { isLogIn, userInfo } from "../store/slice"
 
 
 const Login = ({ loginFor = '', valiDationFunc = "" }) => {
+
     const [username, setUserName] = useState("")
     const [password, setPassword] = useState("")
     const [showSuccess, setShowSuccess] = useState(false)
@@ -42,7 +43,7 @@ const Login = ({ loginFor = '', valiDationFunc = "" }) => {
                 )
 
                 const userData = await authService.getCurrentUser()//collect login-user data
-                dispatch(userInfo(userData))//set data as global
+                dispatch(userInfo(userData))//set userData
                 dispatch(isLogIn(true))//setLogIn status 
                 setTimeout(() => navigate("/panel"), 800)//waiting for redirect...
             }

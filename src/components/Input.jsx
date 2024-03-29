@@ -3,8 +3,9 @@ import { useEffect, useState } from "react"
 const Input = ({ iconName, type, placeholder, value="", minValue, maxValue, fname, readOnly = false, required = false, disabled = false, children, classname = "", inputClassname = "" }) => {
     const [val, setValue] = useState(value)
     //change handeler
-    const onChangeHandeler = (e) => {
-        setValue(e);
+    const onChangeHandeler = (value) => {
+        console.log('Input',value)
+        setValue(value);
     }
 
     //using for sending data to parent when changehandeler encountered
