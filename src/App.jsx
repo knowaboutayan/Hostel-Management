@@ -20,7 +20,7 @@ function App() {
      
       <Provider store={store} className="border-2 border-pink-600">
      
-        <div className='h-screen box-border overflow-auto '>
+        <div className=' box-border overflow-auto '>
         <Outlet/>
         </div>
        <Footer/>

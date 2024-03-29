@@ -71,15 +71,16 @@ const navCardsData = [
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path='' element={<App />} errorElement={<ErrorPage />}>
-      <Route path='' element={<Header />} errorElement={<ErrorPage />}></Route>
-      <Route path="" element={<Footer />} />
+     
+        <Route path="" element={<NoDataFound text='welcome' image={images.empty} />} />
+
       <Route path='/login' element={<Login />} />
       <Route path={'/panel'} element={<Panel navigation={navCardsData} />} >
-        <Route path={'/panel'} element={<NoDataFound text="WELCOME" image={images.maintenence}/>}/>
+        <Route path={'/panel'} element={<NoDataFound text="WELCOME" image={images.maintenence} />} />
         <Route path={'/panel/dashboard'} element={<Dashboard>
-        <div className='flex flex-row flex-wrap justify-around items-center h-full'>
-          <Cards title="Expenses" icon={images.expense} color="red" navigateTo={"/panel/expenses"} />
-          <Cards title="All Members" icon={images.members} color={'green'} navigateTo={"/panel/members"} />
+          <div className='flex flex-row flex-wrap justify-around items-center h-full'>
+            <Cards title="Expenses" icon={images.expense} color="red" navigateTo={"/panel/expenses"} />
+            <Cards title="All Members" icon={images.members} color={'green'} navigateTo={"/panel/members"} />
           </div>
         </Dashboard>} />
         <Route path={'/panel/expenses'} element={<AllExpenses />} />
@@ -88,11 +89,11 @@ const router = createBrowserRouter(
         <Route path={'/panel/deposits'} element={<Deposits />} />
       </Route>
       <Route path='/*' element={<ErrorPage />} />
-      
+
     </Route>
 
-      )
-      )
-      ReactDOM.createRoot(document.getElementById('root')).render(
-      <RouterProvider router={router} />
-      )
+  )
+)
+ReactDOM.createRoot(document.getElementById('root')).render(
+  <RouterProvider router={router} />
+)
