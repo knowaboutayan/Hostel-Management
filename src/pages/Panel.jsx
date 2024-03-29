@@ -29,13 +29,14 @@ const Panel = ({ navigation = [] }) => {
 
     const currentUserInfo = useSelector(state => state.currentUserInfo)
     const isAuthorised = useSelector(state => state.isUserLogin)
+    const currentUserStatus = useSelector(state => state.userStatus)
 
 
     setInterval(() => (() => {
         const date = new Date()
         setTime(date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds())
     })(), 1000)
-    
+
     //logout button 
     const logoutEventHandeler = async () => {
         setAlert(<AlertBox massege={"process"} image={images.process}></AlertBox>)
@@ -43,7 +44,7 @@ const Panel = ({ navigation = [] }) => {
 
         dispatch(userInfo(null))
         dispatch(isLogIn(false))
-        
+
 
         setAlert(<AlertBox massege={"succesfully logout"} image={images.success}></AlertBox>)
         setTimeout(() => {
@@ -58,11 +59,11 @@ const Panel = ({ navigation = [] }) => {
     }
     //checking user login or not 
     if ((currentUserInfo == null || currentUserInfo == {} || currentUserInfo) && isAuthorised != true) {
-        
+
         dispatch(userInfo(null))
         dispatch(isLogIn(false))
         return (<ErrorPage title="unauthorised entry " descrption="access decliend">
-            <Button text="" type="button" fname={()=>navigate(`/`)}>
+            <Button text="" type="button" fname={() => navigate(`/`)}>
                 <i className="fa fa-sign-in" />Go to Home</Button>
             {popup}
         </ErrorPage>
@@ -70,18 +71,18 @@ const Panel = ({ navigation = [] }) => {
     }
 
 
-    else if (isAuthorised&&currentUserInfo != null || currentUserInfo != {}) {
+    else if (isAuthorised && currentUserInfo != null || currentUserInfo != {}) {
         return (
             <section>
-                <section className=" grid grid-cols-4  overflow-auto flex-col flex-nowrap">
+                <section className=" grid  grid-cols-4  overflow-auto flex-col flex-nowrap">
 
                     {/* top, date time*/}
-                    <div className="md:flex col-span-4 flex justify-around items-center bg-green-800 text-gray-200 text-lg flex-wrap " >
+                    <div className="md:flex  w-100    col-span-4 flex justify-around items-center bg-green-800 text-gray-200 text-lg flex-wrap " >
                         <p className="flex flex-row text-nowrap">
                             <p className="mx-4 font-sans font-bold "><i className="fa fa-calendar"></i> {`${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`}</p>
                             <p className=" font-sans font-bold "><i className="fa fa-clock-o"></i> {time}</p>
                         </p>
-                        <p className="mx-4 font-sans text-nowrap "> {String(currentUserInfo['$id'])}</p>
+                        <p className="mx-4 font-sans text-nowrap "> {String(currentUserInfo['$id'])} ({String(currentUserStatus)[0].toUpperCase() + String(currentUserStatus).substring(1,)})</p>
                         <p className="flex flex-row text-nowrap">
                             <p className="mx-4 font-sans font-bold " onClick={() => logoutEventHandeler()}><i className="fa fa-sign-out"></i></p>
                         </p>
@@ -90,33 +91,39 @@ const Panel = ({ navigation = [] }) => {
 
 
                     {/* side nav */}
-                    <div className="  md:col-span-1 md:col-span-0  md: bg-stone-200-50  border-2 md:border-r-0 md:static 
-                md:h-auto md:w-full md:z-0 md:block
-                relative w-72 h-screen  z-10 hidden overflow-auto ">
+                    <div className="  md:col-span-1  md:col-span-0  md: bg-stone-200-50  border-2 md:border-r-0 md:static 
+                 md:w-full md:z-0 md:block
+                relative w-72 h-full  z-10 hidden  ">
                         {/* userProfileBox */}
-                        <div className="bg-gray-50 break-words text-wrap " >
+                        <div className="bg-gray-50 break-words text-wrap border-2 box-border p-2 h-54 " >
 
                             {/* profile data */}
-                            <div className="flex flex-row flex-nowrap pt-2 px-3   justify-around ">
-                                <div className="flex flex-col items-center text-lg font-bold text-green-800">
-                                    <img onClick={profilePicUpload} src={images.user} alt="user" className=" rounded-full size-36" />
 
-                                    {/* print user information */}
-                                    <div>
-                                        <p className="text-center font-serif  ">{currentUserInfo.name}</p>
-                                        <p className="text-center font-serif text-sm font-light">{currentUserInfo.email}</p>
-                                        <p className="text-center font-serif text-sm font-semibold ">{currentUserInfo.phone}</p>
-                                    </div>
+                            <div className=" grid text-gray-700 grid-cols-4">
+                                <div className=" col-span-3 size-4/5 m-auto">     {/* image */}
+                                    <img onClick={profilePicUpload} src={images.user} alt="user" className=" rounded-full w-full" />
                                 </div>
 
-                                {/* user social media */}
-                                <div className="flex text-green-700 flex-col justify-center items-center gap-4  text-2xl">
-                                    <i className="fa fa-whatsapp" />
+                                <div className=" flex flex-nowrap flex-col col-span-1 text-green-600  justify-center gap-6 h items-center p-5  text-3xl">
+                                    <i className="fa fa-whatsapp" onClick={() => setPopup(<PopUp close_btn={()=>setPopup("")} title="facebook">
+                                    <iframe src="http://whatsapp.com" title="W3Schools Free Online Web Tutorials" className="h-96  w-full"></iframe>
+                                    </PopUp>)} />
                                     <i className="fa fa-facebook" />
                                     <i className="fa fa-envelope" />
                                     <i className="fa fa-instagram" />
-
                                 </div>
+                                {/* print user information */}
+                                <div className=" col-span-4 border-t-4 mt-2 text-center border-green-600 grid break-all w-full text-wrap   ">
+                                    <p className="text-center text-2xl font-serif font-bold ">{currentUserInfo.name}</p>
+                                    <p className="text-center text-xl  font-light">{currentUserInfo.email}</p>
+                                    <p className="text-center text-xl  font-light ">{currentUserInfo.phone}</p>
+                                </div>
+                                {/* user social media */}
+                               
+
+
+
+
                             </div>
                         </div>
 

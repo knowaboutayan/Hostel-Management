@@ -88,7 +88,7 @@ const AddExpenses = ({ title, status }) => {
                         <big><b>TotalCost</b></big><br></br> {vegetable + grocery + meat + fish + egg}
                     </p>
                 </fieldset>
-                <Button type="submit" text="" classname={`mt-2 mx-auto  ${(date != "") ? "bg-green-600 hover:bg-green-700 hover:shadow-md hover:shadow-gray-300" : "bg-gray-600"}`} disabled={(date != "") ? false : true} >
+                <Button type="submit" text="" classname={`mt-2 mx-auto float-right  ${(date != "") ? "bg-green-600 hover:bg-green-700 hover:shadow-md hover:shadow-gray-300" : "bg-gray-600"}`} disabled={(date != "") ? false : true} >
                     <i class="fa fa-cloud" aria-hidden="true"> </i> save</Button>
             </form>
             <div>

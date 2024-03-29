@@ -17,6 +17,7 @@ import Deposits from './pages/Deposits.jsx'
 
 import Footer from './components/Footer.jsx'
 import NoDataFound from './PanelComponents/NoDataFound.jsx'
+import Home from './pages/Home.jsx'
 
 const navCardsData = [
   {
@@ -71,10 +72,7 @@ const navCardsData = [
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path='' element={<App />} errorElement={<ErrorPage />}>
-     
-        <Route path="" element={<NoDataFound text='welcome' image={images.empty} />} />
-
-      <Route path='/login' element={<Login />} />
+      <Route path="" element={<Home />} />
       <Route path={'/panel'} element={<Panel navigation={navCardsData} />} >
         <Route path={'/panel'} element={<NoDataFound text="WELCOME" image={images.maintenence} />} />
         <Route path={'/panel/dashboard'} element={<Dashboard>

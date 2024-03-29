@@ -91,9 +91,11 @@ const AddDeposite = ({ status }) => {
         e.preventDefault()
         addDeposite()
     }
+
     useEffect(() => {
         fetchMember()
     }, [])
+
     return (
         <>
             <section>
@@ -110,7 +112,7 @@ const AddDeposite = ({ status }) => {
                     </select>
                     {member}
                     <Input type={"number"} iconName={'fa fa-inr'} placeholder={"amount"} fname={(res) => setAmount(res)} required={true} />
-                    <Button type="submit" text="" classname={`mt-2 mx-auto  ${(member != "" && amount != "" && amount != 0) ? "bg-green-600" : "bg-gray-600"}`} disabled={(member != "" && amount != "") ? false : true} >
+                    <Button type="submit" text="" classname={`mt-2 mx-auto ${(member != "" && amount != "" && amount != 0) ? "bg-green-600" : "bg-gray-600"}`} disabled={(member != "" && amount != "") ? false : true} >
                         <i class="fa fa-cloud" aria-hidden="true" fname={() => { }}> </i> save </Button>
                 </form>
 

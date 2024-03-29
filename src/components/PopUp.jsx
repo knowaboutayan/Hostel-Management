@@ -2,14 +2,14 @@ import { useState } from "react"
 import images from "../images"
 
 const PopUp = ({ title = "", icon = "", children, close_btn }) => {
-    const [animation, setAnimation] = useState('animate-fade-up')
+    const [animation, setAnimation] = useState('animate-flip-up animate-once animate-normal')
     const close_box = async () => {
-        setAnimation('animate-fade-down animate-reverse animate-ease-out animate-duration-700')
+        setAnimation('animate-flip-down animate-once animate-reverse animate-duration-700')
         setTimeout(() => close_btn(), 700)
     }
     return (
         //popup page
-        <section className={`overflow-auto  animate-fade w-full fixed   bg-black bg-opacity-50 top-0 bottom-0 z-50 left-0 right-0 block items-center justify-center`}>
+        <section className={`overflow-auto  animate-fade-in  w-full fixed   bg-black bg-opacity-50 top-0 bottom-0 z-50 left-0 right-0 block items-center justify-center`}>
             <div>
                 {/* popupbox container*/}
 
