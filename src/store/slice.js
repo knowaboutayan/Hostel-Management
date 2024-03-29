@@ -36,7 +36,7 @@ const authenication = createSlice(
                     state.userName = "untitled"
                     state.userId = "0000"
                 }
-
+                console.log(state.userStatus)
 
             },
 

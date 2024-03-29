@@ -43,6 +43,7 @@ const Panel = ({ navigation = [] }) => {
 
         dispatch(userInfo(null))
         dispatch(isLogIn(false))
+        
 
         setAlert(<AlertBox massege={"succesfully logout"} image={images.success}></AlertBox>)
         setTimeout(() => {
