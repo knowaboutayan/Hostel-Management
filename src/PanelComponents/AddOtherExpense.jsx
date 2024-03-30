@@ -30,7 +30,7 @@ const AddOtherExpenses = ({ title, status }) => {
         try {
             setAlertBox(<AlertBox massege={"adding data..."} image={images.process} ></AlertBox>)
             const expenses = new Expenses(expanseDetails, amount)
-            console.log(expenses)
+      
             const dataSubmit = await database.newExpenseAdd(expenses)
             await database.getProfilePic("6603da09cbdee175b725")
             setAlertBox(<AlertBox massege={"working please wait..."} image={images.process} >

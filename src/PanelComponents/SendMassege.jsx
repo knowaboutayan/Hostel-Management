@@ -60,8 +60,7 @@ const SendMassege = () => {
         try {
             const data = await database.getChat()
             if (data.length > 0) {
-                console.log(data)
-                setRecieveChats(data)
+                               setRecieveChats(data)
             }
         }
         catch (err) {

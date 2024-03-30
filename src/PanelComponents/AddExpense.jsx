@@ -43,7 +43,7 @@ const AddExpenses = ({ title, status }) => {
         try {
             setAlertBox(<AlertBox massege={"adding data..."} image={images.process} ></AlertBox>)
             const expenses = new Expenses(vegetable, grocery, fish, egg, meat, date)
-            console.log(expenses)
+      
             const dataSubmit = await database.newExpenseAdd(expenses)
 
             setAlertBox(<AlertBox massege={"working please wait..."} image={images.process} >

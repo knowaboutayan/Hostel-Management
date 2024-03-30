@@ -6,6 +6,7 @@ import images from '../images';
 import PopUp from './PopUp';
 import Login from '../pages/Login'
 import { useSelector } from 'react-redux';
+import MembersAdd from '../PanelComponents/MembersAdd';
 
 const Header = ({ logo = "", navList = [] }) => {
 
@@ -37,12 +38,18 @@ const Header = ({ logo = "", navList = [] }) => {
 
                 {
                     (!isLogin) ?
-
-                        <Button fname={() => setPopUp(<PopUp title='Login' icon={images.login} close_btn={() => setPopUp("")}>
-                            <Login />
-                        </PopUp>)} className="bg-green-600">
-                            <i className=' fa fa-sign-in' />LogIn
-                        </Button>
+                        <>
+                            <Button fname={() => setPopUp(<PopUp title='SignUp' icon={images.user} close_btn={() => setPopUp("")}>
+                                <MembersAdd />
+                            </PopUp>)} className="bg-green-600">
+                                <i className=' fa fa-sign-up' /> SignUp
+                            </Button>
+                            <Button fname={() => setPopUp(<PopUp title='Login' icon={images.login} close_btn={() => setPopUp("")}>
+                                <Login />
+                            </PopUp>)} className="bg-green-600">
+                                <i className=' fa fa-sign-in' />LogIn
+                            </Button>
+                        </>
                         : <Button fname={() => navigate('/panel')}>
                             welcome back {String(currentUserName).split(" ")[0]}
                         </Button>

@@ -1,10 +1,13 @@
 import Input from "../components/Input"
-import newMember from '../../images/newMember.png'
+
 import { useState } from "react"
-import database from "../database"
+
 import AlertBox from "../components/AlertBox"
 import images from "../images"
 import Button from "../components/Button"
+import database from "../database"
+import authService from "../auth"
+
 
 const MembersAdd = ({ title, width = "w-full", status = "" }) => {
     const [name, setName] = useState("")
@@ -13,12 +16,19 @@ const MembersAdd = ({ title, width = "w-full", status = "" }) => {
     const [password, setPassword] = useState("")
     const [confirmPassword, setConfirmPassword] = useState("")
     const [showAlert, setShowAlert] = useState(false)
+
+    //on submt form
     const onSubmitEventHAndeler = async (e) => {
         class Member {
+            //class for member object creation
+            name;
+            password;
+            email;
+            phone;
             constructor(name, password, email, phone) {
+                this.email = email;
                 this.name = name;
                 this.password = password;
-                this.email = email;
 
                 this.phone = "+91" + phone
             }
@@ -26,14 +36,21 @@ const MembersAdd = ({ title, width = "w-full", status = "" }) => {
         e.preventDefault()
         try {
             setShowAlert(
-                <AlertBox massege={"working please wait..."} image={images.process} >
+                <AlertBox massege={"please wait..."} image={images.process} >
                     <p className="animate-spin border-green-600 p-8 border-8 border-l-green-200 border-solid rounded-full"></p>
                 </AlertBox>
             )
+            
             const member = new Member(name, password, email, phone)
-            const add = await database.memberAdd(member)
+            let add = await authService.CreateAccount(member)
+            setShowAlert(< AlertBox massege={"Account successfully completed!"} image={images.success} ></AlertBox>)
+
+            setShowAlert(<AlertBox massege={"user acount creating....."} image={images.success} />)
+
+            
+
             if (add == 0) {
-                setShowAlert(< AlertBox massege={"successfully registered"} image={images.success} >
+                setShowAlert(<AlertBox massege={"User registraction succesful"} image={images.success} >
                 </AlertBox >);
                 setTimeout(() => status(true), 700)
             }
@@ -58,7 +75,7 @@ const MembersAdd = ({ title, width = "w-full", status = "" }) => {
     return (
         <section className="">
 
-            <form onSubmit={onSubmitEventHAndeler}>
+            <form onSubmit={(e) => onSubmitEventHAndeler(e)}>
                 <Input iconName={"fa fa-user"} type={"text"} placeholder={"member's name"} fname={(res) => setName(res)} required={true} />
                 <Input iconName={"fa fa-mobile"} type={"tel"} minValue={1000000000} maxValue={9999999999} placeholder={"member's mobile number"} fname={(res) => setPhone(res)} required={true} />
                 <Input iconName={"fa fa-envelope"} type={"email"} placeholder={"members's email"} fname={(res) => setEmail(res)} required={true} />

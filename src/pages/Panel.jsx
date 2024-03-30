@@ -14,71 +14,50 @@ import { isLogIn, haveProfilePic, userInfo, setProfilePicFile, setDataUpdate } f
 import Button from "../components/Button"
 import PanelSectionTitle from "../PanelComponents/PanelSectionTitle"
 import allAlerts from '../components/allAlerts'
-
-
-
+import UserProfile from "../PanelComponents/UserProfile"
 const Panel = ({ navigation = [] }) => {
-
     const date = new Date()
     const [time, setTime] = useState("")
     const [alert, setAlert] = useState("")
     const [popup, setPopup] = useState("")
     const [title, setTitle] = useState("Dashboard")
+
     const navigate = useNavigate()
     const dispatch = useDispatch()
-    const image = useSelector(state => state.profilePicFile)
+
+    const profileImage = useSelector(state => state.profilePicFile)
+    const isProfilePic = useSelector(state => state.userHaveProfilePic)
 
     const currentUserInfo = useSelector(state => state.currentUserInfo)
-    const currentUserId = useSelector(state => state.userId)
-    const isAuthorised = useSelector(state => state.isUserLogin)
     const [succesful, setSuccessStatus] = useState(false)
     const currentUserStatus = useSelector(state => state.userStatus)
-
     const [panelLogo, setPanelLogo] = useState(images.dashboard)
 
-    setInterval(() => (() => {
-        const date = new Date()
-        setTime(date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds())
-    })(), 1000)
+
     let updated = useSelector(state => state.update)
+
     //logout button 
     const logoutEventHandeler = async () => {
         setAlert(<AlertBox massege={"process"} image={images.process}></AlertBox>)
         await authService.logout()
-
-        dispatch(userInfo(null))
-        dispatch(isLogIn(false))
-
-
         setAlert(<AlertBox massege={"succesfully logout"} image={images.success}></AlertBox>)
+        localStorage.clear()
+        sessionStorage.clear()
+
         setTimeout(() => {
+            dispatch(userInfo(null))
+            dispatch(isLogIn(false))
+            dispatch(haveProfilePic(false))
             navigate("/")
-        }, 800);
-
+        }, 2000)
     }
-
-    useEffect(() => {
-        (async () => {
-            setAlert(allAlerts.processing)
-            const data = await database.getProfilePic(currentUserId)
-            if (data == 1) {
-                dispatch(haveProfilePic(false))//updating no profile pic
-            } else {
-                dispatch(setProfilePicFile(data.href))//have profile pic
-                dispatch(haveProfilePic(true))
-            }
-            setAlert("")
-        })()
-    }, [succesful])
 
     //profile pic upload
     const profilePicUpload = async () => {
 
         setPopup(
-
-
             <PopUp title="Upload Profile Pictute" icon={images.imageupload} close_btn={() => setPopup("")}>
-                <Button type="button" text="ffff" fname={() => dispatch(setDataUpdate(updated + 1))}>Update</Button>
+
                 <UploadFile uploadTo={(res) => database.uploadProfilePic(res)} successfulStatus={() => { setPopup(""); setSuccessStatus(pre => !pre) }}>
                 </UploadFile>
             </PopUp>
@@ -87,25 +66,63 @@ const Panel = ({ navigation = [] }) => {
 
     }
 
-
-    //checking user login or not 
-    if ((currentUserInfo == null || currentUserInfo == {} || currentUserInfo) && isAuthorised != true) {
-
-        dispatch(userInfo(null))
-        dispatch(isLogIn(false))
-        return (<ErrorPage title="unauthorised entry " descrption="access decliend">
-            <Button text="" type="button" fname={() => navigate(`/`)}>
-                <i className="fa fa-sign-in" />Go to Home</Button>
-            {popup}
-        </ErrorPage>
-        )
+    //show user Info 
+    const showUserInfo = () => {
+        setPopup(<PopUp icon={profileImage} title={"Your Profile"} close_btn={() => setPopup("")}><UserProfile /></PopUp>)
     }
 
 
-    else if (isAuthorised && currentUserInfo != null || currentUserInfo != {}) {
+    useEffect(() => {
+        (async () => {
+            try {
+
+                setAlert(allAlerts.processing);
+                const data = await database.getProfilePic(currentUserId);
+
+                if (data === 1) {
+
+                    dispatch(haveProfilePic(false)); // Updating no profile pic
+                } else if (data && data.href) {
+                    console.log(data);
+                    window.localStorage.setItem('imgHref', data.href)
+                    dispatch(setProfilePicFile(data.href)); // Have profile pic
+                    dispatch(haveProfilePic(true));
+
+                } else {
+                    console.error("Invalid profile picture data:", data);
+
+                }
+            } catch (error) {
+                console.error("Error fetching profile picture:", error);
+                // Handle error (e.g., display error message)
+            } finally {
+                setAlert("");
+
+            }
+        })();
+    }, [succesful]);
 
 
-        return (
+    useEffect(() => {
+        (async () => {
+
+            const data = await authService.getCurrentUser()
+            setInterval(() => (() => {
+                const date = new Date()
+                setTime(date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds())
+            })(), 1000)
+            dispatch(userInfo(data))
+            dispatch(isLogIn(true))
+        })()
+    }, [])
+
+    const isUserLogin = useSelector(state => state.isUserLogin)
+    const currentUserId = useSelector(state => state.userId)
+
+
+    //checking user login or not 
+    return (
+        (isUserLogin) ?
             <section>
                 <section className=" grid  grid-cols-4  overflow-auto flex-col flex-nowrap">
 
@@ -134,8 +151,10 @@ const Panel = ({ navigation = [] }) => {
                             {/* profile data */}
 
                             <div className=" grid text-gray-700 grid-cols-4">
-                                <div className=" col-span-3 size-4/5 m-auto">     {/* image */}
-                                    <img onClick={profilePicUpload} src={image} alt="user" className=" rounded-full w-full" />
+                                <div className=" col-span-3 size-4/5 m-auto">
+                                    {console.log(isProfilePic)}
+                                    {/* image */}
+                                    {<img onClick={profilePicUpload} src={(isProfilePic) ? profileImage : images.user} alt="user" className=" rounded-full w-full" />}
                                 </div>
 
                                 <div className=" flex flex-nowrap flex-col col-span-1 text-green-600  justify-center gap-6 h items-center p-5  text-3xl">
@@ -151,7 +170,7 @@ const Panel = ({ navigation = [] }) => {
 
                                 {/* print user information */}
                                 <div className=" col-span-4 border-t-4 mt-2  border-green-600 grid break-all w-full text-wrap   ">
-                                    <p className=" text-2xl font-serif font-bold hover:text-green-700 hover:cursor-pointer "><i className="fa fa-user" /> {currentUserInfo.name} </p>
+                                    <p className=" text-2xl font-serif font-bold hover:text-green-700 hover:cursor-pointer " onClick={showUserInfo} ><i className="fa fa-user" /> {currentUserInfo.name} </p>
                                     <p className=" text-xl  font-light"> <i className="fa fa-envelope " /> {currentUserInfo.email} </p>
                                     <p className="text-xl  font-light "> <i className="fa fa-phone " /> {currentUserInfo.phone} </p>
                                 </div>
@@ -182,19 +201,24 @@ const Panel = ({ navigation = [] }) => {
 
 
                 </section>
+
+
                 {/* bottom nav */}
                 <div className="md:hidden  fixed py-2  bg-green-700 w-screen min-w-80 bottom-0">
                     <div className=" flex flex-row box-border justify-around" >
                         {navigation.map((card) => <NavLink to={`${card.id}`} className={({ isActive }) => ` w-12 hover:cursor-pointer shadow-lg   p-2 rounded-full 
                         hover:shadow-black transition-all
                         
-                         ${isActive ? "animate-pulse animate-once bg-green-300 border-8 border-gray-50  shadow-black -translate-y-6 " : " animate-jump translate-y-0 bg-green-50 "}  `} onClick={() => { setPanelLogo(card.icon); setTitle(card.title) }}>
+                         ${isActive ? "animate-pulse animate-once bg-green-300 border-8 border-gray-50  shadow-black -translate-y-6 " : " animate-jump translate-y-0 bg-green-50 "} `} onClick={() => { setPanelLogo(card.icon); setTitle(card.title) }}>
                             <img src={card.icon} />
                         </NavLink>
 
                         )}
+                        <NavLink to='' className={` w-12 hover:cursor-pointer shadow-lg   p-2 rounded-full 
+                        hover:shadow-black transition-all `} onClick={logoutEventHandeler}>
+                            <img src={images.logout} />
+                        </NavLink>
                     </div>
-
                 </div>
                 {/*  for pop up */}
                 <div>
@@ -202,7 +226,15 @@ const Panel = ({ navigation = [] }) => {
                     {popup}
                 </div>
             </section>
-        )
-    }
+
+            :
+
+            <ErrorPage title="unauthorised entry " descrption="access decliend">
+                <Button text="" type="button" fname={() => navigate(`/`)}>
+                    <i className="fa fa-sign-in" />Go to Home</Button>
+                {popup}
+            </ErrorPage>
+
+    )
 }
 export default Panel

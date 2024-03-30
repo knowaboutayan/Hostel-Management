@@ -4,7 +4,7 @@ const Input = ({ iconName, type, placeholder, value="", minValue, maxValue, fnam
     const [val, setValue] = useState(value)
     //change handeler
     const onChangeHandeler = (value) => {
-        console.log('Input',value)
+  
         setValue(value);
     }
 

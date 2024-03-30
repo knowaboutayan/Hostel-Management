@@ -18,6 +18,7 @@ const authenication = createSlice(
     {
         name: "accountStatus",
         initialState,
+
         reducers: {
             isLogIn: (state, action) => {
 
@@ -26,20 +27,22 @@ const authenication = createSlice(
             },
 
             userInfo: (state, action) => {
-                console.log("slice::", action.payload)
+               
                 const recivedData = action.payload
-                state.currentUserInfo = recivedData
+        
                 if (recivedData !== null) {
+                    state.currentUserInfo = recivedData
                     state.userStatus = recivedData['labels'][0]
                     state.userName = recivedData['name']
                     state.userId = recivedData['$id']
                 }
+
                 else {
                     state.userStatus = 'no-user'
                     state.userName = "untitled"
                     state.userId = "0000"
                 }
-                console.log(state.userId)
+             
 
 
             },
@@ -49,9 +52,11 @@ const authenication = createSlice(
 
             },
             setProfilePicFile: (state, action) => {
-                console.log(action.payload)
+                
                 state.profilePicFile = action.payload
+                state. userHaveProfilePic=true
             },
+            
             setDataUpdate: (state, action) => {
                 state.update = action.payload
             }

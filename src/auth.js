@@ -1,5 +1,7 @@
 import { Account, Client, ID, Teams } from "appwrite"
 import conf from "./conf/conf"
+import { useDispatch } from "react-redux";
+import { haveProfilePic, userInfo } from "./store/slice";
 
 class AuthService {
     client = new Client()
@@ -15,24 +17,26 @@ class AuthService {
         this.teams = new Teams(this.client)
     }
 
+    //accout create
+    async CreateAccount({ email, password, name, phone }) {
+        try {
 
-    // async CreateAccount(email, password, name, phone) {
-    //     try {
-    //         console.log(email, password, name, phone);
-    //         const createAccount = await this.account.create(ID.unique(), email, password, name);
+            const createAccount = await this.account.create(ID.unique(), email, password, name, String(phone));
+          
+            if (createAccount) {
 
-    //         if (createAccount) {
-    //             alert("success")
-    //             return 0;
-    //         } else {
-    //             return 1;
-    //         }
-           
-    //     } catch (error) {
-    //         console.error(error);
-    //         return -1; // Return a custom error code or handle the error appropriately
-    //     }
-    // }
+                return 0;
+            }
+            else {
+                return 1;
+            }
+
+        } catch (error) {
+            alert(error);
+            return -1; // Return a custom error code or handle the error appropriately
+        }
+    }
+
 
 
     async Login(email, password) {
@@ -53,24 +57,30 @@ class AuthService {
     async getCurrentUser() {
         try {
             const data = await this.account.get()
-      
+            
             return data
         }
         catch (err) {
             return 1
         }
+        return null
 
     }
+   
 
     async logout() {
+
         try {
 
-            return await this.account.deleteSessions('current')
+          
+           return  await this.account.deleteSessions('current')
+            
+             
         }
         catch (err) {
-            console.log("error");
+    
         }
-        console.log(null)
+        
     }
 }
 

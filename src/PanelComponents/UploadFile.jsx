@@ -13,7 +13,7 @@ const UploadFile = ({ title, requirements, classname, children, uploadTo, succes
     const currentUserId = useSelector(state => state.userId)
     const havingImage = useSelector(state => state.userHaveProfilePic)//user have profile pic or not
   
-    console.log("Uploaded Image have", havingImage)
+
 
     const dispatch = useDispatch()
     //if already have a image then delete it first *** for case of updation of pic
@@ -22,22 +22,22 @@ const UploadFile = ({ title, requirements, classname, children, uploadTo, succes
         try {
             //if already have a image then delete it first *** for case of updation of pic
             const response = await database.deleteProfilePic(currentUserId);
-            console.log("deleteFile1", response)
+           
             if (response == 0) {
                 setAlert(<AlertBox massege={"previous image removed"} image={images.success} />);
-                window.alert("delete")
-                console.log("deleteFile2", response)
+             
+               
                 return 0//success
             }
             else if (response == -1) {
                 (
                     setAlert(allAlerts.warning({ fname: () => setAlert("") })))
-                console.log("deleteFileXXX", response)
+       
                 return 1//unsuccess
             }
         }
         catch (error) {
-            console.log("error", error);
+            
             setAlert(allAlerts.unsuccessful({ fname: () => setAlert("") }))
             return 1//unsuccess
         }
@@ -54,7 +54,7 @@ const UploadFile = ({ title, requirements, classname, children, uploadTo, succes
             setAlert(allAlerts.processing)
             if (response == 0)
                 response = await database.uploadProfilePic(currentUserId, newImg);
-            console.log("uploadddddd", response)
+          
             setAlert(<AlertBox massege={"success"} image={images.success} />);
 
             setTimeout(() => {
@@ -66,8 +66,7 @@ const UploadFile = ({ title, requirements, classname, children, uploadTo, succes
         }
 
         catch (error) {
-            console.log("error", error);
-        }
+                  }
     }
     const onSubmitEventHandeler = async (e) => {
         e.preventDefault()

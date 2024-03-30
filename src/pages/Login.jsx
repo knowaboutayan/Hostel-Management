@@ -8,6 +8,8 @@ import { redirect, useNavigate } from "react-router"
 import { Link } from "react-router-dom"
 import { useDispatch, useSelector } from "react-redux"
 import { isLogIn, userInfo } from "../store/slice"
+import admin from "../admin"
+import Button from "../components/Button"
 
 
 const Login = ({ loginFor = '', valiDationFunc = "" }) => {
@@ -30,8 +32,8 @@ const Login = ({ loginFor = '', valiDationFunc = "" }) => {
         event.preventDefault()
         try {
             setShowSuccess(<AlertBox massege={"please wait"} color={"gray"} image={images.process} ><p className="animate-spin  animate-reverse border-gray-600 p-8 border-8 border-l-gray-200 border-solid rounded-full"></p></AlertBox>)
-            const data = await authService.Login(username, password)
-            console.log(data)
+            const data = await admin.Login(username, password)
+            
             //onsuccessful login....
             if (data != 1) {
                 //setCurrentUserInformation
@@ -86,10 +88,11 @@ const Login = ({ loginFor = '', valiDationFunc = "" }) => {
                             forget password?
                         </h5>
                     </p>
-                    <input type="submit" value={"login"} className={`px-3 py-2  w-40 rounded-lg font-semibold hover:cursor-pointer  text-white ${(username != "" && password != "") ? "bg-green-600 hover:bg-green-700 hover:shadow-md hover:shadow-gray-300" : "bg-gray-600"}`} disabled={(username != "" && password != "") ? false : true} />
+                    <Button type="submit" text={"login"} className={`px-3 py-2  w-40 rounded-lg font-semibold hover:cursor-pointer  text-white ${(username != "" && password != "") ? "bg-green-600 hover:bg-green-700 hover:shadow-md hover:shadow-gray-300" : "bg-gray-600"}`} disabled={(username != "" && password != "") ? false : true} >
+                        <i className="fa fa-sign-in"/> 
+                    </Button>
                 </form>
                 {showSuccess}
-
             </section>
 
         )

@@ -59,8 +59,7 @@ const AddDeposite = ({ status }) => {
 
                     memberName; amount; userId;
                     constructor(member, amount) {
-                        console.log(member)
-                        this.memberName = member[0];
+                                  this.memberName = member[0];
                         this.amount = amount;
                         this.userId = member[1]
                     }
@@ -68,7 +67,7 @@ const AddDeposite = ({ status }) => {
 
                 const deposit = new Deposits(member.split(','), amount)
 
-                console.log(deposit)
+                
                 const response = await database.newDepositAdd(deposit)
                 if (response == 0) {
                     setAlertBox(<AlertBox massege={"succesfully add"}></AlertBox>)

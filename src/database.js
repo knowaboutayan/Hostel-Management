@@ -1,8 +1,7 @@
-import { Client, Databases, ID, Query, Storage } from "appwrite";
+import { Client, Databases, ID, Storage } from "appwrite";
 import conf from "./conf/conf";
 
 
-import { haveProfilePic, setProfilePicFile } from "./store/slice";
 
 
 class Database {
@@ -16,7 +15,7 @@ class Database {
     }
 
 
-    async memberAdd({ name, email, phone, password }) {
+    async memberAdd({ name, email, phone }) {
         try {
 
             const add = await this.databases.createDocument(
@@ -30,8 +29,6 @@ class Database {
                 }
 
             )
-
-
             if (add) {
                 return 0
             }
@@ -251,7 +248,7 @@ class Database {
                 id,//current user id..
                 file
             )
-            console.log("uploadd", data)
+            
 
             return 0
         }
@@ -259,7 +256,7 @@ class Database {
             if (err['AppwriteException'] == " Network request failed)") {
                 return 'netErr'
             }
-            console.log("uploadd", err)
+            
             return err
         }
     }
@@ -270,7 +267,7 @@ class Database {
                 conf.bucketId,
                 String(fileId)
             )
-            console.log("Deleted", data)
+           
 
             return 0
         }
@@ -278,7 +275,7 @@ class Database {
             if (err['AppwriteException'] == " Network request failed)") {
                 return 'netErr'
             }
-            console.log("uploadd", err)
+            
             return err
         }
     }
@@ -286,12 +283,13 @@ class Database {
     async getProfilePic(fileId) {
 
         try {
-            const data = this.storage.getFileView(
+            const data = this.storage.getFilePreview(
                 conf.bucketId,
                 fileId
             )
-            console.log("IMage", data)
+      
             if (data != null && data != 1 && data.href && data.href != "") {
+                console.log("preview",data)
                 return data
             }
             else {
