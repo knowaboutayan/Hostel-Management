@@ -5,7 +5,7 @@ const NavCards = ({ title = "", icon = "", alt = "", className, isActiveClassNam
     return (
         <NavLink 
         to={`${String(navigateTo).toLowerCase()}`} 
-        className={({isActive}) => `flex flex-row justify-between bg-green-200 hover:border-l-8 hover:cursor-pointer border-green-800  hover:border-green-600 items-center p-2 h-20 ${isActive ? 'border-l-8 bg-green-300 font-extrabold text-gray-700' : 'font-bold'}`}
+        className={({isActive}) => `flex flex-row justify-between bg-gray-200 text-gray-700 font-semibold hover:border-l-8 hover:cursor-pointer border-green-800  hover:border-green-600 items-center p-2 h-20 ${isActive ? 'border-l-4 bg-green-200 font-extrabold text-gray-700' : 'font-bold'}`}
 
 onClick={()=>changeStatus()}
 >

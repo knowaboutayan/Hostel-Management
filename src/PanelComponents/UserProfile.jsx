@@ -1,13 +1,14 @@
 import { useSelector } from "react-redux"
 import Button from "../components/Button"
 import authService from "../auth"
+import { useNavigate } from "react-router"
 
-const UserProfile = () => {
+const UserProfile = ({fname=""}) => {
     const currentUserInfo = useSelector(state => state.currentUserInfo)
     const currentUserStatus = useSelector(state => state.userStatus)
     console.log(currentUserInfo)
     const dataStyle = "font-normal ml-3 text-green-600 cordor"
-
+const navigate = useNavigate()
     return (
         <section className="p-4  text-gray-700 font-semibold ">
             <p className="">
@@ -33,7 +34,7 @@ const UserProfile = () => {
 
             </div>
             <hr></hr>
-            <Button type="button" classname="bg-red-600" onClick={() => authService.logout()} text="Logout" ><i className=" fa fa-sign-out" /></Button>
+            <Button type="button" classname="bg-red-600" fname={fname} text="Logout" ><i className=" fa fa-sign-out" /></Button>
         </section>
 
     )

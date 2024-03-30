@@ -76,10 +76,7 @@ const router = createBrowserRouter(
       <Route path={'/panel'} element={<Panel navigation={navCardsData} />} >
         <Route path={'/panel'} element={<NoDataFound text="WELCOME" image={images.maintenence} />} />
         <Route path={'/panel/dashboard'} element={<Dashboard>
-          <div className='flex flex-row flex-wrap justify-around items-center h-full'>
-            <Cards title="Expenses" icon={images.expense} color="red" navigateTo={"/panel/expenses"} />
-            <Cards title="All Members" icon={images.members} color={'green'} navigateTo={"/panel/members"} />
-          </div>
+          
         </Dashboard>} />
         <Route path={'/panel/expenses'} element={<AllExpenses />} />
         <Route path={'/panel/members'} element={<Members />} />

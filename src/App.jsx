@@ -9,9 +9,9 @@ function App() {
   return (
     <>
 
-      <Provider store={store} className="scroll-smooth transition-all border-2 border-pink-600">
+      <Provider store={store} className="scroll-smooth transition-all ">
 
-        <div className='border-4  box-border overflow-auto border-blue-800 w-screen h-screen '>
+        <div className=' box-border overflow-auto w-screen h-screen '>
           <Outlet />
         </div>
 

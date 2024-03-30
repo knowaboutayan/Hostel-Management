@@ -68,7 +68,7 @@ const Panel = ({ navigation = [] }) => {
 
     //show user Info 
     const showUserInfo = () => {
-        setPopup(<PopUp icon={profileImage} title={"Your Profile"} close_btn={() => setPopup("")}><UserProfile /></PopUp>)
+        setPopup(<PopUp icon={profileImage} title={"Your Profile"} close_btn={() => setPopup("")}><UserProfile fname={() => { setPopup(""); logoutEventHandeler() }} /></PopUp>)
     }
 
 
@@ -124,78 +124,75 @@ const Panel = ({ navigation = [] }) => {
     return (
         (isUserLogin) ?
             <section>
-                <section className=" grid  grid-cols-4  overflow-auto flex-col flex-nowrap">
+                <section className=" grid h-screen grid-cols-4  overflow-auto flex-col flex-nowrap">
 
-                    {/* top, date time*/}
-                    <div className="md:flex  w-100    col-span-4 flex justify-around items-center bg-green-800 text-gray-200 text-lg flex-wrap " >
+                    {/* top, date time user status*/}
+                    <div className="md:flex  w-100    col-span-4  md:justify-between hidden z-30 md:sticky top-0  left-0 right-0 items-center bg-green-800 text-gray-200 text-lg flex-wrap " >
                         <p className="flex flex-row text-nowrap">
-                            <p>
-                                {updated}
-                            </p>
+                          
                             <p className="mx-4 font-sans font-bold "><i className="fa fa-calendar"></i> {`${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`}</p>
                             <p className=" font-sans font-bold "><i className="fa fa-clock-o"></i> {time}</p>
                         </p>
-                        <p className="mx-4 font-sans text-nowrap "> {String(currentUserInfo['$id'])} ({String(currentUserStatus)[0].toUpperCase() + String(currentUserStatus).substring(1,)})</p>
+                        <p className="mx-4 font-sans text-nowrap "> {String(currentUserInfo['$id'])} <span className="  rounded-xl px-1  font-bold text-lg bg-green-500 text-white">{String(currentUserStatus)[0].toUpperCase() + String(currentUserStatus).substring(1,)}</span></p>
                         <p className="flex flex-row text-nowrap">
                             <p className="mx-4 font-sans font-bold " onClick={() => logoutEventHandeler()}><i className="fa fa-sign-out"></i></p>
                         </p>
                     </div>
 
                     {/* side nav */}
-                    <div className="  md:col-span-1  md:col-span-0  md: bg-stone-200-50  border-2 md:border-r-0 md:static 
+                    <div className="fixed top-0 bottom-0 left-0 md:col-span-1  md:col-span-0  md: bg-stone-200-50   md:border-r-0 md:static 
                  md:w-full md:z-0 md:block
-                relative w-72 h-full  z-10 hidden  ">
-                        {/* userProfileBox */}
-                        <div className="bg-gray-50 break-words text-wrap border-2 box-border p-2 h-54 " >
+                 w-72   hidden overflow-hidden  ">
+                        {/* side nav */}
+                        <div className="md:col-span-1 md:col-span-0 md:bg-stone-200-50  md:border-r-0 md:static md:w-full md:z-0 md:block relative w-72 h-screen  z-10 hidden">
+                            {/* userProfileBox */}
+                            <div className="break-words text-wrap box-border h-54  shadow-lg">
+                                {/* profile data */}
+                                <div className="px-3 bottom-3 h-full bg-gray-100 grid text-gray-700  grid-cols-4 ">
+                                    <div className="col-span-3 size-4/5 m-auto">
+                                        {console.log(isProfilePic)}
+                                        {/* image */}
+                                        {<img onClick={profilePicUpload} src={(isProfilePic) ? profileImage : images.user} alt="user" className="rounded-full border w-full" />}
+                                    </div>
 
-                            {/* profile data */}
+                                    <div className="flex flex-nowrap flex-col col-span-1justify-center gap-6 h items-center p-5 text-3xl">
+                                        <i className="fa fa-whatsapp  text-gray-600 hover:text-green-400 cursor-pointer " onClick={() => setPopup(<PopUp close_btn={() => setPopup("")} title="facebook">
+                                            <iframe src="http://whatsapp.com" title="W3Schools Free Online Web Tutorials" className="h-96 w-full"></iframe>
+                                        </PopUp>)} />
+                                        {/* user social media */}
+                                        <i className="fa fa-facebook  text-gray-600 hover:text-blue-700 cursor-pointer " />
+                                        <i className="fa fa-envelope  text-gray-600 hover:text-orange-500 cursor-pointer " />
+                                        <i className="fa fa-instagram  text-gray-600 hover:text-pink-700 cursor-pointer " />
+                                    </div>
 
-                            <div className=" grid text-gray-700 grid-cols-4">
-                                <div className=" col-span-3 size-4/5 m-auto">
-                                    {console.log(isProfilePic)}
-                                    {/* image */}
-                                    {<img onClick={profilePicUpload} src={(isProfilePic) ? profileImage : images.user} alt="user" className=" rounded-full w-full" />}
+                                    {/* print user information */}
+                                    <div className="col-span-4 border-t-4 mt-2 border-green-600 grid break-all w-full text-wrap">
+                                        <p className="text-2xl font-serif font-bold hover:text-green-700 hover:cursor-pointer" onClick={showUserInfo}><i className="fa fa-user" /> {currentUserInfo.name} </p>
+                                        <p className="text-xl font-light"> <i className="fa fa-envelope" /> {currentUserInfo.email} </p>
+                                        <p className="text-xl font-light"> <i className="fa fa-phone" /> {currentUserInfo.phone} </p>
+                                    </div>
                                 </div>
-
-                                <div className=" flex flex-nowrap flex-col col-span-1 text-green-600  justify-center gap-6 h items-center p-5  text-3xl">
-                                    <i className="fa fa-whatsapp" onClick={() => setPopup(<PopUp close_btn={() => setPopup("")} title="facebook">
-                                        <iframe src="http://whatsapp.com" title="W3Schools Free Online Web Tutorials" className="h-96  w-full"></iframe>
-                                    </PopUp>)} />
-                                    {/* user social media */}
-
-                                    <i className="fa fa-facebook" />
-                                    <i className="fa fa-envelope" />
-                                    <i className="fa fa-instagram" />
-                                </div>
-
-                                {/* print user information */}
-                                <div className=" col-span-4 border-t-4 mt-2  border-green-600 grid break-all w-full text-wrap   ">
-                                    <p className=" text-2xl font-serif font-bold hover:text-green-700 hover:cursor-pointer " onClick={showUserInfo} ><i className="fa fa-user" /> {currentUserInfo.name} </p>
-                                    <p className=" text-xl  font-light"> <i className="fa fa-envelope " /> {currentUserInfo.email} </p>
-                                    <p className="text-xl  font-light "> <i className="fa fa-phone " /> {currentUserInfo.phone} </p>
-                                </div>
-
-
                             </div>
-                        </div>
 
-                        {/* navigation cards */}
-                        <div className={`flex flex-col gap-1 overflow-auto `} >
-                            {navigation.map((card) => <NavCards title={card.title} icon={card.icon} color={card.color} isActiveClassName={card.activeClassName} navigateTo={card.id} changeStatus={() => { setPanelLogo(card.icon); setTitle(card.title) }} />)}
+                            {/* navigation cards */}
+                            <div className={` overflow-auto h-1/2 `}>
+                                <div className=" overflow-auto  flex flex-col gap-1">
+                                    {navigation.map((card) => <NavCards title={card.title} icon={card.icon} color={card.color} isActiveClassName={card.activeClassName} navigateTo={card.id} changeStatus={() => { setPanelLogo(card.icon); setTitle(card.title) }} />)}
+                                </div>
+                            </div>
                         </div>
                     </div>
 
                     {/* remaining space */}
-                    <div className=" md:col-span-3 col-span-4  ">
+                    <div className=" md:col-span-3 col-span-4   ">
                         {/* showing elements */}
-                        <div className="    ">
+                        <div className="border m-auto sticky z-10 shadow-sm top-0 ">
+                            <PanelSectionTitle title={title} image={panelLogo} />
+                        </div>
 
-                            <div className="border   ">
-                                <PanelSectionTitle title={title} image={panelLogo} />
-                            </div>
-                            <div className=" w-auto overflow-auto  min-w-320 h-full">
-                                <Outlet />
-                            </div>
+                        <div className="  border  w-auto overflow-auto  min-w-320 ">
+                            <Outlet />
+
                         </div>
                     </div>
 
@@ -221,7 +218,7 @@ const Panel = ({ navigation = [] }) => {
                     </div>
                 </div>
                 {/*  for pop up */}
-                <div>
+                <div className="">
                     {alert}
                     {popup}
                 </div>
