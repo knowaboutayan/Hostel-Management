@@ -35,7 +35,7 @@ const PasswordRecovery = () => {
         try {
             setAlertBox(allAlerts.processing)
             //waiting for update status
-            const response = await authService.updateNewPassword({ userId, secret, password })
+            const response = await authService.updateNewPassword({ userId, secret, password ,confirmPassword})
 
             console.log(response);
             //if successful 
@@ -55,6 +55,7 @@ const PasswordRecovery = () => {
 
         }
         catch (error) {//other exception
+            console.log(error);
             setAlertBox(<AlertBox massege={"something went wrong"} color='red' icon={images.unsuccess} >
                 <Button type='button' text='ok' fname={() => setAlertBox("")}>
                 </Button>
