@@ -120,7 +120,8 @@ class AuthService {
 
     }
 
-    async updateNewPassword({ userId = "", secret = "", password }) {
+    async updateNewPassword(userId,secret,password) {
+        console.log(userId,secret,password);
         try {
             const response = await this.account.updateRecovery(
                 userId, secret, password

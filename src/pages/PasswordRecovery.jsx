@@ -35,7 +35,7 @@ const PasswordRecovery = () => {
         try {
             setAlertBox(allAlerts.processing)
             //waiting for update status
-            const response = await authService.updateNewPassword({ userId, secret,password,confirmPassword})
+            const response = await authService.updateNewPassword( userId, secret,password)
 
             console.log(response);
             //if successful 
