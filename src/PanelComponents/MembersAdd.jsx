@@ -29,7 +29,6 @@ const MembersAdd = ({ title, width = "w-full", status = "" }) => {
                 this.email = email;
                 this.name = name;
                 this.password = password;
-
                 this.phone = "+91" + phone
             }
         }
@@ -52,7 +51,7 @@ const MembersAdd = ({ title, width = "w-full", status = "" }) => {
             if (add == 0) {
                 setShowAlert(<AlertBox massege={"User registraction succesful"} image={images.success} >
                 </AlertBox >);
-                setTimeout(() => status(true), 700)
+                setTimeout(() => {setShowAlert("");status(true)}, 700)
             }
             else {
                 setShowAlert(
