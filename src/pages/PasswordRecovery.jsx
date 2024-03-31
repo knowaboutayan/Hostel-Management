@@ -30,7 +30,8 @@ const PasswordRecovery = () => {
     const [newPassword, setNewPassword] = useState("")//new password
     const [confirmPassword, setConfirmPassword] = useState("")//confirm new password
 
-    const onSubmitEvebntHandeler = async () => {//after submitting form
+    const onSubmitEvebntHandeler = async (e) => {//after submitting form
+        e.preventDefault()
         try {
             setAlertBox(allAlerts.processing)
             //waiting for update status
