@@ -87,10 +87,10 @@ class AuthService {
     async forgetPassword({ email }) {
         try {
             const recover = await this.account.createRecovery(email, "https://hostel-management-lilac.vercel.app/resetPassword")
-            if (recover.userId != "")
+            console.log(recover)
+            if(recover){
                 return 0
-
-            return 1
+            }
         }
         catch (err) {
 
@@ -107,10 +107,10 @@ class AuthService {
 
             )
             console.log(response)
-            if(response){
+            if (response) {
                 return 0
             }
-            else{
+            else {
                 return 1
             }
         }

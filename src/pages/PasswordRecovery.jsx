@@ -77,7 +77,7 @@ const PasswordRecovery = () => {
 
                     <Input type={'password'} fname={(res) => setConfirmPassword(res)} iconName={'fa fa-lock'} placeholder={"confirm password"} required={true} />
                     {/* submit button */}
-                    <Button type='submit' classname={(confirmPassword == newPassword && confirmPassword != "" && newPassword != "") ? 'bg-gray-600' : ""} text=" " disabled={(confirmPassword == newPassword && confirmPassword != "" && newPassword != "") ? false : true} >
+                    <Button type='submit' classname={(confirmPassword == newPassword && confirmPassword != "" && newPassword != "") ? 'bg-green-600' : "bg-gray-500"} text=" " disabled={(confirmPassword == newPassword && confirmPassword != "" && newPassword != "") ? false : true} >
                         <i className='fa fa-refresh' > </i>
                         {" "} reset
                     </Button>
