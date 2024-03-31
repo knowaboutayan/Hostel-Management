@@ -36,11 +36,12 @@ const PasswordRecovery = () => {
             //waiting for update status
             const response = await authService.updateNewPassword({ userId, secret, password })
 
+            console.log(response);
             //if successful 
             if (response == 0) {
                 setAlertBox(allAlerts.successful)
                 //waiting for 2 sec and then go to home page
-                setTimeout(() => navigate(""), 2000)
+                
             }
             // if unsuccessful
             else {
