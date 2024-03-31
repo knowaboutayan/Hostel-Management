@@ -9,11 +9,10 @@ import authService from '../auth';
 import allAlerts from '../components/allAlerts'
 import AlertBox from '../components/AlertBox';
 const PasswordRecovery = () => {
-
-    //getting from urlparameter
     const urlParams = new URLSearchParams(window.location.search);
     const secret = urlParams.get('secret');
     const userId = urlParams.get('userId');
+    //getting from urlparameter
 
     const navigate = useNavigate()//navigation hook
     const [alertBox, setAlertBox] = useState("")// status show processsing --->updated OR not updated
@@ -31,18 +30,30 @@ const PasswordRecovery = () => {
     const [confirmPassword, setConfirmPassword] = useState("")//confirm new password
 
     const onSubmitEvebntHandeler = async (e) => {//after submitting form
+       
+
         e.preventDefault()
+        
         try {
             setAlertBox(allAlerts.processing)
+            
+            const recovery = {
+                'userId': userId,
+                'secret': secret,
+                'password': password,
+                'passwordAgain': confirmPassword
+            }
+
             //waiting for update status
-            const response = await authService.updateNewPassword( userId, secret,password)
+            console.log(recovery)
+            const response = await authService.updateNewPassword(recovery)
 
             console.log(response);
             //if successful 
             if (response == 0) {
                 setAlertBox(allAlerts.successful)
                 //waiting for 2 sec and then go to home page
-                
+
             }
             // if unsuccessful
             else {
@@ -80,7 +91,7 @@ const PasswordRecovery = () => {
 
                     <Input type={'password'} fname={(res) => setConfirmPassword(res)} iconName={'fa fa-lock'} placeholder={"confirm password"} required={true} />
                     {/* submit button */}
-                    <Button type='submit' classname={(confirmPassword == newPassword && confirmPassword != "" && newPassword != "") ? 'bg-green-600' : "bg-gray-500"} text=" " disabled={(confirmPassword == newPassword && confirmPassword != "" && newPassword != "") ? false : true} >
+                    <Button type='submit' classname={(confirmPassword == password && password != "" && password != "") ? 'bg-green-600' : "bg-gray-500"} text=" " disabled={(confirmPassword == password && confirmPassword != "" && password != "") ? false : true} >
                         <i className='fa fa-refresh' > </i>
                         {" "} reset
                     </Button>

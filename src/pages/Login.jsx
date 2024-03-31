@@ -36,7 +36,7 @@ const Login = ({ loginFor = '', valiDationFunc = "" }) => {
         event.preventDefault()
         try {
             setShowSuccess(<AlertBox massege={"please wait"} color={"gray"} image={images.process} ><p className="animate-spin  animate-reverse border-gray-600 p-8 border-8 border-l-gray-200 border-solid rounded-full"></p></AlertBox>)
-            const data = await admin.Login(username, password)
+            const data = await authService.Login(username, password)//member login
 
             //onsuccessful login....
             if (data != 1) {

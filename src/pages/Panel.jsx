@@ -15,6 +15,10 @@ import Button from "../components/Button"
 import PanelSectionTitle from "../PanelComponents/PanelSectionTitle"
 import allAlerts from '../components/allAlerts'
 import UserProfile from "../PanelComponents/UserProfile"
+
+
+
+
 const Panel = ({ navigation = [] }) => {
     const date = new Date()
     const [time, setTime] = useState("")
@@ -27,6 +31,8 @@ const Panel = ({ navigation = [] }) => {
 
     const profileImage = useSelector(state => state.profilePicFile)
     const isProfilePic = useSelector(state => state.userHaveProfilePic)
+    const isEmailVerified = useSelector(state => state.emailVerification)//email verified or not
+    const isPhoneVerified = useSelector(state => state.phoneVerification)//phone verified or not
 
     const currentUserInfo = useSelector(state => state.currentUserInfo)
     const [succesful, setSuccessStatus] = useState(false)
@@ -34,7 +40,7 @@ const Panel = ({ navigation = [] }) => {
     const [panelLogo, setPanelLogo] = useState(images.dashboard)
 
 
-    let updated = useSelector(state => state.update)
+
 
     //logout button 
     const logoutEventHandeler = async () => {
@@ -101,16 +107,16 @@ const Panel = ({ navigation = [] }) => {
             }
         })();
     }, [succesful]);
-
-
     useEffect(() => {
         (async () => {
 
             const data = await authService.getCurrentUser()
+
             setInterval(() => (() => {
                 const date = new Date()
                 setTime(date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds())
             })(), 1000)
+
             dispatch(userInfo(data))
             dispatch(isLogIn(true))
         })()
@@ -119,6 +125,21 @@ const Panel = ({ navigation = [] }) => {
     const isUserLogin = useSelector(state => state.isUserLogin)
     const currentUserId = useSelector(state => state.userId)
 
+
+    //email verification
+    const emailVerification = async () => {
+
+        if (!isEmailVerified) {
+            await authService.emailVerification()
+            setAlert(<AlertBox massege={"we send a verification link on your email Id."} color="orange" image={images.success} />)
+
+        }
+        else {
+            setAlert(<AlertBox massege={"Email Already Verified!"} image={images.success} />)
+
+        }
+        setTimeout(() => setAlert(""), [1000])
+    }
 
     //checking user login or not 
     return (
@@ -129,7 +150,7 @@ const Panel = ({ navigation = [] }) => {
                     {/* top, date time user status*/}
                     <div className="md:flex  w-100    col-span-4  md:justify-between hidden z-30 md:sticky top-0  left-0 right-0 items-center bg-green-800 text-gray-200 text-lg flex-wrap " >
                         <p className="flex flex-row text-nowrap">
-                          
+
                             <p className="mx-4 font-sans font-bold "><i className="fa fa-calendar"></i> {`${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`}</p>
                             <p className=" font-sans font-bold "><i className="fa fa-clock-o"></i> {time}</p>
                         </p>
@@ -168,8 +189,8 @@ const Panel = ({ navigation = [] }) => {
                                     {/* print user information */}
                                     <div className="col-span-4 border-t-4 mt-2 border-green-600 grid break-all w-full text-wrap">
                                         <p className="text-2xl font-serif font-bold hover:text-green-700 hover:cursor-pointer" onClick={showUserInfo}><i className="fa fa-user" /> {currentUserInfo.name} </p>
-                                        <p className="text-xl font-light"> <i className="fa fa-envelope" /> {currentUserInfo.email} </p>
-                                        <p className="text-xl font-light"> <i className="fa fa-phone" /> {currentUserInfo.phone} </p>
+                                        <p className="text-xl font-light" onClick={() => emailVerification()}> <i className="fa fa-envelope" /> {currentUserInfo.email} <img src={(isEmailVerified) ? images.verified : images.notverified} alt="verified" className="w-6 inline-block" /> </p>
+                                        <p className="text-xl font-light "> <i className="fa fa-phone" /> {currentUserInfo.phone} <img src={(isPhoneVerified) ? images.verified : images.notverified} alt="verified" className="w-6 inline" /> </p>
                                     </div>
                                 </div>
                             </div>

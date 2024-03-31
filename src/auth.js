@@ -33,13 +33,14 @@ class AuthService {
 
         } catch (error) {
             alert(error);
+            console.log("CreateAccounr:::", error)
             return -1; // Return a custom error code or handle the error appropriately
         }
     }
 
 
 
-    async Login(email, password) {
+    async Login(email, password) {//member login
         try {
             const accountLogin = await this.account.createEmailPasswordSession(String(email), String(password))
             if (accountLogin) {
@@ -57,6 +58,7 @@ class AuthService {
     async getCurrentUser() {
         try {
             const data = await this.account.get()
+            console.log(data)
 
             return data
         }
@@ -85,21 +87,27 @@ class AuthService {
 
     async emailVerification() {
         try {
-            const response = await this.account.createVerification('https://');
+            const response = await this.account.createVerification('http://localhost:5173/emailVerification');
             console.log(response)
         }
         catch (error) {
-            console.log("Email verify", err)
+            console.log("Email verify", error)
         }
     }
 
     async updateEmailVerification({ userId, secret }) {
         try {
             const response = this.account.updateVerification(userId, secret)
-            console.log(response)
+            if (response) {
+                return 0
+            }
+            return 1
+
         }
         catch (error) {
+
             console.log("emailVerification::", error)
+            return 1
         }
     }
 
@@ -120,23 +128,23 @@ class AuthService {
 
     }
 
-    async updateNewPassword(userId,secret,password) {
-        console.log(userId,secret,password);
+    async updateNewPassword({ userId, secret, password, passwordAgain }) {
+        console.log(userId, secret, password);
         try {
             const response = await this.account.updateRecovery(
-                userId, secret, password
-
-            )
-            console.log(response)
-           
-        }
-        catch (error) {
-            return 1
-
-
+                userId,
+                secret,
+                String(password),
+                String(passwordAgain)
+            );
+            console.log(response);
+        } catch (error) {
+            console.log("updateError", error);
         }
     }
+
 }
+
 
 
 const authService = new AuthService()

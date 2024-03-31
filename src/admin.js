@@ -18,7 +18,6 @@ class Admin {
             if (userAccount) {
                 return userAccount
             }
-
             else {
                 return 1
             }

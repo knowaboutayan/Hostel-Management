@@ -19,6 +19,7 @@ import Footer from './components/Footer.jsx'
 import NoDataFound from './PanelComponents/NoDataFound.jsx'
 import Home from './pages/Home.jsx'
 import PasswordRecovery from './pages/PasswordRecovery.jsx'
+import EmailVerification from './pages/EmailVerification.jsx'
 
 const navCardsData = [
   {
@@ -73,21 +74,22 @@ const navCardsData = [
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path='' element={<App />} errorElement={<ErrorPage />}>
-      
+      <Route path={"resetPassword"} element={<PasswordRecovery />} />
+      <Route path="emailVerification" element={<EmailVerification />} />
       <Route path="" element={<Home />} />
-      <Route path={"resetPassword"} element={<PasswordRecovery/>}/>
+
       <Route path={'/panel'} element={<Panel navigation={navCardsData} />} >
         <Route path={'/panel'} element={<NoDataFound text="WELCOME" image={images.maintenence} />} />
         <Route path={'/panel/dashboard'} element={<Dashboard>
-          
+
         </Dashboard>} />
         <Route path={'/panel/expenses'} element={<AllExpenses />} />
         <Route path={'/panel/members'} element={<Members />} />
         <Route path={'/panel/massege'} element={<SendMassege />} />
         <Route path={'/panel/deposits'} element={<Deposits />} />
-        
+
       </Route>
-      
+
       <Route path='/*' element={<ErrorPage />} />
 
     </Route>

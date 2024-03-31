@@ -11,6 +11,8 @@ let initialState = {
     userHaveProfilePic: false,
     profilePicFile: images.user,
     update: 0,
+    emailVerification:false,
+    phoneVerification:false
 
 }
 
@@ -35,16 +37,17 @@ const authenication = createSlice(
                     state.userStatus = recivedData['labels'][0]
                     state.userName = recivedData['name']
                     state.userId = recivedData['$id']
+                    state.phoneVerification = recivedData.phoneVerification
+                    state.emailVerification = recivedData.emailVerification
                 }
 
                 else {
                     state.userStatus = 'no-user'
                     state.userName = "untitled"
                     state.userId = "0000"
+                    state.emailVerification = false
+                    state.phoneVerification = false
                 }
-             
-
-
             },
 
             haveProfilePic: (state, action) => {
@@ -60,10 +63,6 @@ const authenication = createSlice(
             setDataUpdate: (state, action) => {
                 state.update = action.payload
             }
-
-
-
-
         }
     }
 )
