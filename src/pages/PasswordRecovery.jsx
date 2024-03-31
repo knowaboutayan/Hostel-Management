@@ -27,7 +27,7 @@ const PasswordRecovery = () => {
     }, [])
 
 
-    const [newPassword, setNewPassword] = useState("")//new password
+    const [password, setNewPassword] = useState("")//new password
     const [confirmPassword, setConfirmPassword] = useState("")//confirm new password
 
     const onSubmitEvebntHandeler = async (e) => {//after submitting form
@@ -35,7 +35,7 @@ const PasswordRecovery = () => {
         try {
             setAlertBox(allAlerts.processing)
             //waiting for update status
-            const response = await authService.updateNewPassword({ userId, secret, password ,confirmPassword})
+            const response = await authService.updateNewPassword({ userId, secret,password,confirmPassword})
 
             console.log(response);
             //if successful 
