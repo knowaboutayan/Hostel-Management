@@ -83,12 +83,32 @@ class AuthService {
 
     }
 
+    async emailVerification() {
+        try {
+            const response = await this.account.createVerification('https://');
+            console.log(response)
+        }
+        catch (error) {
+            console.log("Email verify", err)
+        }
+    }
+
+    async updateEmailVerification({ userId, secret }) {
+        try {
+            const response = this.account.updateVerification(userId, secret)
+            console.log(response)
+        }
+        catch (error) {
+            console.log("emailVerification::", error)
+        }
+    }
+
 
     async forgetPassword({ email }) {
         try {
             const recover = await this.account.createRecovery(email, "https://hostel-management-lilac.vercel.app/resetPassword")
             console.log(recover)
-            if(recover){
+            if (recover) {
                 return 0
             }
         }
@@ -107,12 +127,7 @@ class AuthService {
 
             )
             console.log(response)
-            if (response) {
-                return 0
-            }
-            else {
-                return 1
-            }
+           
         }
         catch (error) {
             return 1
