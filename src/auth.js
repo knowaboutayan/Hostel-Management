@@ -87,7 +87,7 @@ class AuthService {
 
     async emailVerification() {
         try {
-            const response = await this.account.createVerification('http://localhost:5173/emailVerification');
+            const response = await this.account.createVerification('https://hostel-management-lilac.vercel.app/emailVerification');
             console.log(response)
         }
         catch (error) {
@@ -114,7 +114,7 @@ class AuthService {
 
     async forgetPassword({ email }) {
         try {
-            const recover = await this.account.createRecovery(email, "http://localhost:5173/resetPassword")
+            const recover = await this.account.createRecovery(email, "https://hostel-management-lilac.vercel.app/resetPassword")
             console.log(recover)
             if (recover) {
                 return 0
