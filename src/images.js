@@ -16,6 +16,8 @@ import alert from '../images/alert.png'
 import imagrupload from '../images/imageupload.png'
 import empty from '../images/empty.jpg'
 import maintenence from '../images/maintenence.png'
+import forgotPassword from '../images/forgotPassword.png'
+import resetPassword from '../images/resetPassword.png'
 const images = {
     'success': success,
     'unsuccess': unsuccess,
@@ -34,7 +36,9 @@ const images = {
     'alert':alert,
     'imageupload':imagrupload,
     'empty':empty,
-    'maintenence':maintenence
+    'maintenence':maintenence,
+    "forgotPassword":forgotPassword,
+    'resetPassword':resetPassword
 
 }
 export default images

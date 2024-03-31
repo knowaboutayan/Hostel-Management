@@ -18,6 +18,7 @@ import Deposits from './pages/Deposits.jsx'
 import Footer from './components/Footer.jsx'
 import NoDataFound from './PanelComponents/NoDataFound.jsx'
 import Home from './pages/Home.jsx'
+import PasswordRecovery from './pages/PasswordRecovery.jsx'
 
 const navCardsData = [
   {
@@ -72,7 +73,9 @@ const navCardsData = [
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path='' element={<App />} errorElement={<ErrorPage />}>
+      
       <Route path="" element={<Home />} />
+      <Route path={"resetPassword"} element={<PasswordRecovery/>}/>
       <Route path={'/panel'} element={<Panel navigation={navCardsData} />} >
         <Route path={'/panel'} element={<NoDataFound text="WELCOME" image={images.maintenence} />} />
         <Route path={'/panel/dashboard'} element={<Dashboard>
@@ -82,7 +85,9 @@ const router = createBrowserRouter(
         <Route path={'/panel/members'} element={<Members />} />
         <Route path={'/panel/massege'} element={<SendMassege />} />
         <Route path={'/panel/deposits'} element={<Deposits />} />
+        
       </Route>
+      
       <Route path='/*' element={<ErrorPage />} />
 
     </Route>

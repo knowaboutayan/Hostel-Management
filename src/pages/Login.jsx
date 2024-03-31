@@ -10,6 +10,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { isLogIn, userInfo } from "../store/slice"
 import admin from "../admin"
 import Button from "../components/Button"
+import ForgetPassword from "../PanelComponents/ForgetPassword"
 
 
 const Login = ({ loginFor = '', valiDationFunc = "" }) => {
@@ -24,7 +25,10 @@ const Login = ({ loginFor = '', valiDationFunc = "" }) => {
 
     //forget password
     const forgetPassword = () => {
-        setShowSuccess(<PopUp close_btn={() => setShowSuccess("")}><div className="text-green-600">Forget password</div><Input type={"email"} fname={() => { }} placeholder={"enter email"} required={true} /></PopUp>)
+        setShowSuccess(<PopUp title="Forgot Password" icon={images.forgotPassword} close_btn={() => setShowSuccess("")}>
+            <div className="text-green-600">Recover Password</div>
+            <ForgetPassword status={() => setShowSuccess("")} />
+        </PopUp>)
     }
 
     const onSubmitHandeler = async (event) => {
@@ -33,7 +37,7 @@ const Login = ({ loginFor = '', valiDationFunc = "" }) => {
         try {
             setShowSuccess(<AlertBox massege={"please wait"} color={"gray"} image={images.process} ><p className="animate-spin  animate-reverse border-gray-600 p-8 border-8 border-l-gray-200 border-solid rounded-full"></p></AlertBox>)
             const data = await admin.Login(username, password)
-            
+
             //onsuccessful login....
             if (data != 1) {
                 //setCurrentUserInformation
@@ -71,7 +75,7 @@ const Login = ({ loginFor = '', valiDationFunc = "" }) => {
     }
     //cheking loggedin or not
     const isLogin = useSelector(state => state.isUserLogin)
-    
+
     //if not
     if (!isLogin) {
         return (
@@ -84,12 +88,12 @@ const Login = ({ loginFor = '', valiDationFunc = "" }) => {
                     <Input label={"Username"} type="text" placeholder={"username"} fname={(res) => setUserName(res)} iconName={"fa fa-user-circle-o"} required="true"></Input>
                     <Input label={"password"} type="password" placeholder={"password"} fname={(res) => setPassword(res)} iconName={"fa fa-lock"} required="true"></Input>
                     <p className="text-right mb-5 font-serif text-sm text-gray-500 hover:text-gray-900 hover:cursor-pointer " onClick={() => { forgetPassword() }} >
-                        <h5>
+                        <h5 >
                             forget password?
                         </h5>
                     </p>
                     <Button type="submit" text={"login"} className={`px-3 py-2  w-40 rounded-lg font-semibold hover:cursor-pointer  text-white ${(username != "" && password != "") ? "bg-green-600 hover:bg-green-700 hover:shadow-md hover:shadow-gray-300" : "bg-gray-600"}`} disabled={(username != "" && password != "") ? false : true} >
-                        <i className="fa fa-sign-in"/> 
+                        <i className="fa fa-sign-in" />
                     </Button>
                 </form>
                 {showSuccess}

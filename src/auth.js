@@ -22,7 +22,7 @@ class AuthService {
         try {
 
             const createAccount = await this.account.create(ID.unique(), email, password, name, String(phone));
-          
+
             if (createAccount) {
 
                 return 0;
@@ -57,32 +57,71 @@ class AuthService {
     async getCurrentUser() {
         try {
             const data = await this.account.get()
-            
+
             return data
         }
         catch (err) {
             return 1
         }
-        return null
+
 
     }
-   
+
 
     async logout() {
 
         try {
 
-          
-           return  await this.account.deleteSessions('current')
-            
-             
+
+            return await this.account.deleteSessions('current')
+
+
         }
         catch (err) {
-    
+            console.log("authService/logout()::", err);
         }
-        
+
+    }
+
+
+    async forgetPassword({ email }) {
+        try {
+            const recover = await this.account.createRecovery(email, "https://recovery.xxx")
+            if (recover.userId != "")
+                return 0
+
+            return 1
+        }
+        catch (err) {
+
+            return err
+
+        }
+
+    }
+
+    async updateNewPassword({ userId = "", secret = "", password, confirmPassword }) {
+        try {
+            const response = await this.account.updateRecovery(
+                userId, secret, password, confirmPassword
+
+            )
+            console.log(response)
+            if(response){
+                return 0
+            }
+            else{
+                return 1
+            }
+        }
+        catch (error) {
+            return 1
+
+
+        }
     }
 }
+
 
 const authService = new AuthService()
 
