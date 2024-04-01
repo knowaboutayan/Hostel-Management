@@ -3,7 +3,7 @@ import Input from "../components/Input"
 import database from "../database";
 import AlertBox from "../components/AlertBox";
 import images from "../images";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Button from "../components/Button";
 import Transction from "../transactionAdd";
 import conf from "../conf/conf";
@@ -19,6 +19,7 @@ const AddExpenses = ({ title, status }) => {
     const [alertBox, setAlertBox] = useState(null)
     const userInfo = useSelector(state => state.currentUserInfo)
     const [totalCost, setTotalCost] = useState(0)
+    const dispatch = useDispatch()
 
     useEffect(() => {
         function totalCost() {
@@ -28,54 +29,54 @@ const AddExpenses = ({ title, status }) => {
         totalCost()
     }, [fish, egg, meat, vegetable, grocery])
 
-    class Expenses {
-        Name;
-        UserID;
-        Fish; Egg; Meat;
-        Grocery
-        TotalCost;
-        Vegetable;
-        submitDate;
-        constructor() {
-            this.Name = userInfo['name'];
-            this.UserID = userInfo['phone'];
-            this.Egg = Number(egg);
-            this.Fish = Number(fish);
-            this.Vegetable = Number(vegetable);
-            this.Meat = Number(meat);
-            this.submitDate = date;
-            this.Grocery = Number(grocery);
-            this.TotalCost = Number(totalCost)
-            this.submitDate = date;
-        }
-
-    }
     const onSubmitEventHandeler = async (e) => {
         e.preventDefault()
+
+        class Expenses {
+            constructor() {
+                this.name = userInfo['name'];
+                this.userId = userInfo['$id'];
+                this.egg = Number(egg);
+                this.fish = Number(fish);
+                this.vegetable = Number(vegetable);
+                this.meat = Number(meat);
+                this.date = date;
+                this.grocery = Number(grocery);
+                this.total = Number(totalCost)
+                this.date = date;
+            }
+
+        }
         try {
             setAlertBox(<AlertBox massege={"adding data..."} image={images.process} ></AlertBox>)
             const expenses = new Expenses(vegetable, grocery, fish, egg, meat, date)
 
-            let dataSubmit = await database.addToCollection("",conf.expenseId, expenses)//dta add o expense 
-            const transaction = new Transction(userInfo['email'], userInfo['name'], date, 'debit', totalCost, "daily marcketing cost")
-            dataSubmit = await database.addToCollection('',conf.transactionCollectionId, transaction)//addTransactionHistory
-
+            const dataSubmit = await database.addToCollection(conf.expenseId, expenses)// add o expense 
             setAlertBox(<AlertBox massege={"working please wait..."} image={images.process} >
                 <p className="animate-spin border-green-600 p-8 border-8 border-l-green-200 border-solid rounded-full"></p>
             </AlertBox>)
             if (dataSubmit == 0) {
                 setAlertBox(<AlertBox massege={"succesfully added"} image={images.success} ></AlertBox>)
+                const transaction = new Transction(userInfo['email'], userInfo['name'], date, 'debit', totalCost, "daily marcketing cost")
+
+                 await database.addToCollection(conf.transactionCollectionId, transaction)//addTransactionHistory
+
                 setTimeout(async () => await status(true), 2000)
             }
             else {
-                setAlertBox(<AlertBox massege={"Error"} image={images.unsuccess} color="red" ><button onClick={() => setAlertBox("")}>OK</button></AlertBox>)
+                setAlertBox(<AlertBox massege={"Error"}   image={images.unsuccess} color="orange"    ><button onClick={() => setAlertBox("")}>OK</button></AlertBox>)
             }
         }
         catch (err) {
-            setAlertBox(<AlertBox massege={"Error" + err} image={images.unsuccess} color="red" ><button onClick={() => setAlertBox("")}>OK</button></AlertBox>)
+            setAlertBox(<AlertBox massege={"Error" + err}   image={images.unsuccess} color="orange"    ><button onClick={() => setAlertBox("")}>OK</button></AlertBox>)
         }
 
     }
+
+
+
+
+
     return (
         <section>
 

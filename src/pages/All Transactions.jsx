@@ -32,7 +32,7 @@ const AllTransactions = () => {
             }
         }
         fetchData()
-    }, [deletePerform])
+    }, [])
 
     return (
         <section>

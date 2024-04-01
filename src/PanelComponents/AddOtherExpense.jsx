@@ -32,25 +32,22 @@ const AddOtherExpenses = ({ title, status }) => {
 
     const userInfo = useSelector(state => state.currentUserInfo)
 
-
-    class Expenses {
-        constructor() {
-            this.userId = userInfo['email'],
-                this.name = userInfo['name'],
-                this.date = date,
-                this.lpgCost = lpgCost,
-                this.cookCost = cookCost,
-                this.riceCost = riceCost,
-                this.otherCostDetails = otherCostDetails,
-                this.otherCost = Number(otherCost),
-                this.TotalCost = totalCost
-        }
-
-    }
-
-
     const onSubmitEventHandeler = async (e) => {
         e.preventDefault()
+        class Expenses {
+            constructor() {
+                this.userId = userInfo['email'],
+                    this.name = userInfo['name'],
+                    this.date = date,
+                    this.LPG= lpgCost,
+                    this.cook = cookCost,
+                    this.rice = riceCost,
+                    this.otherCost = otherCostDetails,
+                    this.amount = Number(otherCost),
+                    this.total = totalCost
+            }
+    
+        }
         try {
             setAlertBox(<AlertBox massege={"adding data..."} image={images.process} ></AlertBox>)
             const expenses = new Expenses()
@@ -58,10 +55,10 @@ const AddOtherExpenses = ({ title, status }) => {
             setAlertBox(<AlertBox massege={"working please wait..."} image={images.process} >
                 <p className="animate-spin border-green-600 p-8 border-8 border-l-green-200 border-solid rounded-full"></p>
             </AlertBox>)
-            let dataSubmit = await database.addToCollection(ID,conf.otherExpenseId, expenses)//expenses add
+            let dataSubmit = await database.addToCollection(conf.otherExpenseId, expenses)//expenses add
 
             const transaction = new Transction(userInfo['email'], userInfo['name'], date, 'debit', totalCost, "otherCost")
-            dataSubmit = await database.addToCollection(ID,conf.transactionCollectionId, transaction)//addTransactionHistory
+            dataSubmit = await database.addToCollection(conf.transactionCollectionId, transaction)//addTransactionHistory
 
 
             if (dataSubmit == 0) {
@@ -70,11 +67,11 @@ const AddOtherExpenses = ({ title, status }) => {
                 setTimeout(async () => await status(true), 2000)
             }
             else {
-                setAlertBox(<AlertBox massege={"Error"} image={images.unsuccess} color="red" ><button onClick={() => setAlertBox("")}>OK</button></AlertBox>)
+                setAlertBox(<AlertBox massege={"Error"}   image={images.unsuccess} color="orange"    ><button onClick={() => setAlertBox("")}>OK</button></AlertBox>)
             }
         }
         catch (err) {
-            setAlertBox(<AlertBox massege={"Error" + err} image={images.unsuccess} color="red" ><button onClick={() => setAlertBox("")}>OK</button></AlertBox>)
+            setAlertBox(<AlertBox massege={"Error" + err}   image={images.unsuccess} color="orange"    ><button onClick={() => setAlertBox("")}>OK</button></AlertBox>)
         }
 
     }

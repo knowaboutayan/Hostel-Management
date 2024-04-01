@@ -82,10 +82,8 @@ const router = createBrowserRouter(
       <Route path="" element={<Home />} />
 
       <Route path={'/panel'} element={<Panel navigation={navCardsData} />} >
-        <Route path={'/panel'} element={<NoDataFound text="WELCOME" image={images.maintenence} />} />
-        <Route path={'/panel/dashboard'} element={<Dashboard>
-
-        </Dashboard>} />
+        <Route path={'/panel'} element={<Dashboard />} />
+        
         <Route path={'/panel/expenses'} element={<AllExpenses />} />
         <Route path={'/panel/members'} element={<Members />} />
         <Route path={'/panel/transaction'} element={<AllTransactions />} />

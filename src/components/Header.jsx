@@ -14,22 +14,26 @@ const Header = ({ logo = "", navList = [] }) => {
     const [popup, setPopUp] = useState()
 
     const isLogin = useSelector(state => state.isUserLogin)
-
     const currentUserName = useSelector(state => state.userName)
+    const profilePicFile = useSelector(state => state.profilePicFile)
+    const [navShow,setNavShow] = useState(false)
+    const showNav = (res)=>{
+        setNavShow(pre=>!pre)
+        
+
+    }
 
     return (
-        <header className="bg-green-300 py-4 px-8 flex justify-between items-center flex-wrap">
-            <div className="flex items-center">
-                <img src={images.user} alt="logo" className="h-8 mr-4" />
-                <nav className="flex flex-row gap-4">
-                    {navList.map((item, index) => (
-                        <span key={index} className="text-black hover:text-green-600 active:text-green-700 text-sm font-serif px-2 py-1 hover:bg-gray-400">
-                            {item}
-                        </span>
-                    ))}
-                </nav>
+        <header className="bg-gray-300  shadow shadow-gray-700 py-4 px-8 flex justify-between items-center flex-wrap">
+            <div className='sm:hidden block'>
+
+                <i className={`fa fa-${navShow?'bars':"times"} cursor-pointer text-4xl text-gray-600 `} onClick={()=>showNav()}/>
             </div>
-            <div className="flex gap-4 items-center flex-wrap">
+            <div className="flex items-center">
+                <img src={profilePicFile || images.user} alt="logo" className="rounded-full border-2 bg-gray-300 h-8 mr-4" />
+                
+            </div>
+            <div className={` gap-4 items-center flex-wrap sm:flex ${navShow?"hidden ":"h-max transition-all"} `}>
                 {/* conditional rendering for user login or not  */}
                 {!isLogin ? (
                     <>
@@ -55,7 +59,7 @@ const Header = ({ logo = "", navList = [] }) => {
                     type="search"
                     fname={() => null}
                     placeholder="Search here..."
-                    className="mt-4"
+                    className="mt-4 w-full"
                 />
                 <div className="flex gap-4 items-center">
                     <i className="fa fa-facebook text-xl"></i>

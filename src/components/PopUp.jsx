@@ -1,22 +1,22 @@
 import { useState } from "react"
-import images from "../images"
+
 
 const PopUp = ({ title = "", icon = "", children, close_btn }) => {
-    const [animation, setAnimation] = useState('animate-flip-up animate-once animate-normal')
+    const [animation, setAnimation] = useState('animate-jump-in animate-once animate-normal')
     const close_box = async () => {
-        setAnimation('animate-flip-down animate-once animate-reverse animate-duration-700')
+        setAnimation('animate-jump-out animate-once animate-duration-700')
         setTimeout(() => close_btn(), 700)
     }
     return (
         //popup page
-        <section className={`overflow-auto  animate-fade-in  w-full fixed   bg-black bg-opacity-50 top-0 bottom-0 z-50 left-0 right-0 block items-center justify-center`}>
-            <div>
+        <section className={`overflow-auto flex animate-fade-in  w-full fixed   bg-black bg-opacity-50 top-0 bottom-0 z-50 left-0 right-0  items-center justify-center`}>
+
                 {/* popupbox container*/}
 
-                <div className={`w-3/5 my-auto  min-w-80 overflow-hidden h-max ${animation}  bg-gray-50 border-2 border-green-500 mx-auto rounded-lg shadow-lg shadow-gray-700 p-4 box-border`}>
+                <div className={`w-3/5 my-auto min-w-80 overflow-hidden h-max ${animation} animate-duration-500  bg-gray-50 border-2 border-green-500 mx-auto rounded-lg shadow-lg shadow-gray-700 p-4 box-border`}>
                     {/* close */}
-                    <div className="float-end text-3xl bg-red-100 border-red-600 hover:cursor-pointer hover:text-red-600 border-2 rounded-full h-9 w-9 p-4 items-center justify-center flex" onClick={close_box}>
-                        <i className="fa fa-close text-red-700 align-middle" />
+                    <div className="float-end text-3xl bg-red-100 border-red-600 hover:cursor-pointer text-red-500  hover:text-red-600 border-2 rounded-full h-9 w-9 p-4 items-center justify-center flex" onClick={close_box}>
+                        <i className="fa fa-close align-middle" />
                     </div>
                     {/* popup box */}
                     <div>
@@ -32,7 +32,7 @@ const PopUp = ({ title = "", icon = "", children, close_btn }) => {
                     </div>
 
                 </div>
-            </div>
+            
         </section>
 
     )

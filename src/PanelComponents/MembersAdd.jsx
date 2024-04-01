@@ -21,14 +21,12 @@ const MembersAdd = ({ title, width = "w-full", status = "" }) => {
     const onSubmitEventHAndeler = async (e) => {
         class Member {
             //class for member object creation
-            name;
-            password;
-            email;
-            phone;
-            constructor(name, password, email) {
-                this.email = email;
+            constructor() {
                 this.name = name;
-                this.password = password;
+                this.phone = '+91' + phone
+                this.email = email;
+
+
 
             }
         }
@@ -41,13 +39,8 @@ const MembersAdd = ({ title, width = "w-full", status = "" }) => {
             )
 
             const member = new Member(name, password, email, phone)
-            let add = await authService.CreateAccount(member)
-
+            let add = await authService.CreateAccount({ name: name, email: email, password: password })
             setShowAlert(< AlertBox massege={"Account successfully created!"} image={images.success} ></AlertBox>)
-
-
-
-
             if (add == 0) {
                 setShowAlert(<AlertBox massege={"User registraction succesful"} image={images.success} >
                 </AlertBox >);
@@ -55,7 +48,7 @@ const MembersAdd = ({ title, width = "w-full", status = "" }) => {
             }
             else {
                 setShowAlert(
-                    <AlertBox massege={"registration unsuccessful"} image={images.unsuccess} >
+                    <AlertBox massege={"registration unsuccessful"}   image={images.unsuccess} color="orange" >
                         <button type="button" className="bg-red-600" onClick={() => setShowAlert(false)}>ok</button>
                     </AlertBox>
                 )
@@ -64,7 +57,7 @@ const MembersAdd = ({ title, width = "w-full", status = "" }) => {
         }
         catch (error) {
             setShowAlert(
-                <AlertBox massege={"registration unsuccessful"} image={images.unsuccess} >
+                <AlertBox massege={"registration unsuccessful"}   image={images.unsuccess} color="orange" >
                     <button type="button" className="bg-red-600" onClick={() => setShowAlert(false)}>ok</button>
                 </AlertBox>
             )

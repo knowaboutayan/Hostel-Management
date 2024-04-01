@@ -40,10 +40,11 @@ const AddDeposite = ({ status }) => {
     const fetchMember = async () => {
 
         setAlertBox(
-            <AlertBox massege={"fetching all members.... "} image={images.process} ></AlertBox>
+            <AlertBox massege={"fetching all members.... "} color="gray" image={images.process} ></AlertBox>
         )
         try {
-            const data = members = await database.getMembersShow()
+            const data = members = await database.getListOfDocuments(conf.collectionId)
+            console.log("fetch member",data)
             if (data == 'netErr') {
                 setAlertBox(
                     alert.warning({ fname: () => setAlertBox("") })
@@ -64,11 +65,12 @@ const AddDeposite = ({ status }) => {
     }
     //deposit Add to Dataabase function....
     const addDeposite = async () => {
-        setAlertBox(<AlertBox massege={"processing..."} image={images.process} onClick={() => setAlertBox("")} />)
+        setAlertBox(<AlertBox massege={"fetching members..."} image={images.process} onClick={() => setAlertBox("")} />)
+
 
         if (member == []) {
 
-            setAlertBox(<AlertBox massege={"No member found"} image={images.unsuccess} onClick={() => setAlertBox("")} />)
+            setAlertBox(<AlertBox massege={"No member found"}   image={images.unsuccess} color="orange" onClick={() => setAlertBox("")} />)
 
         }
 
@@ -77,23 +79,26 @@ const AddDeposite = ({ status }) => {
             try {
                 class Deposits {
 
+
                     memberName; amount; userId;
                     constructor() {
-                        this.memberName = memberName;
+                        this.userId = memberId;
+                        this.name = memberName;
                         this.amount = amount;
-                        this.userId = memberId
+                        this.date = `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`
                     }
                 }
 
+
                 const deposit = new Deposits(member.split(','), amount)
 
-                const uniqueId = ID.unique()//using as a primary key in DB
+                
 
-                console.log(uniqueId)
-                let response = await database.addToCollection(uniqueId, conf.depositId, deposit)
+                
+                let response = await database.addToCollection( conf.depositId, deposit)
                 if (response == 0) {
                     const transaction = new Transction(memberId, memberName, `${day}-${month}-${year}`, 'credit', amount, "deposit Recieved by " + String(currenUserName))
-                    response = await database.addToCollection(uniqueId, conf.transactionCollectionId, transaction)
+                    response = await database.addToCollection( conf.transactionCollectionId, transaction)
                 }
 
                 if (response == 0) {
@@ -104,12 +109,12 @@ const AddDeposite = ({ status }) => {
 
                 }
                 else {
-                    setAlertBox(<AlertBox massege={"Errorr"} image={images.unsuccess} onClick={() => setAlertBox("")} />)
+                    setAlertBox(<AlertBox massege={"Errorr"}   image={images.unsuccess} color="orange" onClick={() => setAlertBox("")} />)
                 }
 
             }
             catch (error) {
-                setAlertBox(<AlertBox massege={"Error ::" + error} image={images.unsuccess} onClick={() => setAlertBox("")} />)
+                setAlertBox(<AlertBox massege={"Error ::" + error}   image={images.unsuccess} color="orange" onClick={() => setAlertBox("")} />)
             }
         }
     }

@@ -21,7 +21,7 @@ const ForgetPassword = ({ status }) => {
 
             }
             else {
-                setAlertBox(<AlertBox massege={"failed to send"} color="red" image={images.unsuccess}  >
+                setAlertBox(<AlertBox massege={"failed to send"}      image={images.unsuccess} color="orange"  >
                 </AlertBox>)
             }
             setTimeout(() => {
@@ -30,7 +30,7 @@ const ForgetPassword = ({ status }) => {
 
         }
         catch (error) {
-            setAlertBox(<AlertBox massege={error} image={images.unsuccess}>
+            setAlertBox(<AlertBox massege={error}   image={images.unsuccess} color="orange">
                 <Button text="Ok" fname={() => setAlertBox("")} />
             </AlertBox>)
 

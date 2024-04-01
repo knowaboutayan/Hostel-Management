@@ -61,11 +61,7 @@ const authenication = createSlice(
                 state.profilePicFile = action.payload
                 state. userHaveProfilePic=true
             },
-            setProfilePicFile: (state, action) => {
-                
-                state.profilePicFile = action.payload
-                state. userHaveProfilePic=true
-            },
+
             setDataUpdate: (state, action) => {
                 state.update = action.payload
             },

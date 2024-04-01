@@ -22,7 +22,7 @@ const AllExpenses = () => {
     const [totalExpense, setTotalExpense] = useState(0)
     const userStatus = useSelector(state => state.userStatus)
 
-    const totalDebit = useSelector(state=>state.totalDebit)
+
 
     const addNewExpense = () => {
         setBox(<AlertBox massege={"please Wait..."} image={images.process} color="gray" />)
@@ -47,7 +47,7 @@ const AllExpenses = () => {
             const data = await (database.getListOfDocuments(conf.expenseId))
 
             if (data == 1 || data == null || data == {} || data.documents.length == 0) {
-                setAlert(<NoDataFound/>)
+                setAlert(<NoDataFound />)
             }
             else {
                 let cost = 0
@@ -61,9 +61,10 @@ const AllExpenses = () => {
         }
         catch (error) {
 
-            setAlert(<AlertBox image={images.unsuccess} color="red" massege={"Error " + error}><button onClick={() => setAlert("")}>ok</button></AlertBox>)
+            setAlert(<AlertBox   image={images.unsuccess} color="orange"    massege={"Error " + error}><button onClick={() => setAlert("")}>ok</button></AlertBox>)
         }
     }
+
     useEffect(() => {
 
         setBox("")
@@ -74,10 +75,10 @@ const AllExpenses = () => {
 
     return (
         <section>
-           
-       
-            <div className="flex items-center w-full justify-between  px-5">
-                {totalDebit}
+
+
+            <div className="flex items-center w-full justify-between  px-5 py-2">
+                
                 <Button type="button" classname="bg-green-600" text="Add New Expenses" fname={() => { addNewExpense() }} ><i className="fa fa-plus-circle"></i></Button>
                 {(userStatus === 'admin') ?
                     <Button text="Add Other Expenses" fname={() => { addOtherExpense() }} ><i className="fa fa-plus-circle"></i> </Button> : null}

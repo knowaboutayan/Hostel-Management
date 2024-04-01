@@ -4,9 +4,11 @@
         this.userId = userId,
             this.name = name,
             this.date = date,
-            this.transactionDetails = trnasactionDetails,
-            this.transactionAmount = transactionAmount,
-            this.transactionType = transactionType
+            this.details = trnasactionDetails,
+            this.amount = transactionAmount,
+            this.type = transactionType
     }
 } 
+
+
 export default Transction

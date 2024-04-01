@@ -5,80 +5,59 @@ import database from "../database";
 import Button from "../components/Button";
 import { useDispatch, useSelector } from "react-redux";
 import AlertBox from "../components/AlertBox";
-import { haveProfilePic } from "../store/slice";
+import { haveProfilePic, setProfilePicFile } from "../store/slice";
 
 const UploadFile = ({ title, requirements, classname, children, uploadTo, successfulStatus }) => {
     const [alert, setAlert] = useState("");
     const [file, setFile] = useState(null); // Initialize file state with null
     const currentUserId = useSelector(state => state.userId)
     const havingImage = useSelector(state => state.userHaveProfilePic)//user have profile pic or not
-  
+
+
 
 
     const dispatch = useDispatch()
-    //if already have a image then delete it first *** for case of updation of pic
-    const deleteFile = async (e) => {
-        setAlert(<AlertBox massege={"removing previous image....."} image={images.process} color="gray" />);
-        try {
-            //if already have a image then delete it first *** for case of updation of pic
-            const response = await database.deleteProfilePic(currentUserId);
-           
-            if (response == 0) {
-                setAlert(<AlertBox massege={"previous image removed"} image={images.success} />);
-             
-               
-                return 0//success
-            }
-            else if (response == -1) {
-                (
-                    setAlert(allAlerts.warning({ fname: () => setAlert("") })))
-       
-                return 1//unsuccess
-            }
-        }
-        catch (error) {
-            
-            setAlert(allAlerts.unsuccessful({ fname: () => setAlert("") }))
-            return 1//unsuccess
-        }
-    }
-    //upload a file
-    const uploadFile = async (newImg) => {
 
-
-        let response = 0
-        try {
-            //if already have a image then delete it first *** for case of updation of pic
-
-            //if no image then.... OR updating image....
-            setAlert(allAlerts.processing)
-            if (response == 0)
-                response = await database.uploadProfilePic(currentUserId, newImg);
-          
-            setAlert(<AlertBox massege={"success"} image={images.success} />);
-
-            setTimeout(() => {
-                successfulStatus()
-
-                dispatch(haveProfilePic(true))//updating at slice that  user have a file..
-            }, 1000);
-
-        }
-
-        catch (error) {
-                  }
-    }
+    //on Submit 
     const onSubmitEventHandeler = async (e) => {
         e.preventDefault()
-        if (havingImage) {
-            await deleteFile()
-        }
-        const newImg = document.getElementById('uploader').files[0];
-        await uploadFile(newImg)
+        const newImg =  document.getElementById('uploader').files[0];
         
+        //check is have any profile pic or not 
+        setAlert(allAlerts.processing)
+        try {
+            if (havingImage) {
+                await database.deleteProfilePic(currentUserId)
+
+            }
+
+            const response = await database.uploadProfilePic(currentUserId,newImg)
+
+            if (response == 0) {
+                const link = await database.getProfilePic(currentUserId)
+                dispatch(setProfilePicFile(link))
+                setAlert(<AlertBox massege={'profile picture succesfully updated!'} image={images.success} />)
+                setTimeout(() => { successfulStatus(); setAlert("") }, 2000)
+            }
+            else {
+                setAlert(<AlertBox massege={'Failed to Upload!'}      image={images.unsuccess} color="orange" >
+                    <Button type="button" classname="bg-red-600" text="ok" fname={() => {
+                        setAlert("")
+                    }}></Button>
+                </AlertBox>)
+            }
+
+        }
+
+        catch (error) {
+            setAlert(<AlertBox massege={'Error::' + error}      image={images.unsuccess} color="orange" >
+                <Button type="button" classname="bg-red-600" fname={() => {
+                    setAlert("")
+                }}></Button>
+            </AlertBox>)
+        }
+
     }
-
-
 
     return (
         <>

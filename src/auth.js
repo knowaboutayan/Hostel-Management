@@ -85,6 +85,40 @@ class AuthService {
 
     }
 
+
+//update password 
+async updatePassword({password,updateNewPassword}){
+    try{
+        const response = await this.account.updatePassword(updateNewPassword,password)
+        console.log(response)
+        if(response.$id!=""){
+            
+            return response
+        }
+
+    }
+    catch(error){
+        console.log("Upadate Password::",error)
+        return 1
+    }
+}
+//update phone 
+async updatePhone({phone,password}){
+    try{
+    const response = await this.account.updatePhone('+91'+phone,password)
+    console.log(response);
+    if (response.$id!=''){
+        return 0
+    }
+    return 1
+    }
+    catch(error){
+        console.log(error)
+        return error
+    }
+
+}
+
     async emailVerification() {
         try {
             const response = await this.account.createVerification('https://hostel-management-lilac.vercel.app/emailVerification');

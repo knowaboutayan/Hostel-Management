@@ -25,24 +25,23 @@ const Panel = ({ navigation = [] }) => {
     const [alert, setAlert] = useState("")
     const [popup, setPopup] = useState("")
     const [title, setTitle] = useState("Dashboard")
+    const [panelLogo, setPanelLogo] = useState(images.dashboard)
+    
 
     const navigate = useNavigate()
     const dispatch = useDispatch()
-
+    
     const profileImage = useSelector(state => state.profilePicFile)
     const isProfilePic = useSelector(state => state.userHaveProfilePic)
     const isEmailVerified = useSelector(state => state.emailVerification)//email verified or not
     const isPhoneVerified = useSelector(state => state.phoneVerification)//phone verified or not
-
+    const isUserLogin = useSelector(state => state.isUserLogin)
     const currentUserInfo = useSelector(state => state.currentUserInfo)
-    const [succesful, setSuccessStatus] = useState(false)
     const currentUserStatus = useSelector(state => state.userStatus)
-    const [panelLogo, setPanelLogo] = useState(images.dashboard)
-
-
 
     const credit = useSelector(state => state.totalCredit)
     const debit = useSelector(state => state.totalDebit)
+    console.log(credit, debit)
     //logout button 
     const logoutEventHandeler = async () => {
         setAlert(<AlertBox massege={"process"} image={images.process}></AlertBox>)
@@ -65,71 +64,53 @@ const Panel = ({ navigation = [] }) => {
         setPopup(
             <PopUp title="Upload Profile Pictute" icon={images.imageupload} close_btn={() => setPopup("")}>
 
-                <UploadFile uploadTo={(res) => database.uploadProfilePic(res)} successfulStatus={() => { setPopup(""); setSuccessStatus(pre => !pre) }}>
+                <UploadFile uploadTo={(res) => database.uploadProfilePic(res)} successfulStatus={() => { setPopup(""); (pre => !pre) }}>
                 </UploadFile>
             </PopUp>
-
         )
 
     }
 
     //show user Info 
     const showUserInfo = () => {
-        setPopup(<PopUp icon={profileImage} title={"Your Profile"} close_btn={() => setPopup("")}><UserProfile fname={() => { setPopup(""); logoutEventHandeler() }} /></PopUp>)
+        setPopup(<PopUp icon={profileImage} title={"My Profile"} close_btn={() => setPopup("")}><UserProfile fname={() => { setPopup(""); logoutEventHandeler() }} /></PopUp>)
     }
 
-
     useEffect(() => {
         (async () => {
+            setAlert(allAlerts.processing)
+            
             try {
+                const data = await authService.getCurrentUser()
+                //checking 
+                if (data.$id!="") {
+                    dispatch(isLogIn(true))
+                    dispatch(userInfo(data))
 
-                setAlert(allAlerts.processing);
-                const data = await database.getProfilePic(currentUserId);
-                const total = await database.getTotalDebit({ transactionType: 'debit' })
-                if (total != null) {
-                    dispatch(setTotalCredit(total.totalCredit))
-                    dispatch(setTotalDebit(total.totalDebit))
+                    const transaction = await database.getTotalTransaction()
+                    dispatch(setTotalCredit(transaction.totalCredit))
+                    dispatch(setTotalDebit(transaction.totalDebit))
+                    const profilePicFile = await database.getProfilePic(data.$id)
+
+                    if(profilePicFile){
+                        dispatch(haveProfilePic(true))
+                        dispatch(setProfilePicFile(profilePicFile))
+                    }
                 }
-                
-                if (data === 1) {
-
-                    dispatch(haveProfilePic(false)); // Updating no profile pic
-                } else if (data && data.href) {
-                    console.log(data);
-                    window.localStorage.setItem('imgHref', data.href)
-                    dispatch(setProfilePicFile(data.href)); // Have profile pic
-                    dispatch(haveProfilePic(true));
-
-                } else {
-                    console.error("Invalid profile picture data:", data);
-
-                }
-            } catch (error) {
-                console.error("Error fetching profile picture:", error);
-                // Handle error (e.g., display error message)
-            } finally {
-                setAlert("");
 
             }
-        })();
-    }, [succesful]);
-    useEffect(() => {
-        (async () => {
-
-            const data = await authService.getCurrentUser()
-
-            setInterval(() => (() => {
-                const date = new Date()
-                setTime(date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds())
-            })(), 1000)
-            dispatch(userInfo(data))
-            dispatch(isLogIn(true))
-
+            catch (error) {
+                dispatch(isLogIn(false))
+                dispatch(userInfo(null))
+                console.log("Panel current userLogin ::: ", error)
+            }
+            finally{
+                setAlert("")
+            }
         })()
     }, [])
 
-    const isUserLogin = useSelector(state => state.isUserLogin)
-    const currentUserId = useSelector(state => state.userId)
+
 
 
     //email verification
@@ -160,8 +141,9 @@ const Panel = ({ navigation = [] }) => {
                             <p className="mx-4 font-sans font-bold "><i className="fa fa-calendar"></i> {`${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`}</p>
                             <p className=" font-sans font-bold "><i className="fa fa-clock-o"></i> {time}</p>
                         </p>
-                        <p className="mx-4 font-sans text-nowrap "> {String(currentUserInfo['$id'])} <span className="  rounded-xl px-1  font-bold text-lg bg-green-500 text-white">{String(currentUserStatus)[0].toUpperCase() + String(currentUserStatus).substring(1,)}</span></p>
+                        <p className="mx-4 font-sans text-nowrap ">HOSTEL MANAGEMENT <span className="  rounded-xl px-1  font-bold text-lg bg-green-500 text-white">{String(currentUserStatus)[0].toUpperCase() + String(currentUserStatus).substring(1,)}</span></p>
                         <p className="flex flex-row text-nowrap">
+                        <p className="mx-4 font-sans font-bold " onClick={() => {navigate("/panel/");setPanelLogo(images.dashboard);setTitle("Dashboard")}}><i className="fa fa-home"></i></p>
                             <p className="mx-4 font-sans font-bold " onClick={() => logoutEventHandeler()}><i className="fa fa-sign-out"></i></p>
                         </p>
                     </div>
@@ -215,13 +197,7 @@ const Panel = ({ navigation = [] }) => {
                         {/* showing elements */}
                         <div className="border m-auto sticky z-10 shadow-sm top-0 ">
                             <PanelSectionTitle title={title} image={panelLogo} >
-                                <div className="text-lg font-mono p-2 flex flex-row justify-evenly text-gray-600 m-auto ml-2 font-bold rounded-xl w-full  ">
-                               <h2>   Total  Deposit:{credit}</h2>
-
-                               <h2>   Total Expense:{debit}</h2>
-
-                               <h2 className="text-xl">    Balance:{Number(credit) - Number(debit)}</h2>
-                                </div>
+                               
 
                             </PanelSectionTitle>
                         </div>

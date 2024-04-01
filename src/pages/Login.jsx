@@ -56,7 +56,7 @@ const Login = ({ loginFor = '', valiDationFunc = "" }) => {
             //onUnsuccessful Login....
             else {
 
-                setShowSuccess(<AlertBox massege={"account not found"} color={"red"} image={images.unsuccess} >
+                setShowSuccess(<AlertBox massege={"account not found"} color={"red"}   image={images.unsuccess} color="orange" >
                     <button onClick={() => setShowSuccess("")}>
                         ok
                     </button>
@@ -65,7 +65,7 @@ const Login = ({ loginFor = '', valiDationFunc = "" }) => {
         }
         catch (error) {
             //error 
-            setShowSuccess(<AlertBox massege={"something went wrong"} color={"red"} image={images.unsuccess} >
+            setShowSuccess(<AlertBox massege={"something went wrong"} color={"red"}   image={images.unsuccess} color="orange" >
                 <button onClick={() => setShowSuccess("")}>
                     ok
                 </button>

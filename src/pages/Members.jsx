@@ -40,7 +40,7 @@ const Members = ({ }) => {
             }
         }
         catch (err) {
-            setPrintData(<AlertBox image={images.unsuccess} color="red" massege={"Error " + err}><button onClick={() => setPrintData("")}>ok</button></AlertBox>)
+            setPrintData(<AlertBox   image={images.unsuccess} color="orange"    massege={"Error " + err}><button onClick={() => setPrintData("")}>ok</button></AlertBox>)
         }
 
     }

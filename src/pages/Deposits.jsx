@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import PopUp from "../components/PopUp"
 import images from "../images";
 import AddDeposite from "../PanelComponents/AddDeposit";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 import AlertBox from "../components/AlertBox";
 import database from "../database";
@@ -12,6 +12,7 @@ import DataTable from "../PanelComponents/DataTable";
 import Button from "../components/Button";
 import alert from "../components/allAlerts";
 import NoDataFound from "../PanelComponents/NoDataFound";
+import { setTotalCredit, setTotalDebit } from "../store/slice";
 
 const Deposits = () => {
 
@@ -21,9 +22,7 @@ const Deposits = () => {
     const [databaseUpdate, setDatabaseUpdated] = useState(false)//database update or not like delete document 
 
     const userStatus = useSelector(state => state.userStatus)
-    const credit = useSelector(state => state.totalCredit)
-    const debit = useSelector(state => state.totalDebit)
-
+const dispatch = useDispatch()
     const navigate = useNavigate()
 
 
@@ -61,7 +60,7 @@ const Deposits = () => {
                 setPrintData(
                     <>
 
-                        <DataTable deltePerform={(res) => setDatabaseUpdated((pre) => !pre)} title="All  Member's Deposit" data={data} columns={Object.keys(data[0]).filter((key) => { if (!String(key).startsWith('$')) { return key } })} />)
+                        <DataTable deltePerform={(res) => setDatabaseUpdated((pre) => !pre)} title="All  Member's Deposit" data={data} columns={Object.keys(data[0]).filter((key) => { if (!String(key).startsWith('$')) { return key } })} />
                     </>)
             }
 
@@ -82,19 +81,29 @@ const Deposits = () => {
 
     })(), [databaseUpdate])
 
+    useEffect( ()=>{
+        //transaction update
+        async function transaction (){
+            const data = await database.getTotalTransaction()
+            
+            if(data!=1){
+                dispatch(setTotalCredit(data.totalCredit))
+                dispatch(setTotalDebit(data.totalDebit))
+                console.log(data)
+            }
+        }
+        transaction()
+    },[databaseUpdate])
 
     if (userStatus == 'admin' || userStatus == 'manager') {
 
         return (
             <section>
-                <div>
-                   
-                </div>
-                <div className="">
+                <div className="flex items-center w-full justify-between  px-5 py-2">
                     <Button type="button" text=" " fname={() => addNewDeposit()}><i className="fa fa-plus-circle" /> Add New Deposit</Button>
-                    {printData}
+                    
                 </div>
-
+                {printData}
                 {popupBox}
 
             </section>
