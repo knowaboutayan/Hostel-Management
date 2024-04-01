@@ -12,7 +12,9 @@ let initialState = {
     profilePicFile: images.user,
     update: 0,
     emailVerification:false,
-    phoneVerification:false
+    phoneVerification:false,
+    totalDebit:0,
+    totalCredit:0,
 
 }
 
@@ -59,12 +61,26 @@ const authenication = createSlice(
                 state.profilePicFile = action.payload
                 state. userHaveProfilePic=true
             },
-            
+            setProfilePicFile: (state, action) => {
+                
+                state.profilePicFile = action.payload
+                state. userHaveProfilePic=true
+            },
             setDataUpdate: (state, action) => {
                 state.update = action.payload
+            },
+            setTotalDebit:(state,action)=>{
+
+                state.totalCredit = action.payload
+            },
+
+            setTotalCredit:(state,action)=>{
+                state.totalDebit=action.payload
+
             }
+            
         }
     }
 )
-export const { isLogIn, userInfo, haveProfilePic, setProfilePicFile, setDataUpdate } = authenication.actions
+export const { isLogIn, userInfo, haveProfilePic, setProfilePicFile, setDataUpdate,setTotalCredit,setTotalDebit } = authenication.actions
 export default authenication.reducer

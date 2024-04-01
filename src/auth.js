@@ -18,10 +18,10 @@ class AuthService {
     }
 
     //accout create
-    async CreateAccount({ email, password, name, phone }) {
+    async CreateAccount({ email, password, name }) {
         try {
 
-            const createAccount = await this.account.create(ID.unique(), email, password, name, String(phone));
+            const createAccount = await this.account.create(ID.unique(), email, password, name);
 
             if (createAccount) {
 

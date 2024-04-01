@@ -6,17 +6,37 @@ import AlertBox from "../components/AlertBox";
 import images from "../images";
 import Button from "../components/Button";
 import alert from "../components/allAlerts";
+import conf from "../conf/conf";
+import Transction from "../transactionAdd";
+import { data } from "autoprefixer";
+import { ID } from "appwrite";
+
 
 const AddDeposite = ({ status }) => {
+
+    const date = new Date();
+
+    let day = date.getDate();
+    let month = date.getMonth() + 1;
+    let year = date.getFullYear()
+
     const currenUserId = useSelector(state => state.userId)
     const currenUserName = useSelector(state => state.userName)
     const [amount, setAmount] = useState(0);
     const [member, setMember] = useState("")
-    const [alertBox, setAlertBox] = useState()
+    const [alertBox, setAlertBox] = useState("")
+    const [memberName, setMemberName] = useState("")
+    const [memberId, setMemberId] = useState("")
 
     let [members, setMembers] = useState([]);
 
-
+    useEffect(() => {
+        function setMembers() {
+            setMemberName(member.split(",")[0])
+            setMemberId(member.split(",")[1])
+        }
+        setMembers()
+    }, [member])
     const fetchMember = async () => {
 
         setAlertBox(
@@ -42,13 +62,13 @@ const AddDeposite = ({ status }) => {
         }
 
     }
-
+    //deposit Add to Dataabase function....
     const addDeposite = async () => {
         setAlertBox(<AlertBox massege={"processing..."} image={images.process} onClick={() => setAlertBox("")} />)
 
         if (member == []) {
 
-            setAlertBox(<AlertBox massege={"select a member"} image={images.unsuccess} onClick={() => setAlertBox("")} />)
+            setAlertBox(<AlertBox massege={"No member found"} image={images.unsuccess} onClick={() => setAlertBox("")} />)
 
         }
 
@@ -58,17 +78,24 @@ const AddDeposite = ({ status }) => {
                 class Deposits {
 
                     memberName; amount; userId;
-                    constructor(member, amount) {
-                                  this.memberName = member[0];
+                    constructor() {
+                        this.memberName = memberName;
                         this.amount = amount;
-                        this.userId = member[1]
+                        this.userId = memberId
                     }
                 }
 
                 const deposit = new Deposits(member.split(','), amount)
 
-                
-                const response = await database.newDepositAdd(deposit)
+                const uniqueId = ID.unique()//using as a primary key in DB
+
+                console.log(uniqueId)
+                let response = await database.addToCollection(uniqueId, conf.depositId, deposit)
+                if (response == 0) {
+                    const transaction = new Transction(memberId, memberName, `${day}-${month}-${year}`, 'credit', amount, "deposit Recieved by" + String(currenUserName))
+                    response = await database.addToCollection(uniqueId, conf.transactionCollectionId, transaction)
+                }
+
                 if (response == 0) {
                     setAlertBox(<AlertBox massege={"succesfully add"}></AlertBox>)
 
@@ -82,7 +109,7 @@ const AddDeposite = ({ status }) => {
 
             }
             catch (error) {
-                setAlertBox(<AlertBox massege={"Error" + error} image={images.unsuccess} onClick={() => setAlertBox("")} />)
+                setAlertBox(<AlertBox massege={"Error ::" + error} image={images.unsuccess} onClick={() => setAlertBox("")} />)
             }
         }
     }

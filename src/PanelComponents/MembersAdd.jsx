@@ -25,11 +25,11 @@ const MembersAdd = ({ title, width = "w-full", status = "" }) => {
             password;
             email;
             phone;
-            constructor(name, password, email, phone) {
+            constructor(name, password, email) {
                 this.email = email;
                 this.name = name;
                 this.password = password;
-                this.phone = "+91" + phone
+
             }
         }
         e.preventDefault()
@@ -39,19 +39,19 @@ const MembersAdd = ({ title, width = "w-full", status = "" }) => {
                     <p className="animate-spin border-green-600 p-8 border-8 border-l-green-200 border-solid rounded-full"></p>
                 </AlertBox>
             )
-            
+
             const member = new Member(name, password, email, phone)
             let add = await authService.CreateAccount(member)
-            setShowAlert(< AlertBox massege={"Account successfully completed!"} image={images.success} ></AlertBox>)
 
-            setShowAlert(<AlertBox massege={"user acount creating....."} image={images.success} />)
+            setShowAlert(< AlertBox massege={"Account successfully created!"} image={images.success} ></AlertBox>)
 
-            
+
+
 
             if (add == 0) {
                 setShowAlert(<AlertBox massege={"User registraction succesful"} image={images.success} >
                 </AlertBox >);
-                setTimeout(() => {setShowAlert("");status(true)}, 700)
+                setTimeout(() => { setShowAlert(""); status(true) }, 700)
             }
             else {
                 setShowAlert(

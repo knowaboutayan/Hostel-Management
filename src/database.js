@@ -1,4 +1,4 @@
-import { Client, Databases, ID, Storage } from "appwrite";
+import { Client, Databases, ID, Query, Storage } from "appwrite";
 import conf from "./conf/conf";
 
 
@@ -93,6 +93,81 @@ class Database {
         }
 
     }
+
+
+
+
+
+    //add Expenses To Database Collection (GENERAL METHOD)
+    async addToCollection(uniqueId,collectionId, object) {
+        try {
+            const response = await this.databases.createDocument(
+                conf.dataBaseId,
+                collectionId,
+                uniqueId,
+                object
+
+            )
+            if (response) {
+                console.log("newExpenseAdded", response);
+                return 0
+            }
+
+
+        }
+        catch (error) {
+            console.log("add new collection", error)
+        }
+    }
+
+    //end... new deposit 
+
+
+    async getListOfDocuments(collectionId,query=[]) {//listDocumentsGLobal FUNCTION
+        try{
+        const list = await this.databases.listDocuments(
+
+            conf.dataBaseId,
+            collectionId,
+
+        )
+        console.log(list)
+        return list
+        }
+        catch(error){
+            console.log("Error in listDocumets::",error);
+        }
+    }
+
+    // Import the Query object from your query library
+
+    async getTotalDebit({ transactionType }) {
+        try {
+            const response = await this.databases.listDocuments(
+                conf.dataBaseId,
+                conf.transactionCollectionId,
+               
+            );
+            let totalDebit = 0
+            let totalCredit = 0
+            
+            response.documents.map((obj)=>{
+                if(obj['transactionType']==='debit')
+                totalDebit+=Number(obj['transactionAmount'])
+                else if(obj['transactionType']==='credit')
+                totalCredit+=Number(obj['transactionAmount'])
+            })
+            
+            console.log(totalCredit,totalDebit)
+            return {totalDebit:totalDebit,totalCredit:totalCredit}
+
+        } catch(error) {
+            console.log("GET TOTAL::", error);
+        }
+    }
+    
+    
+    
 
     async updateNewExpence(
         docId
@@ -220,25 +295,7 @@ class Database {
 
     }
 
-    //function forgeneral data fetched 
-    async fetchCollectionData({ dataBaseId = conf.dataBaseId, collectionId = collectionId }) {
-        try {
-            const data = await this.databases.listDocuments(
-                dataBaseId,
-                collectionId,
-            )
 
-            return data['documents']
-        }
-        catch (err) {
-            if (err['AppwriteException'] == " Network request failed)") {
-                return 'netErr'
-            }
-            return 1
-
-        }
-
-    }
 
     async uploadProfilePic(id, file) {
         try {
@@ -248,7 +305,7 @@ class Database {
                 id,//current user id..
                 file
             )
-            
+
 
             return 0
         }
@@ -256,7 +313,7 @@ class Database {
             if (err['AppwriteException'] == " Network request failed)") {
                 return 'netErr'
             }
-            
+
             return err
         }
     }
@@ -267,15 +324,13 @@ class Database {
                 conf.bucketId,
                 String(fileId)
             )
-           
-
             return 0
         }
         catch (err) {
             if (err['AppwriteException'] == " Network request failed)") {
                 return 'netErr'
             }
-            
+
             return err
         }
     }
@@ -287,9 +342,9 @@ class Database {
                 conf.bucketId,
                 fileId
             )
-      
+
             if (data != null && data != 1 && data.href && data.href != "") {
-                console.log("preview",data)
+                console.log("preview", data)
                 return data
             }
             else {

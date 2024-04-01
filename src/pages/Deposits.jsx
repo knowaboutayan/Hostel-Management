@@ -21,6 +21,8 @@ const Deposits = () => {
     const [databaseUpdate, setDatabaseUpdated] = useState(false)//database update or not like delete document 
 
     const userStatus = useSelector(state => state.userStatus)
+    const credit = useSelector(state => state.totalCredit)
+
     const navigate = useNavigate()
 
 
@@ -40,8 +42,8 @@ const Deposits = () => {
 
 
         try {
-            const data = await database.fetchCollectionData({ collectionId: conf.depositId })//fetching data....
-
+            const documentList = await database.getListOfDocuments(conf.depositId)//fdetsch list of documents
+            const data = documentList.documents
 
             if (data == 'netErr') {
                 alert("")
@@ -50,7 +52,7 @@ const Deposits = () => {
             }
             else if (data.length == 0 || data == []) {
                 setPrintData(
-                    <NoDataFound/>
+                    <NoDataFound />
                 )
 
             }
@@ -77,9 +79,7 @@ const Deposits = () => {
         setPopupBox("")
         printDeposits()
 
-    })()
-
-        , [databaseUpdate])
+    })(), [databaseUpdate])
 
 
     if (userStatus == 'admin' || userStatus == 'manager') {
@@ -89,14 +89,14 @@ const Deposits = () => {
 
                 {popupBox}
                 <div className="">
-                <Button type="button" text=" " fname={() => addNewDeposit()}><i className="fa fa-plus-circle" /> Add New Deposit</Button>
-                        <div>
-                            <h3>
-                                All Deposit
-                            </h3>
+                    <Button type="button" text=" " fname={() => addNewDeposit()}><i className="fa fa-plus-circle" /> Add New Deposit</Button>
+                    <div>
+                        <h3>
+                            Total Deposit:{credit}
+                        </h3>
 
-                        </div>
-                       
+                    </div>
+
                     {printData}
 
                 </div>

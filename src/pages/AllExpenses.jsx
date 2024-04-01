@@ -10,6 +10,7 @@ import AddOtherExpenses from "../PanelComponents/AddOtherExpense"
 import { useSelector } from "react-redux"
 import Button from "../components/Button"
 import NoDataFound from "../PanelComponents/NoDataFound"
+import conf from "../conf/conf"
 
 
 
@@ -19,8 +20,9 @@ const AllExpenses = () => {
     const [databaseUpdate, setDatabaseUpdated] = useState(false)
     const [alert, setAlert] = useState("")
     const [totalExpense, setTotalExpense] = useState(0)
-
     const userStatus = useSelector(state => state.userStatus)
+
+    const totalDebit = useSelector(state=>state.totalDebit)
 
     const addNewExpense = () => {
         setBox(<AlertBox massege={"please Wait..."} image={images.process} color="gray" />)
@@ -42,7 +44,7 @@ const AllExpenses = () => {
 
         try {
             //caling db
-            const data = await (database.getAllExpenses())
+            const data = await (database.getListOfDocuments(conf.expenseId))
 
             if (data == 1 || data == null || data == {} || data.documents.length == 0) {
                 setAlert(<NoDataFound/>)
@@ -75,6 +77,7 @@ const AllExpenses = () => {
            
        
             <div className="flex items-center w-full justify-between  px-5">
+                {totalDebit}
                 <Button type="button" classname="bg-green-600" text="Add New Expenses" fname={() => { addNewExpense() }} ><i className="fa fa-plus-circle"></i></Button>
                 {(userStatus === 'admin') ?
                     <Button text="Add Other Expenses" fname={() => { addOtherExpense() }} ><i className="fa fa-plus-circle"></i> </Button> : null}

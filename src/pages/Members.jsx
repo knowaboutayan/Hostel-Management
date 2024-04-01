@@ -8,6 +8,7 @@ import AlertBox from "../components/AlertBox"
 import database from "../database"
 import DataTable from "../PanelComponents/DataTable"
 import NoDataFound from "../PanelComponents/NoDataFound"
+import conf from "../conf/conf"
 
 const Members = ({ }) => {
     const [box, setBox] = useState("")
@@ -25,7 +26,7 @@ const Members = ({ }) => {
     const printUserData = async () => {
         setPrintData(<AlertBox massege={"please wait..."} image={images.process} color="blue" />)
         try {
-            const data = await database.getMembersShow()
+            const data = await database.getListOfDocuments(conf.collectionId)
             setTotalMember(data['documents'].length)
             if (data.documents.length > 0 && data != null) {
                 setPrintData(<AlertBox image={images.success} massege={"succesfully fatched"} />)

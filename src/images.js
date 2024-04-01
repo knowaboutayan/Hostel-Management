@@ -20,6 +20,7 @@ import forgotPassword from '../images/forgotPassword.png'
 import resetPassword from '../images/resetPassword.png'
 import verified from '../images/verified.png'
 import notverified from '../images/notverified.png'
+import transation from '../images/transaction.png'
 const images = {
     'success': success,
     'unsuccess': unsuccess,
@@ -42,7 +43,8 @@ const images = {
     "forgotPassword":forgotPassword,
     'resetPassword':resetPassword,
     'verified':verified,
-    'notverified':notverified
+    'notverified':notverified,
+    'transaction':transation
 
 }
 export default images

@@ -20,15 +20,10 @@ import NoDataFound from './PanelComponents/NoDataFound.jsx'
 import Home from './pages/Home.jsx'
 import PasswordRecovery from './pages/PasswordRecovery.jsx'
 import EmailVerification from './pages/EmailVerification.jsx'
+import AllTransactions from './pages/All Transactions.jsx'
 
 const navCardsData = [
-  {
-    title: "Dashboard",
-    icon: images.dashboard,
-    color: "green",
-    activeClassName: "active-dashboard", // Add the appropriate class name
-    id: "dashboard"//navigation-id
-  },
+  
   {
     title: "All Members",
     icon: images.members,
@@ -53,6 +48,14 @@ const navCardsData = [
     id: "expenses"//navigation-id
   },
 
+{
+    title: "Transactions",
+    icon: images.transaction,
+    color: "green",
+    activeClassName: "active-expenses", // Add the appropriate class name
+    id: "transaction"//navigation-id
+  },
+  
   {
     title: "Message",
     icon: images.massege,
@@ -85,6 +88,7 @@ const router = createBrowserRouter(
         </Dashboard>} />
         <Route path={'/panel/expenses'} element={<AllExpenses />} />
         <Route path={'/panel/members'} element={<Members />} />
+        <Route path={'/panel/transaction'} element={<AllTransactions />} />
         <Route path={'/panel/massege'} element={<SendMassege />} />
         <Route path={'/panel/deposits'} element={<Deposits />} />
 

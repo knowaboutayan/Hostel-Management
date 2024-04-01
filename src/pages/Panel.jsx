@@ -10,7 +10,7 @@ import ErrorPage from "./ErrorPage"
 import { Link, NavLink } from "react-router-dom"
 import AlertBox from "../components/AlertBox"
 import authService from "../auth"
-import { isLogIn, haveProfilePic, userInfo, setProfilePicFile, setDataUpdate } from "../store/slice"
+import { isLogIn, haveProfilePic, userInfo, setProfilePicFile, setDataUpdate, setTotalCredit, setTotalDebit } from "../store/slice"
 import Button from "../components/Button"
 import PanelSectionTitle from "../PanelComponents/PanelSectionTitle"
 import allAlerts from '../components/allAlerts'
@@ -111,14 +111,21 @@ const Panel = ({ navigation = [] }) => {
         (async () => {
 
             const data = await authService.getCurrentUser()
-
+            const total = await database.getTotalDebit({ transactionType: 'debit' })
+            if (total != null) {
+                dispatch(setTotalCredit(total.totalCredit))
+                dispatch(setTotalDebit(total.totalDebit))
+            }
             setInterval(() => (() => {
                 const date = new Date()
                 setTime(date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds())
             })(), 1000)
 
+
+
             dispatch(userInfo(data))
             dispatch(isLogIn(true))
+
         })()
     }, [])
 

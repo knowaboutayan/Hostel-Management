@@ -12,7 +12,8 @@ const conf = {
 
     adminProjectId: String(import.meta.env.VITE_ADMIN_PROJECT_ID),
     adminBatabaseId: String(import.meta.env.VITE_ADMIN_DATABASE_ID),
-    adminCollectionId: String(import.meta.env.VITE_ADMIN_COLLECTION_ID)
+    adminCollectionId: String(import.meta.env.VITE_ADMIN_COLLECTION_ID),
+    transactionCollectionId: String(import.meta.env.VITE_ALL_TRANSACTION_COLLECTION_ID)
 }
 
 
