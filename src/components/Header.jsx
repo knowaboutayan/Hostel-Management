@@ -16,7 +16,7 @@ const Header = ({ logo = "", navList = [] }) => {
     const isLogin = useSelector(state => state.isUserLogin)
     const currentUserName = useSelector(state => state.userName)
     const profilePicFile = useSelector(state => state.profilePicFile)
-    const [navShow,setNavShow] = useState(false)
+    const [navShow,setNavShow] = useState(true)
     const showNav = (res)=>{
         setNavShow(pre=>!pre)
         
