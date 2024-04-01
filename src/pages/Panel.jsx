@@ -41,7 +41,8 @@ const Panel = ({ navigation = [] }) => {
 
 
 
-
+    const credit = useSelector(state => state.totalCredit)
+    const debit = useSelector(state => state.totalDebit)
     //logout button 
     const logoutEventHandeler = async () => {
         setAlert(<AlertBox massege={"process"} image={images.process}></AlertBox>)
@@ -84,7 +85,12 @@ const Panel = ({ navigation = [] }) => {
 
                 setAlert(allAlerts.processing);
                 const data = await database.getProfilePic(currentUserId);
-
+                const total = await database.getTotalDebit({ transactionType: 'debit' })
+                if (total != null) {
+                    dispatch(setTotalCredit(total.totalCredit))
+                    dispatch(setTotalDebit(total.totalDebit))
+                }
+                
                 if (data === 1) {
 
                     dispatch(haveProfilePic(false)); // Updating no profile pic
@@ -111,18 +117,11 @@ const Panel = ({ navigation = [] }) => {
         (async () => {
 
             const data = await authService.getCurrentUser()
-            const total = await database.getTotalDebit({ transactionType: 'debit' })
-            if (total != null) {
-                dispatch(setTotalCredit(total.totalCredit))
-                dispatch(setTotalDebit(total.totalDebit))
-            }
+
             setInterval(() => (() => {
                 const date = new Date()
                 setTime(date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds())
             })(), 1000)
-
-
-
             dispatch(userInfo(data))
             dispatch(isLogIn(true))
 
@@ -215,7 +214,16 @@ const Panel = ({ navigation = [] }) => {
                     <div className=" md:col-span-3 col-span-4   ">
                         {/* showing elements */}
                         <div className="border m-auto sticky z-10 shadow-sm top-0 ">
-                            <PanelSectionTitle title={title} image={panelLogo} />
+                            <PanelSectionTitle title={title} image={panelLogo} >
+                                <div className="text-lg font-mono p-2 flex flex-row justify-evenly text-gray-600 m-auto ml-2 font-bold rounded-xl w-full  ">
+                               <h2>   Total  Deposit:{credit}</h2>
+
+                               <h2>   Total Expense:{debit}</h2>
+
+                               <h2 className="text-xl">    Balance:{Number(credit) - Number(debit)}</h2>
+                                </div>
+
+                            </PanelSectionTitle>
                         </div>
 
                         <div className="  border  w-auto overflow-auto  min-w-320 ">

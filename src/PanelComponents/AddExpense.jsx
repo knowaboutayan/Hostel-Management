@@ -56,9 +56,9 @@ const AddExpenses = ({ title, status }) => {
             setAlertBox(<AlertBox massege={"adding data..."} image={images.process} ></AlertBox>)
             const expenses = new Expenses(vegetable, grocery, fish, egg, meat, date)
 
-            let dataSubmit = await database.addToCollection(ID,conf.expenseId, expenses)//dta add o expense 
+            let dataSubmit = await database.addToCollection("",conf.expenseId, expenses)//dta add o expense 
             const transaction = new Transction(userInfo['email'], userInfo['name'], date, 'debit', totalCost, "daily marcketing cost")
-            dataSubmit = await database.addToCollection(ID,conf.transactionCollectionId, transaction)//addTransactionHistory
+            dataSubmit = await database.addToCollection('',conf.transactionCollectionId, transaction)//addTransactionHistory
 
             setAlertBox(<AlertBox massege={"working please wait..."} image={images.process} >
                 <p className="animate-spin border-green-600 p-8 border-8 border-l-green-200 border-solid rounded-full"></p>

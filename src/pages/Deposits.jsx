@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import PanelSectionTitle from "../PanelComponents/PanelSectionTitle";
+
 import PopUp from "../components/PopUp"
 import images from "../images";
 import AddDeposite from "../PanelComponents/AddDeposit";
@@ -22,6 +22,7 @@ const Deposits = () => {
 
     const userStatus = useSelector(state => state.userStatus)
     const credit = useSelector(state => state.totalCredit)
+    const debit = useSelector(state => state.totalDebit)
 
     const navigate = useNavigate()
 
@@ -86,29 +87,19 @@ const Deposits = () => {
 
         return (
             <section>
-
-                {popupBox}
+                <div>
+                   
+                </div>
                 <div className="">
                     <Button type="button" text=" " fname={() => addNewDeposit()}><i className="fa fa-plus-circle" /> Add New Deposit</Button>
-                    <div>
-                        <h3>
-                            Total Deposit:{credit}
-                        </h3>
-
-                    </div>
-
                     {printData}
-
                 </div>
 
-
+                {popupBox}
 
             </section>
         )
     }
-
-
-
     else {
 
 

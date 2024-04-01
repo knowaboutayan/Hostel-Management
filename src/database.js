@@ -95,16 +95,13 @@ class Database {
     }
 
 
-
-
-
     //add Expenses To Database Collection (GENERAL METHOD)
     async addToCollection(uniqueId,collectionId, object) {
         try {
             const response = await this.databases.createDocument(
                 conf.dataBaseId,
                 collectionId,
-                uniqueId,
+                ID.unique(),
                 object
 
             )

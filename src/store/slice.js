@@ -71,11 +71,10 @@ const authenication = createSlice(
             },
             setTotalDebit:(state,action)=>{
 
-                state.totalCredit = action.payload
+                state.totalDebit = action.payload
             },
-
             setTotalCredit:(state,action)=>{
-                state.totalDebit=action.payload
+                state.totalCredit=action.payload
 
             }
             

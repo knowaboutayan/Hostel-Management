@@ -92,7 +92,7 @@ const AddDeposite = ({ status }) => {
                 console.log(uniqueId)
                 let response = await database.addToCollection(uniqueId, conf.depositId, deposit)
                 if (response == 0) {
-                    const transaction = new Transction(memberId, memberName, `${day}-${month}-${year}`, 'credit', amount, "deposit Recieved by" + String(currenUserName))
+                    const transaction = new Transction(memberId, memberName, `${day}-${month}-${year}`, 'credit', amount, "deposit Recieved by " + String(currenUserName))
                     response = await database.addToCollection(uniqueId, conf.transactionCollectionId, transaction)
                 }
 

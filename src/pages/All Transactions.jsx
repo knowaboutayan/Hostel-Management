@@ -3,6 +3,7 @@ import DataTable from "../PanelComponents/DataTable"
 import allAlerts from "../components/allAlerts"
 import database from "../database"
 import conf from "../conf/conf"
+import images from "../images"
 
 const AllTransactions = () => {
     const [alertBox, setAlertBox] = useState("")
@@ -15,11 +16,16 @@ const AllTransactions = () => {
             try {
                 const response = await database.getListOfDocuments(conf.transactionCollectionId)
                 setAlertBox("")
-                setData(<DataTable 
-                    title="All Transactions" 
-                    data={response.documents}  deltePerform={()=>setDeletePerform(pre=>!pre)}
-                    columns={Object.keys(response.documents[0]).filter(key => !key.startsWith('$'))} 
-                />)
+                if (response.documents.length != 0) {
+                    setData(<DataTable
+                        title="All Transactions"
+                        data={response.documents} deltePerform={() => setDeletePerform(pre => !pre)}
+                        columns={Object.keys(response.documents[0]).filter(key => !key.startsWith('$'))}
+                    />)
+                }
+                else {
+                    setData(<img src={images.empty} className="w-3/4 m-auto" />)
+                }
             } catch (error) {
                 console.error("Error fetching data:", error)
                 setAlertBox(allAlerts.error)
@@ -31,7 +37,7 @@ const AllTransactions = () => {
     return (
         <section>
             <div>
-                
+
             </div>
             <div  >
                 {data}

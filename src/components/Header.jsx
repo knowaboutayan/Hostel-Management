@@ -17,10 +17,8 @@ const Header = ({ logo = "", navList = [] }) => {
 
     const currentUserName = useSelector(state => state.userName)
 
-
-
     return (
-        <header className="bg-green-300 py-4 px-8 flex justify-between items-center">
+        <header className="bg-green-300 py-4 px-8 flex justify-between items-center flex-wrap">
             <div className="flex items-center">
                 <img src={images.user} alt="logo" className="h-8 mr-4" />
                 <nav className="flex flex-row gap-4">
@@ -31,37 +29,33 @@ const Header = ({ logo = "", navList = [] }) => {
                     ))}
                 </nav>
             </div>
-            <div className="flex gap-4 items-center">
-
-
+            <div className="flex gap-4 items-center flex-wrap">
                 {/* conditional rendering for user login or not  */}
-
-                {
-                    (!isLogin) ?
-                        <>
-                            <Button fname={() => setPopUp(<PopUp title='SignUp' icon={images.user} close_btn={() => setPopUp("")}>
-                                <MembersAdd />
-                            </PopUp>)} className="bg-green-600">
-                                <i className=' fa fa-sign-up' /> SignUp
-                            </Button>
-                            <Button fname={() => setPopUp(<PopUp title='Login' icon={images.login} close_btn={() => setPopUp("")}>
-                                <Login />
-                            </PopUp>)} className="bg-green-600">
-                                <i className=' fa fa-sign-in' />LogIn
-                            </Button>
-                        </>
-                        : <Button fname={() => navigate('/panel')}>
-                            welcome back {String(currentUserName).split(" ")[0]}
+                {!isLogin ? (
+                    <>
+                        <Button fname={() => setPopUp(<PopUp title='SignUp' icon={images.user} close_btn={() => setPopUp("")}>
+                            <MembersAdd />
+                        </PopUp>)} className="bg-green-600">
+                            <i className=' fa fa-sign-up' /> SignUp
                         </Button>
-
-
-                }
+                        <Button fname={() => setPopUp(<PopUp title='Login' icon={images.login} close_btn={() => setPopUp("")}>
+                            <Login />
+                        </PopUp>)} className="bg-green-600">
+                            <i className=' fa fa-sign-in' />LogIn
+                        </Button>
+                    </>
+                ) : (
+                    <Button fname={() => navigate('/panel')}>
+                        welcome back {String(currentUserName).split(" ")[0]}
+                    </Button>
+                )}
 
                 <Input
                     iconName="fa fa-search"
                     type="search"
                     fname={() => null}
                     placeholder="Search here..."
+                    className="mt-4"
                 />
                 <div className="flex gap-4 items-center">
                     <i className="fa fa-facebook text-xl"></i>
