@@ -16,7 +16,8 @@ const PanelSectionTitle = ({ title, image, children, alt }) => {
                     </h2>
                 </div>
 
-                <div className="  sm:block flex justify-evenly items-center text-nowrap font-semibold text-gray-600 shadow-lg bg-gray-200 p-2 rounded-md ">
+                <div className="  sm:block flex justify-evenly items-center text-nowrap font-semibold text-gray-600 shadow-lg
+flex-wrap  bg-gray-200 p-2 rounded-md ">
                     <h2>   Total  Deposit:{credit}</h2>
 
                     <h2>   Total Expense:{debit}</h2>
