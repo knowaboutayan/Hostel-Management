@@ -122,6 +122,7 @@ const Panel = ({ navigation = [] }) => {
 
     //checking user login or not 
     return (
+        
         (isUserLogin) ?
             <section>
                 <section className=" grid h-screen grid-cols-4  overflow-auto flex-col flex-nowrap">
@@ -218,8 +219,8 @@ const Panel = ({ navigation = [] }) => {
 
                         )}
                         <NavLink to='' className={` w-12 hover:cursor-pointer shadow-lg   p-2 rounded-full 
-                        hover:shadow-black transition-all `} onClick={logoutEventHandeler}>
-                            <img src={images.logout} />
+                        hover:shadow-black transition-all `} onClick={()=>showUserInfo()}>
+                            <img src={profileImage}  />
                         </NavLink>
                     </div>
                 </div>
@@ -233,7 +234,7 @@ const Panel = ({ navigation = [] }) => {
             :
 
             <ErrorPage title="unauthorised entry " descrption="access decliend">
-                <Button text="" type="button" fname={() => navigate(`/`)}>
+                <Button text="" type="button" classname="m-auto" fname={() => navigate(`/`)}>
                     <i className="fa fa-sign-in" />Go to Home</Button>
 
             </ErrorPage>
