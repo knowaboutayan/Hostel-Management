@@ -21,9 +21,11 @@ import Home from './pages/Home.jsx'
 import PasswordRecovery from './pages/PasswordRecovery.jsx'
 import EmailVerification from './pages/EmailVerification.jsx'
 import AllTransactions from './pages/All Transactions.jsx'
+import { Provider } from 'react-redux'
+import { store } from './store/store.js'
 
 const navCardsData = [
-  
+
   {
     title: "All Members",
     icon: images.members,
@@ -48,14 +50,14 @@ const navCardsData = [
     id: "expenses"//navigation-id
   },
 
-{
+  {
     title: "Transactions",
     icon: images.transaction,
     color: "green",
     activeClassName: "active-expenses", // Add the appropriate class name
     id: "transaction"//navigation-id
   },
-  
+
   {
     title: "Message",
     icon: images.massege,
@@ -64,18 +66,12 @@ const navCardsData = [
     id: "massege"//navigation-id
   },
 
-  {
-    title: "Logout",
-    icon: images.logout,
-    color: "green",
-    activeClassName: "active-logout", // Add the appropriate class name
-    id: "logout"//navigation-id
-  },
 ];
 
 
 const router = createBrowserRouter(
   createRoutesFromElements(
+    
     <Route path='' element={<App />} errorElement={<ErrorPage />}>
       <Route path={"resetPassword"} element={<PasswordRecovery />} />
       <Route path="emailVerification" element={<EmailVerification />} />
@@ -83,7 +79,7 @@ const router = createBrowserRouter(
 
       <Route path={'/panel'} element={<Panel navigation={navCardsData} />} >
         <Route path={'/panel'} element={<Dashboard />} />
-        
+
         <Route path={'/panel/expenses'} element={<AllExpenses />} />
         <Route path={'/panel/members'} element={<Members />} />
         <Route path={'/panel/transaction'} element={<AllTransactions />} />
@@ -99,5 +95,8 @@ const router = createBrowserRouter(
   )
 )
 ReactDOM.createRoot(document.getElementById('root')).render(
+  <Provider store={store} className="scroll-smooth transition-all ">
+
   <RouterProvider router={router} />
+  </Provider>
 )

@@ -7,6 +7,7 @@ import images from "../images"
 import Button from "../components/Button"
 import database from "../database"
 import authService from "../auth"
+import conf from "../conf/conf"
 
 
 const MembersAdd = ({ title, width = "w-full", status = "" }) => {
@@ -25,9 +26,6 @@ const MembersAdd = ({ title, width = "w-full", status = "" }) => {
                 this.name = name;
                 this.phone = '+91' + phone
                 this.email = email;
-
-
-
             }
         }
         e.preventDefault()
@@ -39,16 +37,23 @@ const MembersAdd = ({ title, width = "w-full", status = "" }) => {
             )
 
             const member = new Member(name, password, email, phone)
-            let add = await authService.CreateAccount({ name: name, email: email, password: password })
-            setShowAlert(< AlertBox massege={"Account successfully created!"} image={images.success} ></AlertBox>)
+
+            let add = await authService.CreateAccount({ name: name, email: email, password: password })//user created
+
+
+            setShowAlert(< AlertBox massege={"Account successfully created!"} image={images.success}
+                color="green" ></AlertBox>)
             if (add == 0) {
-                setShowAlert(<AlertBox massege={"User registraction succesful"} image={images.success} >
+                await database.addToCollection(conf.collectionId, member)//add to database collection
+
+                setShowAlert(<AlertBox massege={"User registraction succesful"} image={images.success}
+                    color="green" >
                 </AlertBox >);
                 setTimeout(() => { setShowAlert(""); status(true) }, 700)
             }
             else {
                 setShowAlert(
-                    <AlertBox massege={"registration unsuccessful"}   image={images.unsuccess} color="orange" >
+                    <AlertBox massege={"registration unsuccessful"} image={images.unsuccess} color="orange" >
                         <button type="button" className="bg-red-600" onClick={() => setShowAlert(false)}>ok</button>
                     </AlertBox>
                 )
@@ -57,7 +62,7 @@ const MembersAdd = ({ title, width = "w-full", status = "" }) => {
         }
         catch (error) {
             setShowAlert(
-                <AlertBox massege={"registration unsuccessful"}   image={images.unsuccess} color="orange" >
+                <AlertBox massege={"registration unsuccessful"} image={images.unsuccess} color="orange" >
                     <button type="button" className="bg-red-600" onClick={() => setShowAlert(false)}>ok</button>
                 </AlertBox>
             )

@@ -29,18 +29,19 @@ const Members = ({ }) => {
             const data = await database.getListOfDocuments(conf.collectionId)
             setTotalMember(data['documents'].length)
             if (data.documents.length > 0 && data != null) {
-                setPrintData(<AlertBox image={images.success} massege={"succesfully fatched"} />)
-                setPrintData(<DataTable deltePerform={()=>setIsMemberAdded((pre)=>!pre)} title="All Members Information" except="No Member add" columns={Object.keys(data['documents'][0]).filter((key) => { if (!String(key).startsWith('$', 0)) { return (key) } })} data={data["documents"]} />)
+                setPrintData(<AlertBox image={images.success}
+                    color="green" massege={"succesfully fatched"} />)
+                setPrintData(<DataTable deltePerform={() => setIsMemberAdded((pre) => !pre)} title="All Members Information" except="No Member add" columns={Object.keys(data['documents'][0]).filter((key) => { if (!String(key).startsWith('$', 0)) { return (key) } })} data={data["documents"]} />)
             }
-            else if(String(totalMember)=='0'){
-                setPrintData(<NoDataFound/>)
+            else if (String(totalMember) == '0') {
+                setPrintData(<NoDataFound />)
             }
             else {
                 setPrintData(<p>No members found</p>)
             }
         }
         catch (err) {
-            setPrintData(<AlertBox   image={images.unsuccess} color="orange"    massege={"Error " + err}><button onClick={() => setPrintData("")}>ok</button></AlertBox>)
+            setPrintData(<AlertBox image={images.unsuccess} color="orange" massege={"Error " + err}><button onClick={() => setPrintData("")}>ok</button></AlertBox>)
         }
 
     }
@@ -57,10 +58,10 @@ const Members = ({ }) => {
     return (
 
         <section className="w-full">
-           
+
             <div className=" flex justify-between flex-wrap items-center text-gray-500 font-bold text-xl border px-5 ">
                 <p>Total Member:<big>{totalMember}</big></p>
-                <button onClick={() => addNewMember()} type="button" className=" px-3 py-2  text-lg text-white rounded-lg shadow-lg bg-green-600"><i className="fa fa-plus-circle"></i>Add New Member</button>
+               
             </div>
             <div className="m-auo ">
                 {printData}

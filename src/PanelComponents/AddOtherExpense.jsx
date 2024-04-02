@@ -63,7 +63,8 @@ const AddOtherExpenses = ({ title, status }) => {
 
             if (dataSubmit == 0) {
 
-                setAlertBox(<AlertBox massege={"succesfully added"} image={images.success} ></AlertBox>)
+                setAlertBox(<AlertBox massege={"succesfully added"} image={images.success} 
+ color="green" ></AlertBox>)
                 setTimeout(async () => await status(true), 2000)
             }
             else {

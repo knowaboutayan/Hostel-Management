@@ -56,7 +56,8 @@ const AddExpenses = ({ title, status }) => {
                 <p className="animate-spin border-green-600 p-8 border-8 border-l-green-200 border-solid rounded-full"></p>
             </AlertBox>)
             if (dataSubmit == 0) {
-                setAlertBox(<AlertBox massege={"succesfully added"} image={images.success} ></AlertBox>)
+                setAlertBox(<AlertBox massege={"succesfully added"} image={images.success} 
+ color="green" ></AlertBox>)
                 const transaction = new Transction(userInfo['email'], userInfo['name'], date, 'debit', totalCost, "daily marcketing cost")
 
                  await database.addToCollection(conf.transactionCollectionId, transaction)//addTransactionHistory

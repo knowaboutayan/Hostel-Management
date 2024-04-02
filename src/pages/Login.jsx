@@ -42,7 +42,9 @@ const Login = ({ loginFor = '', valiDationFunc = "" }) => {
             if (data != 1) {
                 //setCurrentUserInformation
                 setShowSuccess(
-                    <AlertBox massege={"Login Successful"} color={"green"} image={images.success} >
+                    <AlertBox massege={"Login Successful"} image={images.success} 
+ 
+ color="green" >
                         redirecting...
                         <p className="animate-spin border-green-600 p-8 border-8 border-l-green-200 border-solid rounded-full"></p>
                     </AlertBox>

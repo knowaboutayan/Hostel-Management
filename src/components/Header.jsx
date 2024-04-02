@@ -5,35 +5,37 @@ import Button from './Button';
 import images from '../images';
 import PopUp from './PopUp';
 import Login from '../pages/Login'
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import MembersAdd from '../PanelComponents/MembersAdd';
+
 
 const Header = ({ logo = "", navList = [] }) => {
 
     const navigate = useNavigate()
     const [popup, setPopUp] = useState()
 
+    const [navShow, setNavShow] = useState(true)
+    const showNav = (res) => {
+        setNavShow(pre => !pre)
+
+    }
+
     const isLogin = useSelector(state => state.isUserLogin)
     const currentUserName = useSelector(state => state.userName)
     const profilePicFile = useSelector(state => state.profilePicFile)
-    const [navShow,setNavShow] = useState(true)
-    const showNav = (res)=>{
-        setNavShow(pre=>!pre)
-        
-
-    }
+    console.log("HEADER::", isLogin)
 
     return (
         <header className="bg-gray-300  shadow shadow-gray-700 py-4 px-8 flex justify-between items-center flex-wrap">
             <div className='sm:hidden block'>
 
-                <i className={`fa fa-${navShow?'bars':"times"} cursor-pointer text-4xl text-gray-600 `} onClick={()=>showNav()}/>
+                <i className={`fa fa-${navShow ? 'bars' : "times"} cursor-pointer text-4xl text-gray-600 `} onClick={() => showNav()} />
             </div>
             <div className="flex items-center">
                 <img src={profilePicFile || images.user} alt="logo" className="rounded-full border-2 bg-gray-300 h-8 mr-4" />
-                
+
             </div>
-            <div className={` gap-4 items-center flex-wrap sm:flex ${navShow?"hidden ":"h-max transition-all"} `}>
+            <div className={` gap-4 items-center flex-wrap sm:flex ${navShow ? "hidden " : "h-max transition-all"} `}>
                 {/* conditional rendering for user login or not  */}
                 {!isLogin ? (
                     <>

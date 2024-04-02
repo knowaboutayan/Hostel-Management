@@ -26,11 +26,14 @@ const Panel = ({ navigation = [] }) => {
     const [popup, setPopup] = useState("")
     const [title, setTitle] = useState("Dashboard")
     const [panelLogo, setPanelLogo] = useState(images.dashboard)
-    
 
+
+
+    
+    
     const navigate = useNavigate()
     const dispatch = useDispatch()
-    
+
     const profileImage = useSelector(state => state.profilePicFile)
     const isProfilePic = useSelector(state => state.userHaveProfilePic)
     const isEmailVerified = useSelector(state => state.emailVerification)//email verified or not
@@ -39,14 +42,25 @@ const Panel = ({ navigation = [] }) => {
     const currentUserInfo = useSelector(state => state.currentUserInfo)
     const currentUserStatus = useSelector(state => state.userStatus)
 
-    const credit = useSelector(state => state.totalCredit)
-    const debit = useSelector(state => state.totalDebit)
-    console.log(credit, debit)
+    useEffect(() => {
+        const intervalId = setInterval(() => {
+            const now = new Date();
+            const hours = now.getHours().toString().padStart(2, '0');
+            const minutes = now.getMinutes().toString().padStart(2, '0');
+            const seconds = now.getSeconds().toString().padStart(2, '0');
+            setTime(`${hours}:${minutes}:${seconds}`);
+        }, 1000);
+    
+        // Cleanup function to clear interval when component unmounts
+        return () => clearInterval(intervalId);
+    }, []);
+    
     //logout button 
     const logoutEventHandeler = async () => {
         setAlert(<AlertBox massege={"process"} image={images.process}></AlertBox>)
         await authService.logout()
-        setAlert(<AlertBox massege={"succesfully logout"} image={images.success}></AlertBox>)
+        setAlert(<AlertBox massege={"succesfully logout"} image={images.success}
+            color="green"></AlertBox>)
         localStorage.clear()
         sessionStorage.clear()
 
@@ -55,7 +69,7 @@ const Panel = ({ navigation = [] }) => {
             dispatch(isLogIn(false))
             dispatch(haveProfilePic(false))
             navigate("/")
-        }, 2000)
+        }, 1000)
     }
 
     //profile pic upload
@@ -78,39 +92,14 @@ const Panel = ({ navigation = [] }) => {
 
     useEffect(() => {
         (async () => {
-            setAlert(allAlerts.processing)
-            
-            try {
-                const data = await authService.getCurrentUser()
-                //checking 
-                if (data.$id!="") {
-                    dispatch(isLogIn(true))
-                    dispatch(userInfo(data))
+            setAlert(<AlertBox massege={'loading...'} image={images.process} color={'gray'} />)
+            const transaction = await database.getTotalTransaction()
+            dispatch(setTotalCredit(transaction.totalCredit))
+            dispatch(setTotalDebit(transaction.totalDebit))
+            setAlert("")
 
-                    const transaction = await database.getTotalTransaction()
-                    dispatch(setTotalCredit(transaction.totalCredit))
-                    dispatch(setTotalDebit(transaction.totalDebit))
-                    const profilePicFile = await database.getProfilePic(data.$id)
-
-                    if(profilePicFile){
-                        dispatch(haveProfilePic(true))
-                        dispatch(setProfilePicFile(profilePicFile))
-                    }
-                }
-
-            }
-            catch (error) {
-                dispatch(isLogIn(false))
-                dispatch(userInfo(null))
-                console.log("Panel current userLogin ::: ", error)
-            }
-            finally{
-                setAlert("")
-            }
         })()
     }, [])
-
-
 
 
     //email verification
@@ -118,11 +107,14 @@ const Panel = ({ navigation = [] }) => {
 
         if (!isEmailVerified) {
             await authService.emailVerification()
-            setAlert(<AlertBox massege={"we send a verification link on your email Id."} color="orange" image={images.success} />)
+            setAlert(<AlertBox massege={"we send a verification link on your email Id."} image={images.success}
+
+                color="green" />)
 
         }
         else {
-            setAlert(<AlertBox massege={"Email Already Verified!"} image={images.success} />)
+            setAlert(<AlertBox massege={"Email Already Verified!"} image={images.success}
+                color="green" />)
 
         }
         setTimeout(() => setAlert(""), [1000])
@@ -143,7 +135,7 @@ const Panel = ({ navigation = [] }) => {
                         </p>
                         <p className="mx-4 font-sans text-nowrap ">HOSTEL MANAGEMENT <span className="  rounded-xl px-1  font-bold text-lg bg-green-500 text-white">{String(currentUserStatus)[0].toUpperCase() + String(currentUserStatus).substring(1,)}</span></p>
                         <p className="flex flex-row text-nowrap">
-                        <p className="mx-4 font-sans font-bold " onClick={() => {navigate("/panel/");setPanelLogo(images.dashboard);setTitle("Dashboard")}}><i className="fa fa-home"></i></p>
+                            <p className="mx-4 font-sans font-bold " onClick={() => { navigate("/panel/"); setPanelLogo(images.dashboard); setTitle("Dashboard") }}><i className="fa fa-home"></i></p>
                             <p className="mx-4 font-sans font-bold " onClick={() => logoutEventHandeler()}><i className="fa fa-sign-out"></i></p>
                         </p>
                     </div>
@@ -165,7 +157,7 @@ const Panel = ({ navigation = [] }) => {
                                     </div>
 
                                     <div className="flex flex-nowrap flex-col col-span-1justify-center gap-6 h items-center p-5 text-3xl">
-                                        <i className="fa fa-whatsapp  text-gray-600 hover:text-green-400 cursor-pointer " onClick={() => setPopup(<PopUp close_btn={() => setPopup("")} title="facebook">
+                                        <i className="fa fa-whatsapp  text-gray-600 hover:text-green-400 cursor-pointer " onClick={() => setPopup(<PopUp icon={images.members} close_btn={() => setPopup("")} title="whatsapp">
                                             <iframe src="http://whatsapp.com" title="W3Schools Free Online Web Tutorials" className="h-96 w-full"></iframe>
                                         </PopUp>)} />
                                         {/* user social media */}
@@ -197,7 +189,7 @@ const Panel = ({ navigation = [] }) => {
                         {/* showing elements */}
                         <div className="border m-auto sticky z-10 shadow-sm top-0 ">
                             <PanelSectionTitle title={title} image={panelLogo} >
-                               
+
 
                             </PanelSectionTitle>
                         </div>
@@ -213,8 +205,10 @@ const Panel = ({ navigation = [] }) => {
 
 
                 {/* bottom nav */}
-                <div className="md:hidden  fixed py-2  bg-green-700 w-screen min-w-80 bottom-0">
+                <div className="md:hidden  fixed py-2  shadow-lg bg-gray-700 w-screen min-w-80 bottom-0">
                     <div className=" flex flex-row box-border justify-around" >
+                       
+                       
                         {navigation.map((card) => <NavLink to={`${card.id}`} className={({ isActive }) => ` w-12 hover:cursor-pointer shadow-lg   p-2 rounded-full 
                         hover:shadow-black transition-all
                         
@@ -241,7 +235,7 @@ const Panel = ({ navigation = [] }) => {
             <ErrorPage title="unauthorised entry " descrption="access decliend">
                 <Button text="" type="button" fname={() => navigate(`/`)}>
                     <i className="fa fa-sign-in" />Go to Home</Button>
-                {popup}
+
             </ErrorPage>
 
     )

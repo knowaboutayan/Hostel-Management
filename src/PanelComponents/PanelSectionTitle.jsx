@@ -16,12 +16,12 @@ const PanelSectionTitle = ({ title, image, children, alt }) => {
                     </h2>
                 </div>
 
-                <div className="  sm:block flex justify-evenly items-center text-nowrap font-semibold text-gray-600 shadow-lg bg-gray-200 p-2 rounded-md ">
-                    <h2>   Total  Deposit:{credit}</h2>
+                <div className="  sm:grid hidden justify-evenly items-center text-nowrap gap-2 font-semibold text-gray-600 shadow-lg bg-gray-200 p-2 rounded-md ">
+                    <h2>  Total  Deposit: <i className="fa fa-inr"/> {credit}</h2>
 
-                    <h2>   Total Expense:{debit}</h2>
+                    <h2>   Total Expense: <i className="fa fa-inr"/>  {debit}</h2>
 
-                    <h2 className="text-xl cborder-gray-600">    Balance:{Number(credit) - Number(debit)}</h2>
+                    <h2 className="text-xl cborder-gray-600">    Balance: <i className="fa fa-inr"/> {Number(credit) - Number(debit)}</h2>
                 </div>
             </div>
             {children}

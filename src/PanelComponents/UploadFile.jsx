@@ -36,7 +36,8 @@ const UploadFile = ({ title, requirements, classname, children, uploadTo, succes
             if (response == 0) {
                 const link = await database.getProfilePic(currentUserId)
                 dispatch(setProfilePicFile(link))
-                setAlert(<AlertBox massege={'profile picture succesfully updated!'} image={images.success} />)
+                setAlert(<AlertBox massege={'profile picture succesfully updated!'} image={images.success} 
+ color="green" />)
                 setTimeout(() => { successfulStatus(); setAlert("") }, 2000)
             }
             else {

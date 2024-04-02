@@ -16,7 +16,8 @@ const ForgetPassword = ({ status }) => {
         try {
             const response = await authService.forgetPassword({ email })
             if (response == 0) {
-                setAlertBox(<AlertBox massege={" recovery link send to your EmailId"} image={images.success}  >
+                setAlertBox(<AlertBox massege={" recovery link send to your EmailId"} image={images.success} 
+ color="green"  >
                 </AlertBox>)
 
             }
