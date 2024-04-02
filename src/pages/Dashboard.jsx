@@ -11,7 +11,7 @@ const Dashboard = ({ children = "" }) => {
     
 
     return (
-        <div className="h-full flex flex-row  gap-5 flex-wrap justify-center items-center items-center w-full border-red-600 p-2">
+        <div className="h-full flex flex-row  gap-5 flex-wrap justify-center items-center w-full border-red-600 p-2">
             
             <Cards title="All Members" icon={images.members} color={'gray'} navigateTo={"/panel/members"} />
             <Cards title="All Expenses" icon={images.expense}navigateTo={"/panel/expenses"} > <p>Total Expense:{totalDebit} </p></Cards>
