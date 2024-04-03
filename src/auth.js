@@ -121,7 +121,7 @@ async updatePhone({phone,password}){
 
     async emailVerification() {
         try {
-            const response = await this.account.createVerification('https://hostel-management-lilac.vercel.app/emailVerification');
+            const response = await this.account.createVerification('https://hostel-management-blush.vercel.app/emailVerification');
             console.log(response)
         }
         catch (error) {
